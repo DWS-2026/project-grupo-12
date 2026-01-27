@@ -3,10 +3,10 @@
 ## 👥 Miembros del Equipo
 | Nombre y Apellidos | Correo URJC | Usuario GitHub |
 |:--- |:--- |:--- |
-| [Nombre 1] | [email1]@alumnos.urjc.es | [User1] |
-| [Nombre 2] | [email2]@alumnos.urjc.es | [User2] |
-| [Nombre 3] | [email3]@alumnos.urjc.es | [User3] |
-| [Nombre 4] | [email4]@alumnos.urjc.es | [User4] |
+| Oliver Infante Jarana | o.infante.2024@alumnos.urjc.es | 0L1V3R5 |
+| Fernando Montero Molina | f.montero.2024@alumnos.urjc.es | [User2] |
+| Hugo Vara Carbajo | h.vara.2024@alumnos.urjc.es | [User3] |
+| Jose Carlos Hernampérez Moreno | jc.hernamperez.2024@alumnos.urjc.es | [User4] |
 
 ---
 
