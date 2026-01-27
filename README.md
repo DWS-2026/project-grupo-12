@@ -4,7 +4,7 @@
 | Nombre y Apellidos | Correo URJC | Usuario GitHub |
 |:--- |:--- |:--- |
 | Oliver Infante Jarana | o.infante.2024@alumnos.urjc.es | 0L1V3R5 |
-| Fernando Montero Molina | f.montero.2024@alumnos.urjc.es | [User2] |
+| Fernando Montero Molina | f.montero.2024@alumnos.urjc.es | feerr5 |
 | Hugo Vara Carbajo | h.vara.2024@alumnos.urjc.es | [User3] |
 | Jose Carlos Hernampérez Moreno | jc.hernamperez.2024@alumnos.urjc.es | [User4] |
 
