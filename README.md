@@ -5,7 +5,7 @@
 |:--- |:--- |:--- |
 | Oliver Infante Jarana | o.infante.2024@alumnos.urjc.es | 0L1V3R5 |
 | Fernando Montero Molina | f.montero.2024@alumnos.urjc.es | feerr5 |
-| Hugo Vara Carbajo | h.vara.2024@alumnos.urjc.es | [User3] |
+| Hugo Vara Carbajo | h.vara.2024@alumnos.urjc.es | Hvara14 |
 | Jose Carlos Hernampérez Moreno | jc.hernamperez.2024@alumnos.urjc.es | [User4] |
 
 ---
