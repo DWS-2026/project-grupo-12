@@ -13,21 +13,21 @@
         <link href="css/styles.css" rel="stylesheet" />
 
         <style>
-            /* Hacemos que el mapa sea responsive */
+            /* We make the map responsive */
             .map-container iframe {
                 width: 100%;
                 height: 250px;
                 border: 0;
                 border-radius: 0.5rem;
             }
-            /* Ajuste para que las fotos se vean bonitas en grid */
+            /* Adjust to see pretty the photos */
             .img-grid-main { height: 400px; object-fit: cover; width: 100%; }
             .img-grid-sub { height: 195px; object-fit: cover; width: 100%; }
             
             /* Sidebar sticky */
             .sticky-sidebar {
                 position: sticky;
-                top: 100px; /* Se queda pegado al bajar */
+                top: 100px; /* stick when going down */
             }
         </style>
     </head>
@@ -65,17 +65,58 @@
                     </div>
                 </div>
 
-                <div class="row g-2 mb-5">
-                    <div class="col-md-8">
-                        <img id="h-img-main" class="img-fluid rounded img-grid-main" src="https://dummyimage.com/800x500/dee2e6/6c757d.jpg" alt="..." />
+                <div class="container gallery-container mb-5">
+    
+                    <div class="row g-2 mb-2">
+                        <div class="col-lg-8">
+                            <img id="gal-0" src="" class="img-fluid rounded img-main" alt="Principal" onclick="abrirGaleria(0)">
+                        </div>
+                        
+                        <div class="col-lg-4 d-flex flex-column gap-2">
+                            <img id="gal-1" src="" class="img-fluid rounded img-side" alt="Lateral 1" onclick="abrirGaleria(1)">
+                            <img id="gal-2" src="" class="img-fluid rounded img-side" alt="Lateral 2" onclick="abrirGaleria(2)">
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="row g-2">
-                            <div class="col-12">
-                                <img class="img-fluid rounded img-grid-sub" src="https://dummyimage.com/400x300/dee2e6/6c757d.jpg" alt="..." />
+
+                    <div class="row g-2">
+                        <div class="col-3">
+                            <img id="gal-3" src="" class="img-fluid rounded img-bottom" alt="Inferior 1" onclick="abrirGaleria(3)">
+                        </div>
+                        <div class="col-3">
+                            <img id="gal-4" src="" class="img-fluid rounded img-bottom" alt="Inferior 2" onclick="abrirGaleria(4)">
+                        </div>
+                        <div class="col-3">
+                            <img id="gal-5" src="" class="img-fluid rounded img-bottom" alt="Inferior 3" onclick="abrirGaleria(5)">
+                        </div>
+                        
+                        <div class="col-3 position-relative" onclick="abrirGaleria(0)">
+                            <img id="gal-6" src="" class="img-fluid rounded img-bottom" alt="Inferior 4">
+                            <div class="more-photos-overlay">
+                                <span id="contador-mas-fotos">+10 fotos</span>
                             </div>
-                            <div class="col-12">
-                                <img class="img-fluid rounded img-grid-sub" src="https://dummyimage.com/400x300/dee2e6/6c757d.jpg" alt="..." />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="modalGaleria" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-xl">
+                        <div class="modal-content bg-dark">
+                            <div class="modal-header border-0">
+                                <h5 class="modal-title text-white" id="tituloGaleriaModal">Galería</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body p-0">
+                                <div id="carruselHotel" class="carousel slide" data-bs-ride="false"> <div class="carousel-inner" id="carousel-items-container">
+                                        </div>
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carruselHotel" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Anterior</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carruselHotel" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Siguiente</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -153,16 +194,27 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         
         <script>
-            // 1. BASE DE DATOS (JSON)
+            //Global variable to hold the actual hotel
+            let hotelActual = null; 
+            // 1. DATABASE (JSON)
             const hoteles = [
                 {
                     id: 1,
-                    nombre: "Heima buhardilla de ensueño 4A",
-                    tipo: "Alquiler Temporal",
-                    ubicacion: "Calle de Fúcar, 7, 4A, 28014 Madrid",
-                    precio: 120,
-                    descripcion: "Este apartamento increíble cuenta con vigas de madera a la vista, suelos de parquet y una iluminación cálida. Está situado a 9 minutos de la Plaza Mayor y ofrece todas las comodidades para una estancia de lujo.",
-                    imagen: "assets/img/portfolio/fullsize/1.jpg", // Asegúrate de que esta ruta exista o pon una URL web
+                    nombre: "UMusic Hotel Madrid",
+                    tipo: "Alojamiento Deluxe con vistas al patio",
+                    ubicacion: "Calle de la Paz 11, Centro de Madrid, 28012 Madrid, España",
+                    precio: 742,
+                    descripcion: "El UMusic Hotel Madrid en Madrid ofrece una experiencia de 5 estrellas con una piscina de agua salada, centro de fitness, terraza solarium, restaurante, bar y WiFi gratis. El check-in y check-out privados, la recepcion 24 horas y el servicio de consejeria garantizan una estancia comoda.",
+                    galeria: [
+                        "assets/img/portfolio/hoteles/UMusic1.jpg",
+                        "assets/img/portfolio/hoteles/UMusic2.jpg",
+                        "assets/img/portfolio/hoteles/UMusic3.jpg",
+                        "assets/img/portfolio/hoteles/UMusic4.jpg",
+                        "assets/img/portfolio/hoteles/UMusic5.jpg",
+                        "assets/img/portfolio/hoteles/UMusic6.jpg",
+                        "assets/img/portfolio/hoteles/UMusic7.jpg",
+                        "assets/img/portfolio/hoteles/UMusic8.jpg"
+                    ],
                     servicios: ["WiFi gratis", "Aire acondicionado", "Baño privado", "Cocina equipada", "Lavadora"]
                 },
                 {
@@ -172,34 +224,57 @@
                     ubicacion: "Gran Vía, 84, Madrid",
                     precio: 250,
                     descripcion: "Disfruta de las mejores vistas de Madrid desde nuestra terraza 360. Habitaciones modernas y servicio exclusivo.",
-                    imagen: "assets/img/portfolio/fullsize/2.jpg",
+                    imagen: "assets/img/portfolio/hoteles/Riu1.jpg",
                     servicios: ["Piscina", "Rooftop Bar", "Gimnasio", "Desayuno incluido"]
                 }
             ];
 
-            // 2. FUNCIÓN PARA CARGAR DATOS
+                    // 3. LOGICA AL CARGAR LA PÁGINA
             document.addEventListener('DOMContentLoaded', () => {
-                // Leer ID de la URL (ej: hotel.html?id=1)
                 const params = new URLSearchParams(window.location.search);
                 const idUrl = parseInt(params.get('id'));
 
-                // Buscar hotel (Si no hay ID, cargamos el primero por defecto para probar)
-                let hotel = hoteles.find(h => h.id === idUrl);
-                if (!hotel) hotel = hoteles[0]; // Fallback para que no se vea vacío
+                // Buscar el hotel
+                hotelActual = hoteles.find(h => h.id === idUrl);
+                if (!hotelActual) hotelActual = hoteles[0]; // Fallback
 
-                // Rellenar HTML
-                document.getElementById('h-nombre').innerText = hotel.nombre;
-                document.getElementById('h-tipo').innerText = hotel.tipo;
-                document.getElementById('h-ubicacion').innerText = hotel.ubicacion;
-                document.getElementById('h-precio').innerText = hotel.precio + " €";
-                document.getElementById('h-descripcion').innerText = hotel.descripcion;
+                // Rellenar Textos
+                document.getElementById('h-nombre').innerText = hotelActual.nombre;
+                document.getElementById('h-tipo').innerText = hotelActual.tipo;
+                document.getElementById('h-ubicacion').innerText = hotelActual.ubicacion;
+                document.getElementById('h-precio').innerText = hotelActual.precio + " €";
+                document.getElementById('h-descripcion').innerText = hotelActual.descripcion;
+
+                // --- NUEVO: RELLENAR GALERÍA MOSAICO (0 a 6) ---
+                // Recorremos las fotos del hotel y las ponemos en los huecos gal-0, gal-1, etc.
+                hotelActual.galeria.forEach((imgUrl, index) => {
+                    // Solo llenamos hasta el hueco 6 (porque es lo que cabe en el diseño)
+                    if(index <= 6) {
+                        const imgElement = document.getElementById(`gal-${index}`);
+                        if(imgElement) {
+                            imgElement.src = imgUrl;
+                        }
+                    }
+                });
+
+                // Calcular cuántas fotos sobran para el texto "+X fotos"
+                const totalFotos = hotelActual.galeria.length;
+                const fotosEnMosaico = 7; // Mostramos 7 huecos (0 a 6)
                 
-                // Cambiar imagen (si usas URLs reales cambia el src)
-                // document.getElementById('h-img-main').src = hotel.imagen; 
+                // El overlay está sobre la foto 6, así que contamos cuántas hay DESPUÉS de la 6
+                // Pero visualmente suele quedar bien decir "cuantas más hay aparte de las que veo claras"
+                const sobran = totalFotos - fotosEnMosaico; 
+                
+                if(sobran > 0) {
+                    // +1 para incluir la foto que está debajo del texto oscuro
+                    document.getElementById('contador-mas-fotos').innerText = `+${sobran + 1} fotos más`;
+                } else {
+                    document.getElementById('contador-mas-fotos').innerText = "Ver galería";
+                }
 
-                // Pintar servicios
+                // Rellenar Servicios
                 const divServicios = document.getElementById('h-servicios');
-                hotel.servicios.forEach(serv => {
+                hotelActual.servicios.forEach(serv => {
                     divServicios.innerHTML += `
                         <div class="col-md-6 mb-2">
                             <i class="bi bi-check-circle-fill text-primary me-2"></i> ${serv}
@@ -207,6 +282,30 @@
                     `;
                 });
             });
+
+            // 4. NUEVA FUNCIÓN: ABRIR EL MODAL (CARRUSEL)
+            function abrirGaleria(indiceInicial) {
+                const contenedorCarrusel = document.getElementById('carousel-items-container');
+                contenedorCarrusel.innerHTML = ''; // Limpiar lo anterior
+
+                // Generar todas las diapositivas
+                hotelActual.galeria.forEach((imgUrl, index) => {
+                    // Añadir clase 'active' solo a la foto que pulsaste
+                    const claseActive = index === indiceInicial ? 'active' : '';
+                    
+                    // HTML del item del carrusel
+                    const itemHtml = `
+                        <div class="carousel-item ${claseActive}" style="height: 80vh;">
+                            <img src="${imgUrl}" class="d-block w-100 h-100" style="object-fit: contain;" alt="Foto ${index}">
+                        </div>
+                    `;
+                    contenedorCarrusel.innerHTML += itemHtml;
+                });
+
+                // Usar Bootstrap para mostrar el modal
+                const myModal = new bootstrap.Modal(document.getElementById('modalGaleria'));
+                myModal.show();
+            }
         </script>
     </body>
 </html>
