@@ -119,14 +119,14 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 
 ---
 
-#### **Alumno 4 - [Nombre Completo]**
+#### **Alumno 4 -  José Carlos Hernampérez Moreno**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Encargado de hacer la parte del administrador del hotel
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
+|1| [Creación de la estructura base y maquetación de la página de administración](https://github.com/DWS-2026/project-grupo-12/commit/df395427f08a4e81337c89c13a703acc6c64c0b4)  | [admin.html](https://github.com/DWS-2026/project-grupo-12/blob/df395427f08a4e81337c89c13a703acc6c64c0b4/admin.html)   |
+|2| [Implementación de la gestión de hoteles: interfaces para creación y edición de elementos](https://github.com/DWS-2026/project-grupo-12/commit/7986a17785279d419ce83dd6e81c935c266028a9)  | [admin.html](https://github.com/DWS-2026/project-grupo-12/blob/7986a17785279d419ce83dd6e81c935c266028a9/admin.html)<br>[create_hotel.html](https://github.com/DWS-2026/project-grupo-12/blob/7986a17785279d419ce83dd6e81c935c266028a9/create_hotel.html)<br>[edit_hotel.html](https://github.com/DWS-2026/project-grupo-12/blob/7986a17785279d419ce83dd6e81c935c266028a9/edit_hotel.html)  |
 |3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
 |4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
 |5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
