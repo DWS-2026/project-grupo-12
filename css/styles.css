@@ -11037,3 +11037,37 @@ header.masthead h1, header.masthead .h1 {
 .more-photos-overlay:hover {
     background-color: rgba(0, 0, 0, 0.4);
 }
+
+
+/*Main form container for login,register and profile*/
+.masthead-full {
+    min-height: 100vh; 
+    height: auto;      
+    padding-top: 8rem; 
+    padding-bottom: 5rem;
+    background-attachment: fixed; 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/*Specific styles for profile picture */
+
+/*Rounded image input*/
+.profile-avatar-container {
+    width: 130px;
+    height: 130px;
+    border: 3px solid #fff !important; 
+}
+
+/*Default user image*/
+.profile-avatar-icon {
+    font-size: 5rem;
+}
+
+/*Edit photo button*/
+.profile-edit-btn {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}

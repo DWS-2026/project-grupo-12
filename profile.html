@@ -15,7 +15,7 @@
     <link href="css/styles.css" rel="stylesheet" />
 </head>
 
-<!--Top page -->
+<!--Top page-->
 <body id="page-top">
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
         <div class="container px-4 px-lg-5">
@@ -23,8 +23,8 @@
             <a class="btn btn-primary btn-sm ms-auto" href="index.html">Volver al inicio</a>
         </div>
     </nav>
-    <!-- Profile Panel--> <!--Classes for creating and adjusting the panel-->
-    <header class="masthead" style="min-height: 100vh; height: auto; padding-top: 5rem; padding-bottom: 5rem;">
+    <!--Input form-->
+    <header class="masthead masthead-full">
         <div class="container px-4 px-lg-5 h-100">
             <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center">
                 <div class="col-lg-5 col-md-8 text-center">
@@ -32,24 +32,21 @@
                         <div class="card-body p-5">
                             <div class="mb-4 text-center">
                                 <div class="position-relative d-inline-block">
-                                    <div class="rounded-circle bg-light d-flex align-items-center justify-content-center shadow-sm"
-                                        style="width: 130px; height: 130px; border: 3px solid #fff;">
-                                        <i class="bi bi-person-fill text-primary" style="font-size: 5rem;"></i>
+                                    <div
+                                        class="rounded-circle bg-light d-flex align-items-center justify-content-center shadow-sm profile-avatar-container">
+                                        <i class="bi bi-person-fill text-primary profile-avatar-icon"></i>
+                                        <!--Profile picture-->
                                     </div>
-                                    <!--Image input-->
                                     <input type="file" id="fotoPerfilInput" class="d-none" accept="image/*">
-
                                     <label for="fotoPerfilInput"
-                                        class="position-absolute bottom-0 end-0 mb-2 me-1 btn btn-primary rounded-circle d-flex align-items-center justify-content-center border border-2 border-white shadow-sm"
-                                        style="width: 40px; height: 40px; cursor: pointer;"
+                                        class="position-absolute bottom-0 end-0 mb-2 me-1 btn btn-primary rounded-circle d-flex align-items-center justify-content-center border border-2 border-white shadow-sm profile-edit-btn"
                                         title="Cambiar foto de perfil">
                                         <i class="bi bi-camera-fill text-white"></i>
                                     </label>
                                 </div>
                             </div>
-                            <!--Profile information-->
+                            <!--Profile Info-->
                             <h2 class="text-center font-weight-light text-dark">Mi Perfil</h2>
-                            <hr class="divider" />
                             <p class="text-muted mb-4">Información de la cuenta</p>
                             <!--Username input-->
                             <div>
@@ -58,7 +55,7 @@
                                         value="UsuarioEjemplo" readonly />
                                     <label for="inputUsername" class="opacity-50">Nombre de Usuario</label>
                                 </div>
-                                <!--Phone number input-->
+                                <!--Phone input-->
                                 <div class="form-floating mb-3">
                                     <input class="form-control bg-white" id="inputPhone" type="tel"
                                         value="+34 600 000 000" readonly />
@@ -72,17 +69,15 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Logout button -->
-                    <div class="card-footer text-center py-4 bg-light border-0 rounded-bottom">
-                        <a href="login.html" class="btn btn-outline-danger rounded-pill px-4 shadow-sm">
-                            <i class="bi bi-box-arrow-right me-2"></i> Cerrar Sesión
-                        </a>
+                        <!--Botton form-->
+                        <div class="card-footer text-center py-4 bg-light border-0 rounded-bottom">
+                            <a href="login.html" class="btn btn-outline-danger rounded-pill px-4 shadow-sm">
+                                <i class="bi bi-box-arrow-right me-2"></i> Cerrar Sesión
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        </div>
         </div>
     </header>
 </body>
