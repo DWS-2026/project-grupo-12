@@ -11038,6 +11038,7 @@ header.masthead h1, header.masthead .h1 {
     background-color: rgba(0, 0, 0, 0.4);
 }
 
+<<<<<<< HEAD
 
 /*Main form container for login,register and profile*/
 .masthead-full {
@@ -11070,4 +11071,20 @@ header.masthead h1, header.masthead .h1 {
     width: 40px;
     height: 40px;
     cursor: pointer;
+}
+/* We make the map responsive */
+.map-container iframe {
+  width: 100%;
+  height: 250px;
+  border: 0;
+  border-radius: 0.5rem;
+}
+/* Adjust to see pretty the photos */
+.img-grid-main { height: 400px; object-fit: cover; width: 100%; }
+.img-grid-sub { height: 195px; object-fit: cover; width: 100%; }
+            
+/* Sidebar sticky */
+.sticky-sidebar {
+position: sticky;
+top: 100px; /* stick when going down */
 }
