@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Añadir Nuevo Hotel - Hospedate.com</title>
-    
+    <title>Añadir Nuevo Hotel - Hospédate</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <link rel="stylesheet" href="styles.css">
 </head>
+<!--Title-->
 <body id="page-top">
-
+    <!--Logo with button to go backwards-->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3 navbar-shrink" id="mainNav">
         <div class="container px-4 px-lg-5">
-            <a class="navbar-brand fw-bold" href="admin.html">Hospedate.com</a>
+            <a class="navbar-brand fw-bold" href="admin.html">Hospédate</a>
         </div>
     </nav>
 
@@ -21,10 +24,10 @@
         <div class="container px-4 px-lg-5">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    
+                    <!--Title of the form-->
                     <h2 class="text-center mt-0">Registrar Nuevo Hotel</h2>
                     <hr class="divider" /> 
-                    
+                    <!--Creation of the form-->
                     <form action="guardar_nuevo_hotel.php" method="POST" class="mt-4">
                         
                         <div class="mb-4">
@@ -46,12 +49,12 @@
                             <label for="description" class="form-label fw-bold">Descripción</label>
                             <textarea class="form-control" id="description" name="description" rows="4" placeholder="Escribe aquí los servicios o detalles del hotel..."></textarea>
                         </div>
-
                         <div class="d-flex justify-content-center gap-3">
+                            <!--Button to save the form-->
                             <button type="submit" class="btn btn-primary btn-xl shadow">
                                 Guardar Hotel
                             </button>
-                            
+                            <!--Button to cancel the form and go backwards-->
                             <a href="admin.html" class="btn btn-light btn-xl border">
                                 Cancelar
                             </a>
@@ -62,10 +65,10 @@
             </div>
         </div>
     </section>
-
+    <!--Bottom section and footer-->
     <footer class="bg-light py-5">
         <div class="container px-4 px-lg-5">
-            <div class="small text-center text-muted">Copyright &copy; 2026 - Hospedate.com</div>
+            <div class="small text-center text-muted">Copyright &copy; 2026 - Hospédate.com</div>
         </div>
     </footer>
 </body>
