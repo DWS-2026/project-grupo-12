@@ -11129,7 +11129,7 @@ top: 100px; /* stick when going down */
      color: #f4623a !important;
 }
  /* SMALLER HEADER IN THIS PAGE */
-.header.masthead-short {
+  header.masthead-short {
      padding-top: 8rem;
      padding-bottom: 4rem;
      background: linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%), url("../assets/img/bg-masthead.jpg");
@@ -11146,7 +11146,7 @@ top: 100px; /* stick when going down */
     position:absolute;
     top:-9999px;
 }
-/* Creamos las estrellas visuales */
+/* We create the visual stars */
 .rate:not(:checked) > label {
     float:right;
     width:1em;
@@ -11154,7 +11154,7 @@ top: 100px; /* stick when going down */
     white-space:nowrap;
     cursor:pointer;
     font-size:30px;
-    color:#ccc; /* Color gris por defecto */
+    color:#ccc; /* Gray */
 }
 /* Usamos el símbolo de estrella */
 .rate:not(:checked) > label:before {
