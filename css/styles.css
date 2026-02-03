@@ -10926,7 +10926,7 @@ hr.divider-light {
   }
 }
 
-header.masthead {
+header.masthead, section.masthead {
   padding-top: 10rem;
   padding-bottom: calc(10rem - 4.5rem);
   background: linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%), url("../assets/img/bg-masthead.jpg");
@@ -10993,13 +10993,16 @@ header.masthead h1, header.masthead .h1 {
 #portfolio .container-fluid .portfolio-box:hover .portfolio-box-caption, #portfolio .container-sm .portfolio-box:hover .portfolio-box-caption, #portfolio .container-md .portfolio-box:hover .portfolio-box-caption, #portfolio .container-lg .portfolio-box:hover .portfolio-box-caption, #portfolio .container-xl .portfolio-box:hover .portfolio-box-caption, #portfolio .container-xxl .portfolio-box:hover .portfolio-box-caption {
   opacity: 1;
 }
-/* ALIGN IMAGES*/
+/* ALIGN IMAGES ADDING COVER*/
 #portfolio .portfolio-box img {
   width: 100%;
   height: 450px;     
   object-fit: cover; 
   object-position: center;
   display: block;
+}
+.top-view {
+    object-position: top !important;
 }
 /* GALERY STYLES */
 .gallery-container .img-main {
