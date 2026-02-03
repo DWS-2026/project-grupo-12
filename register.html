@@ -3,88 +3,101 @@
 
 <head>
     <meta charset="utf-8" />
+    <!-- Configuration for Responsive Web Design -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Page metadata -->
     <meta name="description" content="Register Page" />
     <meta name="author" content="" />
+    <!-- Browser tab title -->
     <title>Crear Cuenta - Hospédate</title>
+    <!-- Browser tab icon -->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic"
         rel="stylesheet" type="text/css" />
+    <!-- Custom stylesheet -->
     <link href="css/styles.css" rel="stylesheet" />
 </head>
 
-<!--Top page-->
-
 <body id="page-top">
+    <!-- NAVIGATION BAR -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
         <div class="container px-4 px-lg-5">
             <a class="navbar-brand" href="#page-top">Hospédate</a>
             <a class="btn btn-primary btn-sm ms-auto" href="index.html">Volver al inicio</a>
         </div>
     </nav>
-    <!--Input form-->
+
+    <!-- BACKGROUND SECTION -->
+    <!-- Registration form displayed over the masthead background -->
     <section class="masthead masthead-full">
         <div class="container px-4 px-lg-5 h-100">
+            <!-- GRID SYSTEM -->
             <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center">
+                <!-- REGISTER CARD COLUMN -->
                 <div class="col-lg-5 col-md-8 text-center">
                     <div class="card shadow-lg border-0 rounded-lg">
+                        <!-- CARD BODY -->
                         <div class="card-body p-5">
-                            <!-- Top form-->
+                            <!-- Register title -->
                             <h2 class="text-center font-weight-light text-dark">Crear cuenta</h2>
                             <p class="text-muted mb-5">Ingrese sus credenciales</p>
+                            <!-- REGISTER FORM -->
                             <form>
-                                <!-- Email input-->
+                                <!-- Email input -->
                                 <div class="form-floating mb-3">
                                     <input class="form-control" id="inputEmail" type="email"
                                         placeholder="nombre@ejemplo.com" required />
                                     <label for="inputEmail" class="opacity-50">Correo Electrónico</label>
                                 </div>
-                                <!--Phone number input-->
+                                <!-- Phone number input -->
                                 <div class="form-floating mb-3">
                                     <input class="form-control" id="inputPhone" type="tel"
                                         placeholder="Número de teléfono" required />
                                     <label for="inputPhone" class="opacity-50">Número de teléfono</label>
                                 </div>
-                                <!--Username input-->
+                                <!-- Username input -->
                                 <div class="form-floating mb-3">
-                                    <input class="form-control" id="inputUsername" type="text" placeholder="Usuario"
-                                        required />
+                                    <input class="form-control" id="inputUsername" type="text"
+                                        placeholder="Usuario" required />
                                     <label for="inputUsername" class="opacity-50">Nombre de Usuario</label>
                                 </div>
-                                <!--Password input-->
+                                <!-- Password input -->
                                 <div class="form-floating mb-3">
                                     <input class="form-control" id="inputPassword" type="password"
                                         placeholder="Contraseña" required />
                                     <label for="inputPassword" class="opacity-50">Contraseña</label>
                                 </div>
-                                <!--Create account button-->
+                                <!-- Create account button -->
                                 <div class="d-grid gap-2 mt-4 mb-0">
-                                    <button class="btn btn-primary btn-xl" href="index.html" type="submit">Crear
-                                        cuenta</button>
+                                    <a class="btn btn-primary btn-xl" href="index.html">Crear cuenta</a>
                                 </div>
                             </form>
                         </div>
-                        <!--Bottom form-->
+                        <!-- CARD FOOTER -->
+                        <!-- Link to login page -->
                         <div class="card-footer text-center py-3 bg-light border-0 rounded-bottom">
-                            <a href="login.html" class="text-decoration-none text-decoration-none ">¿Tienes ya cuenta?
-                                Inicia sesión</a>
+                            <a href="login.html" class="text-decoration-none">
+                                ¿Tienes ya cuenta? Inicia sesión
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        </div>
-
     </section>
-    <!--Copyright section-->
+
+    <!-- FOOTER -->
     <footer class="bg-light py-5">
         <div class="container px-4 px-lg-5">
-            <div class="small text-center text-muted">Copyright &copy; 2026 - Hospédate.com</div>
+            <div class="small text-center text-muted">
+                Copyright &copy; 2026 - Hospédate.com
+            </div>
         </div>
     </footer>
-
 </body>
 
 </html>

@@ -11077,8 +11077,8 @@ header.masthead h1, header.masthead .h1 {
     background-repeat: no-repeat;
     background-size: cover;
 }
-
-/*Specific styles for profile picture */
+/*----------------------------------------------------------------------------*/
+/*STYLES FOR PROFILE PICTURE*/
 
 /*Rounded image input*/
 .profile-avatar-container {
@@ -11098,6 +11098,35 @@ header.masthead h1, header.masthead .h1 {
     height: 40px;
     cursor: pointer;
 }
+/*----------------------------------------------------------------------------*/
+/* STYLES FOR SCROLL METHOD */
+.scroll-container {
+    max-height: 400px; /* Max height for scrollable container */
+    overflow-y: auto;  /* Activates scroll if overflows */
+    padding-right: 10px; /* Lateral space for text not to touch scrollbar */
+}
+
+/* Scroll container styling */
+.scroll-container::-webkit-scrollbar {
+    width: 6px; 
+}
+
+.scroll-container::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Track background color */
+    border-radius: 4px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+    background-color: #ccc; /* Bar color */
+    border-radius: 4px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+    background-color: #f4623a; 
+}
+
+/*----------------------------------------------------------------------------*/
+
 /* We make the map responsive */
 .map-container iframe {
   width: 100%;
@@ -11199,3 +11228,4 @@ top: 100px; /* stick when going down */
     display: block;
     clear: both;
 }
+
