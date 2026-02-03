@@ -11129,11 +11129,56 @@ top: 100px; /* stick when going down */
      color: #f4623a !important;
 }
  /* SMALLER HEADER IN THIS PAGE */
-header.masthead-short {
+.header.masthead-short {
      padding-top: 8rem;
      padding-bottom: 4rem;
      background: linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%), url("../assets/img/bg-masthead.jpg");
      background-position: center;
      background-repeat: no-repeat;
      background-size: cover;
+}
+.rate {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+}
+.rate:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+/* Creamos las estrellas visuales */
+.rate:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:30px;
+    color:#ccc; /* Color gris por defecto */
+}
+/* Usamos el símbolo de estrella */
+.rate:not(:checked) > label:before {
+    content: '★ ';
+}
+/* Color naranja al hacer check o hover */
+.rate > input:checked ~ label {
+    color: #f4623a;    
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+    color: #f4623a;  
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #cf5331; /* Un naranja un poco más oscuro al pasar por encima de una seleccionada */
+}
+
+/* Limpiar el float del sistema de estrellas para que no rompa el layout */
+.rate::after {
+    content: "";
+    display: block;
+    clear: both;
 }
