@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
@@ -16,6 +17,7 @@
 </head>
 
 <!--Top page-->
+
 <body id="page-top">
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
         <div class="container px-4 px-lg-5">
@@ -23,11 +25,35 @@
             <a class="btn btn-primary btn-sm ms-auto" href="index.html">Volver al inicio</a>
         </div>
     </nav>
-    <!--Input form-->
-    <header class="masthead masthead-full">
+    <!--Background image-->
+    <section class="masthead masthead-full">
+        <!--Reviews panel-->
         <div class="container px-4 px-lg-5 h-100">
-            <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center">
-                <div class="col-lg-5 col-md-8 text-center">
+            <div class="row gx-4 gx-lg-5 h-100 align-items-start justify-content-center">
+                <div class="col-lg-6 col-md-10 mb-5 mb-lg-0 text-start">
+                    <div class="card shadow-lg border-0 rounded-lg h-100">
+                        <div class="card-body p-4">
+                            <h2 class="h3 font-weight-light text-dark mb-4 border-bottom pb-2">Mis Reseñas</h2>
+
+                            <!--id for compatibility with javascript-->
+                            <div id="reviews-container">
+
+                                <div class="review-item mb-3 border-bottom pb-3">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <h5 class="mb-1 fw-bold text-primary">
+                                            <i class="bi bi-building me-2"></i>Hotel Gran Vía
+                                        </h5>
+                                        <span class="text-warning fs-6">★★★★☆</span>
+                                    </div>
+                                    <small class="text-muted d-block mb-2">Publicado el 12/10/2023</small>
+                                    <p class="text-dark small mb-0">"Reseña ejemplo"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Profile panel-->
+                <div class="col-lg-5 col-md-10">
                     <div class="card shadow-lg border-0 rounded-lg">
                         <div class="card-body p-5">
                             <div class="mb-4 text-center">
@@ -35,7 +61,6 @@
                                     <div
                                         class="rounded-circle bg-light d-flex align-items-center justify-content-center shadow-sm profile-avatar-container">
                                         <i class="bi bi-person-fill text-primary profile-avatar-icon"></i>
-                                        <!--Profile picture-->
                                     </div>
                                     <input type="file" id="fotoPerfilInput" class="d-none" accept="image/*">
                                     <label for="fotoPerfilInput"
@@ -45,31 +70,35 @@
                                     </label>
                                 </div>
                             </div>
-                            <!--Profile Info-->
+                            <!--Profile information-->
                             <h2 class="text-center font-weight-light text-dark">Mi Perfil</h2>
-                            <p class="text-muted mb-4">Información de la cuenta</p>
-                            <!--Username input-->
+                            <p class="text-muted text-center mb-4">Información de la cuenta</p>
                             <div>
                                 <div class="form-floating mb-3">
                                     <input class="form-control bg-white" id="inputUsername" type="text"
                                         value="UsuarioEjemplo" readonly />
                                     <label for="inputUsername" class="opacity-50">Nombre de Usuario</label>
                                 </div>
-                                <!--Phone input-->
                                 <div class="form-floating mb-3">
                                     <input class="form-control bg-white" id="inputPhone" type="tel"
                                         value="+34 600 000 000" readonly />
                                     <label for="inputPhone" class="opacity-50">Número de teléfono</label>
                                 </div>
-                                <!--Email input-->
                                 <div class="form-floating mb-3">
                                     <input class="form-control bg-white" id="inputEmail" type="email"
                                         value="usuario@email.com" readonly />
+
                                     <label for="inputEmail" class="opacity-50">Correo Electrónico</label>
                                 </div>
                             </div>
+                            <!--Edit profile button-->
+                            <div class="mt-4 text-center">
+                                <button class="btn btn-primary rounded-pill px-4 shadow-sm w-100">
+                                    <i class="bi bi-pencil-square me-2"></i> Modificar datos
+                                </button>
+                            </div>
                         </div>
-                        <!--Botton form-->
+                        <!--Logout button-->
                         <div class="card-footer text-center py-4 bg-light border-0 rounded-bottom">
                             <a href="login.html" class="btn btn-outline-danger rounded-pill px-4 shadow-sm">
                                 <i class="bi bi-box-arrow-right me-2"></i> Cerrar Sesión
@@ -77,9 +106,17 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
-    </header>
+
+    </section>
+    <!--Copyright section-->
+    <footer class="bg-light py-5">
+        <div class="container px-4 px-lg-5">
+            <div class="small text-center text-muted">Copyright &copy; 2026 - Hospédate.com</div>
+        </div>
+    </footer>
 </body>
 
 </html>
