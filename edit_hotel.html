@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Hotel - Hospedate.com</title>
+    <title>Edit Hotel - Hospédate</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <link rel="stylesheet" href="styles.css">
 </head>
 <body id="page-top">
-
+    <!--Title-->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3 navbar-shrink" id="mainNav">
         <div class="container px-4 px-lg-5">
-            <a class="navbar-brand fw-bold" href="admin.html">Hospedate.com</a>
+            <a class="navbar-brand fw-bold" href="admin.html">Hospédate</a>
         </div>
     </nav>
 
@@ -21,10 +21,10 @@
         <div class="container px-4 px-lg-5">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    
+                    <!--Title of the form-->
                     <h2 class="text-center mt-0">Edit Hotel Information</h2>
                     <hr class="divider" /> 
-                    
+                    <!--Creation of the form-->
                     <form action="update_hotel.php" method="POST" class="mt-4">
                         
                         <input type="hidden" name="hotel_id" value="1">
@@ -50,10 +50,11 @@
                         </div>
 
                         <div class="d-flex justify-content-center gap-3">
+                            <!--Button to submit the changes-->
                             <button type="submit" class="btn btn-primary btn-xl shadow">
                                 Update Changes
                             </button>
-                            
+                            <!--Button to cancel the form and go backwards-->
                             <a href="admin.html" class="btn btn-light btn-xl border">
                                 Cancel
                             </a>
@@ -64,7 +65,7 @@
             </div>
         </div>
     </section>
-
+    <!--Bottom section and footer-->
     <footer class="bg-light py-5">
         <div class="container px-4 px-lg-5">
             <div class="small text-center text-muted">Copyright &copy; 2026 - Hospedate.com</div>
