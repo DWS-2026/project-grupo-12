@@ -11094,3 +11094,42 @@ header.masthead h1, header.masthead .h1 {
 position: sticky;
 top: 100px; /* stick when going down */
 }
+
+.hotel-card {
+     transition: transform 0.3s ease, box-shadow 0.3s ease;
+     border: none;
+     border-radius: 10px;
+     overflow: hidden;
+     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+     height: 100%; /* Para que todas las tarjetas de la fila midan lo mismo */
+}
+.hotel-card:hover {
+     transform: translateY(-5px);
+     box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+.hotel-img-container {
+     height: 250px; /* Altura fija para las fotos */
+     overflow: hidden;
+     position: relative;
+}
+.hotel-img-container img {
+     width: 100%;
+     height: 100%;
+     object-fit: cover; /* Evita que la foto se deforme */
+}
+.price-tag {
+     color: #f4623a; /* Tu color naranja corporativo */
+     font-weight: 700;
+     font-size: 1.5rem;
+}
+.text-orange {
+     color: #f4623a !important;
+}
+ /* Ajuste para el header más pequeño en esta página */
+header.masthead-short {
+     padding-top: 8rem;
+     padding-bottom: 4rem;
+     background: linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%), url("assets/img/bg-masthead.jpg");
+     background-position: center;
+     background-repeat: no-repeat;
+}
