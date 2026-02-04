@@ -1,23 +1,27 @@
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
     <meta charset="utf-8" />
+    <!-- Configuration for Responsive Web Design -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="User Profile View" />
+    <!-- Page metadata -->
+    <meta name="description" content="Reserve Page" />
     <meta name="author" content="" />
+    <!-- Browser tab title -->
     <title>Reservas - Hospédate</title>
+    <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Bootstrap Icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <!-- Google fonts-->
     <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic"
-        rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
 </head>
 
-<!--Top page-->
-
+<!--Page Top-->
 <body id="page-top">
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
         <div class="container px-4 px-lg-5">
@@ -25,20 +29,27 @@
             <a class="btn btn-primary btn-sm ms-auto" href="index.html">Volver al inicio</a>
         </div>
     </nav>
-    <!--Background image-->
+    <!-- Masthead-->
     <section class="masthead masthead-full">
         <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5">
+                <!-- Hotel details card for reservation-->
                 <div class="col-lg-7">
                     <div class="card shadow border-0 rounded-lg mb-4">
+                        <!-- Hotel image-->
                         <div class="hotel-img-container">
                             <img src="assets/img/portfolio/hoteles/Riu4.jpg" alt="Hotel">
                         </div>
+                        <!-- CARD BODY -->
+                        <!-- Hotel information-->
                         <div class="card-body p-4">
+                            <!-- Name and address of the hotel-->
                             <h2 class="h3 fw-bold text-primary mb-2">Hotel Riu Plaza España</h2>
                             <p class="text-muted small"><i class="bi bi-geo-alt-fill me-2"></i>Calle Gran Vía, 84,
                                 Madrid</p>
+                            <!-- Divider bar-->
                             <hr class="divider ms-0 mb-4">
+                            <!-- Service details-->
                             <h5 class="fw-bold mb-3">Tu selección incluye:</h5>
                             <ul class="list-unstyled small">
                                 <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Habitación
@@ -48,6 +59,7 @@
                                 <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Cancelación
                                     gratuita</li>
                             </ul>
+                            <!-- Price information-->
                             <div class="mt-4 p-3 bg-light rounded">
                                 <span class="h4 price-tag mb-0">Total: 426€</span>
                                 <small class="text-muted d-block">Impuestos incluidos</small>
@@ -55,12 +67,14 @@
                         </div>
                     </div>
                 </div>
-
+                <!-- Date summary card and confirmation button-->
                 <div class="col-lg-5">
                     <div class="card shadow border-0 rounded-lg sticky-sidebar">
+                        <!-- CARD BODY -->
                         <div class="card-body p-4">
+                            <!-- Summary of dates and guests-->
                             <h4 class="h5 fw-bold mb-4">Resumen de tu selección</h4>
-
+                            <!-- Calendar icon and entry date-->
                             <div class="d-flex align-items-center mb-3 p-3 bg-light rounded">
                                 <i class="bi bi-calendar-check text-primary me-3 fs-4"></i>
                                 <div>
@@ -68,7 +82,7 @@
                                     <span class="fw-bold">12 de Marzo, 2026</span>
                                 </div>
                             </div>
-
+                            <!-- Calendar icon and departure date-->
                             <div class="d-flex align-items-center mb-3 p-3 bg-light rounded">
                                 <i class="bi bi-calendar-x text-primary me-3 fs-4"></i>
                                 <div>
@@ -76,7 +90,7 @@
                                     <span class="fw-bold">15 de Marzo, 2026</span>
                                 </div>
                             </div>
-
+                            <!-- Icon and number of guests-->
                             <div class="d-flex align-items-center mb-4 p-3 bg-light rounded">
                                 <i class="bi bi-people text-primary me-3 fs-4"></i>
                                 <div>
@@ -84,15 +98,12 @@
                                     <span class="fw-bold">2 personas</span>
                                 </div>
                             </div>
-
+                            <!-- Divider bar-->
                             <hr class="my-4">
-
-                            <button type="button" class="btn btn-primary w-100 py-3 fw-bold text-uppercase">
-                                Pagar ahora
+                            <!-- Reserve confirmation with a temporary alert-->
+                            <button type="button" class="btn btn-primary w-100 py-3 fw-bold text-uppercase" onclick="alert('¡Reserva confirmada con éxito! Gracias por elegir Hospédate.')">
+                                Confirmar la reserva
                             </button>
-                            <p class="text-center small text-muted mt-3 mb-0">
-                                <i class="bi bi-shield-lock me-1"></i> Pago seguro y encriptado
-                            </p>
                         </div>
                     </div>
                 </div>
@@ -106,6 +117,30 @@
             <div class="small text-center text-muted">Copyright &copy; 2026 - Hospédate.com</div>
         </div>
     </footer>
+    <!-- Dynamic transparency of the top bar-->
+        <script>
+            // Detects when the page has finished loading
+            window.addEventListener('DOMContentLoaded', event => {
+                // Changes the appearance of the navbar according to the scroll position
+                var navbarShrink = function () {
+                    const navbarCollapsible = document.body.querySelector('#mainNav');
+                    if (!navbarCollapsible) {
+                        return;
+                    }
+                    // If we are at the very top (pixel 0), remove the solid background
+                    if (window.scrollY === 0) {
+                        navbarCollapsible.classList.remove('navbar-shrink');
+                    } else {
+                        // When going down, add the class that sets the background to white/orange
+                        navbarCollapsible.classList.add('navbar-shrink');
+                    }
+                };
+
+                // Initializes the state on load and listens for mouse movement
+                navbarShrink();
+                document.addEventListener('scroll', navbarShrink);
+            });
+        </script>
 </body>
 
 </html>

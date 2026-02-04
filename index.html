@@ -3,48 +3,49 @@
 
 <head>
     <meta charset="utf-8" />
+    <!-- Configuration for Responsive Web Design -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
+    <!-- Page metadata -->
+    <meta name="description" content="Main Page" />
     <meta name="author" content="" />
+    <!-- Browser tab title -->
     <title>Hospédate</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <!-- Bootstrap Icons-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Google fonts-->
     <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic"
-        rel="stylesheet" type="text/css" />
-    <!-- SimpleLightbox plugin CSS-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
 </head>
 
+<!-- Page Top-->
 <body id="page-top">
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
         <div class="container px-4 px-lg-5">
             <a class="navbar-brand fw-bold" href="#page-top">Hospédate</a>
-
+            <!-- Mobile web dropdown-->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
+            <!-- Search bar-->
             <div class="collapse navbar-collapse" id="navbarResponsive">
-
                 <div class="mx-auto my-3 my-lg-0 main-search">
                 <div class="input-group">
+                    <!-- Magnifying glass image and icon-->
                     <span class="input-group-text bg-white border-end-0 search-icon-box">
                         <i class="bi bi-search text-muted"></i>
                     </span>
+                    <!--Text box and search button-->
                     <input type="text" id="searchInput" class="form-control border-start-0 ps-0 search-input"
                         placeholder="¿A dónde vas?">
                     <button class="btn btn-primary px-4" type="button">Buscar</button>
                 </div>
             </div>
-
+            <!-- Links to different sections or pages-->
                 <ul class="navbar-nav ms-auto my-2 my-lg-0">
                     <li class="nav-item"><a class="nav-link" href="#services">Servicios</a></li>
                     <li class="nav-item"><a class="nav-link" href="profile.html">Perfil</a></li>
@@ -59,12 +60,14 @@
     <header class="masthead">
         <div class="container px-4 px-lg-5 h-100">
             <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
+                <!-- Phrases from the homepage-->
                 <div class="col-lg-8 align-self-end">
                     <h1 class="text-white font-weight-bold">Disfruta de unas maravillosas vacaciones</h1>
                     <hr class="divider" />
                 </div>
                 <div class="col-lg-8 align-self-baseline">
                     <p class="text-white-75 mb-5">Elige entre nuestra amplia gama de hoteles para reservar</p>
+                    <!-- Search bar link button-->
                     <a class="btn btn-primary btn-xl" href="#searchInput">Busca tu Hotel</a>
                 </div>
             </div>
@@ -78,6 +81,7 @@
                     <h2 class="text-white mt-0">Te ofrecemos los mejores hoteles!</h2>
                     <hr class="divider divider-light" />
                     <p class="text-white-75 mb-4">Descubre la opción que más se ajuste a tus gustos</p>
+                    <!-- Hotel List link button-->
                     <a class="btn btn-light btn-xl" href="HotelList.html">Comienza!</a>
                 </div>
             </div>
@@ -86,9 +90,13 @@
     <!-- Services-->
     <section class="page-section" id="services">
         <div class="container px-4 px-lg-5">
+            <!-- Services title-->
             <h2 class="text-center mt-0">A tu servicio</h2>
+            <!-- Divider bar-->
             <hr class="divider" />
+            <!-- GRID SYSTEM-->
             <div class="row gx-4 gx-lg-5">
+                <!-- Icons and descriptions of services-->
                 <div class="col-lg-3 col-md-6 text-center">
                     <div class="mt-5">
                         <div class="mb-2"><i class="bi-gem fs-1 text-primary"></i></div>
@@ -126,18 +134,25 @@
     <!-- Portfolio-->
     <div id="portfolio">
         <div class="container-fluid p-0">
+            <!-- GRID SYSTEM-->
             <div class="row g-0">
+                <!--Images and links to hotels-->
                 <div class="col-lg-4 col-sm-6">
-                    <a class="portfolio-box" href="hotel.html?id=1" title="Project Name">
+                    <!-- Link to the photo when you hover over it-->
+                    <a class="portfolio-box" href="hotel.html?id=1" title="Hotel UMusic">
+                        <!-- Hotel image-->
                         <img class="img-fluid" src="assets/img/portfolio/hoteles/UMusic1.jpg" alt="..." />
+                        <!--Layer over the image when you hover over it-->
                         <div class="portfolio-box-caption">
+                            <!-- Hotel Category-->
                             <div class="project-category text-white-50">Gama Alta</div>
+                            <!-- Hotel Name-->
                             <div class="project-name">Hotel UMusic Madrid</div>
                         </div>
                     </a>
                 </div>
                 <div class="col-lg-4 col-sm-6">
-                    <a class="portfolio-box" href="hotel.html?id=2" title="Project Name">
+                    <a class="portfolio-box" href="hotel.html?id=2" title="Hotel Riu">
                         <img class="img-fluid top-view" src="assets/img/portfolio/hoteles/Edificio_España_2025.jpg" alt="..." />
                         <div class="portfolio-box-caption">
                             <div class="project-category text-white-50">Hotel Céntrico</div>
@@ -146,7 +161,7 @@
                     </a>
                 </div>
                 <div class="col-lg-4 col-sm-6">
-                    <div class="portfolio-box"  title="Project Name">
+                    <div class="portfolio-box"  title="Hotel Fuerte El Rompido">
                         <img class="img-fluid" src="assets/img/portfolio/thumbnails/3.jpg" alt="..." />
                         <div class="portfolio-box-caption">
                             <div class="project-category text-white-50">Resort</div>
@@ -162,12 +177,14 @@
             <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-lg-8 col-xl-6 text-center">
+                        <!-- Contact title-->
                         <h2 class="mt-0">Contáctanos</h2>
+                        <!-- Divider bar-->
                         <hr class="divider" />
                         <p class="text-muted mb-5">Puedes contactar con nosotros usando el siguiente correo electrónico o número de teléfono</p>
                     </div>
                 </div>
-
+                <!-- Icon and email and phone information-->
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-lg-4 text-center mb-5 mb-lg-0">
                         <i class="bi bi-mailbox-flag fs-2 mb-3 text-muted"></i>
@@ -186,26 +203,27 @@
                 <div class="small text-center text-muted">Copyright &copy; 2026 - Hospédate.com</div>
             </div>
         </footer>
-
+        <!-- Dynamic transparency of the top bar-->
         <script>
+            // Detects when the page has finished loading
             window.addEventListener('DOMContentLoaded', event => {
-                // Función para cambiar el fondo de la navbar
+                // Changes the appearance of the navbar according to the scroll position
                 var navbarShrink = function () {
                     const navbarCollapsible = document.body.querySelector('#mainNav');
                     if (!navbarCollapsible) {
                         return;
                     }
+                    // If we are at the very top (pixel 0), remove the solid background
                     if (window.scrollY === 0) {
                         navbarCollapsible.classList.remove('navbar-shrink');
                     } else {
+                        // When going down, add the class that sets the background to white/orange
                         navbarCollapsible.classList.add('navbar-shrink');
                     }
                 };
 
-                // Ejecutar al cargar la página
+                // Initializes the state on load and listens for mouse movement
                 navbarShrink();
-
-                // Ejecutar cuando se hace scroll
                 document.addEventListener('scroll', navbarShrink);
             });
         </script>
