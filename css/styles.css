@@ -11229,3 +11229,6 @@ top: 100px; /* stick when going down */
     clear: both;
 }
 
+.remove-hyperlink{
+  text-decoration:none;
+}
