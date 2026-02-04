@@ -29,6 +29,7 @@
     <!-- NAVIGATION BAR -->
     <!-- 'fixed-top' makes the bar stick to the top even if you scroll -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+        
         <!--Container fluid makes max-width bigger-->
         <div class="container-fluid px-4 px-lg-5">
             <a class="navbar-brand ms-5" href="#page-top">Hospédate</a>
@@ -42,7 +43,7 @@
     <!-- We use <section> for semantics, and .masthead for CSS to paint the background image -->
     <!-- .masthead-full forces it to occupy 100% of the screen height -->
     <!--We use style padding top to show the profile information better (moving everything up) -->
-    <section class="masthead masthead-full" style="padding-top: 5rem; min-height: 100vh;">
+    <section class="masthead masthead-full">
         <div class="container px-4 px-lg-5 h-100">
 
             <!-- GRID SYSTEM -->
@@ -195,6 +196,31 @@
             <div class="small text-center text-muted">Copyright &copy; 2026 - Hospédate.com</div>
         </div>
     </footer>
+
+    <!--Same script as index.html-->
+    <script>
+        window.addEventListener('DOMContentLoaded', event => {
+            // Find the navbar
+            var navbarShrink = function () {
+                const navbarCollapsible = document.body.querySelector('#mainNav');
+                if (!navbarCollapsible) {
+                    return;
+                }
+                if (window.scrollY === 0) {
+                    //If we are at the top 
+                    navbarCollapsible.classList.remove('navbar-shrink');
+                } else {
+                    // If we scroll down
+                    navbarCollapsible.classList.add('navbar-shrink');
+                }
+            };
+            //execute the function once to set the initial state
+            navbarShrink();
+            // execute the function when scrolling
+            document.addEventListener('scroll', navbarShrink);
+        });
+        
+    </script>
 </body>
 
 </html>
