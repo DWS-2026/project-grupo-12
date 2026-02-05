@@ -24,10 +24,10 @@ Indicar las entidades principales que gestionará la aplicación y las relacione
 4. **[Entidad 4]**: Reservas
 
 **Relaciones entre entidades:**
-- [Usuario - Reseñas: Un usuario puede tener hacer múltiples reseñas sobre múltiples hoteles ]
-- [Hotel - Reseña: Un hotel puede tener múltiples reseñas de múltiples usuarios]
-- [Usuario - Reserva: Un usuario puede tener múltiples reservas de múltiples hoteles]
-- [Hotel - Reserva: Un hotel puede tener varias reservas]
+- Usuario - Reseñas: Un usuario puede tener hacer múltiples reseñas sobre múltiples hoteles 
+- Hotel - Reseña: Un hotel puede tener múltiples reseñas de múltiples usuarios
+- Usuario - Reserva: Un usuario puede tener múltiples reservas de múltiples hoteles
+- Hotel - Reserva: Un hotel puede tener varias reservas
 
 ### **Permisos de los Usuarios**
 Describir los permisos de cada tipo de usuario e indicar de qué entidades es dueño:
