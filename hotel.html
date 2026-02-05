@@ -18,10 +18,11 @@
 </head>
 
 <body id="page-top">
-
+    <!--Definition of the top part of the page-->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3 navbar-shrink" id="mainNav">
         <div class="container px-4 px-lg-5">
             <a class="navbar-brand" href="index.html">Hospédate</a>
+            <!--If you are in mobile or in a smaller device you have a button to see the top part-->
             <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
                 aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -42,12 +43,17 @@
             <div class="row gx-4 gx-lg-5 mb-4">
                 <div class="col-lg-8">
                     <span class="badge bg-primary mb-2" id="h-tipo">Categoría</span>
-                    <h1 class="mt-0" id="h-nombre">Cargando Hotel...</h1>
-                    <p class="text-muted mb-0"><i class="bi bi-geo-alt-fill text-primary"></i> <span
-                            id="h-ubicacion">Cargando dirección...</span></p>
+                    <!--We fill here the name of the hotel with id-->
+                    <h1 class="mt-0" id="h-name">Cargando Hotel...</h1>
+                    <p class="text-muted mb-0"><i class="bi bi-geo-alt-fill text-primary"></i> 
+                        <!--We fill here the location of the hotel-->
+                        <span
+                        
+                            id="h-location">Cargando dirección...</span></p>
                 </div>
                 <div class="col-lg-4 text-lg-end align-self-center">
                     <div class="text-warning small mb-1">
+                        <!--We put the stars of the hotels (Same for both of them)-->
                         <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
                             class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                     </div>
@@ -59,46 +65,49 @@
 
                 <div class="row g-2 mb-2">
                     <div class="col-lg-8">
+                        <!--We create the space for the main photo of the hotel-->
                         <img id="gal-0" src="" class="img-fluid rounded img-main" alt="Principal"
-                            onclick="abrirGaleria(0)">
+                            onclick="openGallery(0)">
                     </div>
 
                     <div class="col-lg-4 d-flex flex-column gap-2">
+                        <!--Second row for the photos on the right (In computer Screen)-->
                         <img id="gal-1" src="" class="img-fluid rounded img-side" alt="Lateral 1"
-                            onclick="abrirGaleria(1)">
+                            onclick="openGallery(1)">
                         <img id="gal-2" src="" class="img-fluid rounded img-side" alt="Lateral 2"
-                            onclick="abrirGaleria(2)">
+                            onclick="openGallery(2)">
                     </div>
                 </div>
 
                 <div class="row g-2">
                     <div class="col-3">
+                        <!--The 3 final space for the rest of the photos-->
                         <img id="gal-3" src="" class="img-fluid rounded img-bottom" alt="Inferior 1"
-                            onclick="abrirGaleria(3)">
+                            onclick="openGallery(3)">
                     </div>
                     <div class="col-3">
                         <img id="gal-4" src="" class="img-fluid rounded img-bottom" alt="Inferior 2"
-                            onclick="abrirGaleria(4)">
+                            onclick="openGallery(4)">
                     </div>
                     <div class="col-3">
                         <img id="gal-5" src="" class="img-fluid rounded img-bottom" alt="Inferior 3"
-                            onclick="abrirGaleria(5)">
+                            onclick="openGallery(5)">
                     </div>
-
-                    <div class="col-3 position-relative" onclick="abrirGaleria(0)">
+                    <!--The botton to open the rest of the gallery and see all photos-->
+                    <div class="col-3 position-relative" onclick="openGallery(0)">
                         <img id="gal-6" src="" class="img-fluid rounded img-bottom" alt="Inferior 4">
                         <div class="more-photos-overlay">
-                            <span id="contador-mas-fotos">+10 fotos</span>
+                            <span id="more-photos-count">+10 fotos</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="modal fade" id="modalGaleria" tabindex="-1" aria-hidden="true">
+            <div class="modal fade" id="modalGallery" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-xl">
                     <div class="modal-content bg-dark">
                         <div class="modal-header border-0">
-                            <h5 class="modal-title text-white" id="tituloGaleriaModal">Galería</h5>
+                            <h5 class="modal-title text-white" id="modalGalleryTitle">Galería</h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                         </div>
@@ -126,6 +135,7 @@
 
                 <div class="col-lg-8">
 
+                    <!--The 4 different icons that show bellow the gallery-->
                     <div class="d-flex justify-content-between text-center border-bottom pb-4 mb-4">
                         <div><i class="bi bi-wifi fs-2 text-primary"></i><br><small>Wifi Gratis</small></div>
                         <div><i class="bi bi-tv fs-2 text-primary"></i><br><small>TV</small></div>
@@ -133,13 +143,15 @@
                         <div><i class="bi bi-people fs-2 text-primary"></i><br><small>Familiar</small></div>
                     </div>
 
+                    <!--Creation of the space that will be filled by the description of each hotel-->
                     <h3 class="h4 mb-3">Descripción del alojamiento</h3>
-                    <p class="text-muted mb-5" id="h-descripcion">
+                    <p class="text-muted mb-5" id="h-description">
                         Cargando descripción detallada...
                     </p>
 
+                    <!--Creation of the space that will be filled with the services avai-->
                     <h3 class="h4 mb-3">Servicios disponibles</h3>
-                    <div class="row" id="h-servicios">
+                    <div class="row" id="h-services">
                     </div>
                 </div>
 
@@ -147,6 +159,7 @@
                     <div class="sticky-sidebar">
 
                         <div class="card border-0 shadow-sm mb-4">
+                            <!--Creation of the space and representation of the map in the hotel page-->
                             <div class="card-body p-0 map-container">
                                 <iframe
                                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3037.643328222046!2d-3.706259023473204!3d40.41673245564296!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd42287e0892225d%3A0x62915335016a2d9!2sPuerta%20del%20Sol!5e0!3m2!1ses!2ses!4v1700000000000!5m2!1ses!2ses"
@@ -156,7 +169,8 @@
                                 <small class="text-muted">Calle Fúcar, Madrid Centro</small>
                             </div>
                         </div>
-
+                        
+                        <!--Definition of the part about reservation details-->
                         <div class="card border-0 shadow" id="reserve">
                             <div class="card-header bg-primary text-white text-center">
                                 <h5 class="card-title mb-0 text-white">Reserva tu estancia</h5>
@@ -164,7 +178,7 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <span class="text-muted">Precio por noche</span>
-                                    <span class="h2 mb-0 text-primary" id="h-precio">-- €</span>
+                                    <span class="h2 mb-0 text-primary" id="h-price">-- €</span>
                                 </div>
                                 <hr>
                                 <form>
@@ -197,6 +211,7 @@
             <div class="row gx-4 gx-lg-5 mt-5 pt-4 border-top">
                 <div class="col-lg-8">
 
+                    <!--Space for the reviews-->
                     <h3 class="h4 mb-4">Opiniones de los viajeros</h3>
 
                     <div class="card border-0 shadow-sm mb-5">
@@ -209,6 +224,8 @@
                                     </div>
                                 </div>
                                 <div class="ms-3">
+
+                                    <!--Creation of a example review-->
                                     <h5 class="mb-0">Marta G.</h5>
                                     <div class="text-warning small">
                                         <i class="bi bi-star-fill"></i>
@@ -235,6 +252,8 @@
                             <form>
                                 <div class="mb-3">
                                     <label class="form-label small text-muted mb-1">Tu valoración</label>
+
+                                    <!--Creation of the class rate to edit it in the styles.css-->
                                     <div class="rate">
                                         <input type="radio" id="star5" name="rate" value="5" />
                                         <label for="star5" title="5 estrellas">5 stars</label>
@@ -257,8 +276,8 @@
 
                                 <div class="form-floating mb-3">
                                     <textarea class="form-control" placeholder="Escribe aquí tu opinión"
-                                        id="cuerpoResena" style="height: 150px"></textarea>
-                                    <label for="cuerpoResena">Cuéntanos tu experiencia...</label>
+                                        id="reviewBody" style="height: 150px"></textarea>
+                                    <label for="reviewBody">Cuéntanos tu experiencia...</label>
                                 </div>
 
                                 <button type="button" class="btn btn-primary btn-xl"
@@ -277,16 +296,16 @@
 
     <script>
         //Global variable to hold the actual hotel
-        let hotelActual = null;
+        let actualHotel = null;
         // 1. DATABASE (JSON)
-        const hoteles = [
+        const hotels = [
             {
                 id: 1,
-                nombre: "UMusic Hotel Madrid",
+                name: "UMusic Hotel Madrid",
                 tipo: "Alojamiento Deluxe con vistas al patio",
-                ubicacion: "Calle de la Paz 11, Centro de Madrid, 28012 Madrid, España",
-                precio: 742,
-                descripcion: "El UMusic Hotel Madrid en Madrid ofrece una experiencia de 5 estrellas con una piscina de agua salada, centro de fitness, terraza solarium, restaurante, bar y WiFi gratis. El check-in y check-out privados, la recepcion 24 horas y el servicio de consejeria garantizan una estancia comoda.",
+                location: "Calle de la Paz 11, Centro de Madrid, 28012 Madrid, España",
+                price: 742,
+                description: "El UMusic Hotel Madrid en Madrid ofrece una experiencia de 5 estrellas con una piscina de agua salada, centro de fitness, terraza solarium, restaurante, bar y WiFi gratis. El check-in y check-out privados, la recepcion 24 horas y el servicio de consejeria garantizan una estancia comoda.",
                 galeria: [
                     "assets/img/portfolio/hoteles/UMusic1.jpg",
                     "assets/img/portfolio/hoteles/UMusic2.jpg",
@@ -297,15 +316,15 @@
                     "assets/img/portfolio/hoteles/UMusic7.jpg",
                     "assets/img/portfolio/hoteles/UMusic8.jpg"
                 ],
-                servicios: ["WiFi gratis", "Aire acondicionado", "Baño privado", "Cocina equipada", "Lavadora"]
+                services: ["WiFi gratis", "Aire acondicionado", "Baño privado", "Cocina equipada", "Lavadora"]
             },
             {
                 id: 2,
-                nombre: "Hotel Riu Plaza España",
+                name: "Hotel Riu Plaza España",
                 tipo: "Hotel 5 Estrellas",
-                ubicacion: "Gran Vía, 84, Madrid",
-                precio: 426,
-                descripcion: "Establecimiento muy bien situado en el centro de Madrid y ofrece aire acondicionado en sus habitaciones, un restaurante, WiFi gratuita y un bar. Este hotel cuenta con servicio de habitaciones, servicio de consejería, psicina climatizada al aire libre, centro de fitness, discoteca y recepción 24 horas.",
+                location: "Gran Vía, 84, Madrid",
+                price: 426,
+                description: "Establecimiento muy bien situado en el centro de Madrid y ofrece aire acondicionado en sus habitaciones, un restaurante, WiFi gratuita y un bar. Este hotel cuenta con servicio de habitaciones, servicio de consejería, psicina climatizada al aire libre, centro de fitness, discoteca y recepción 24 horas.",
                 galeria: [
                     "assets/img/portfolio/hoteles/Edificio_España_2025.jpg",
                     "assets/img/portfolio/hoteles/Riu2.jpg",
@@ -316,7 +335,7 @@
                     "assets/img/portfolio/hoteles/Riu7.jpg",
                     "assets/img/portfolio/hoteles/Riu8.jpg"
                 ],
-                servicios: ["Piscina", "Rooftop Bar", "Gimnasio", "Desayuno incluido", "Servicio de habitaciones", "Parking privado", "Discoteca", "Equipamiento audiovisual y tecnológico", "Adaptado silla de ruedas", "Nevera incluida"]
+                services: ["Piscina", "Rooftop Bar", "Gimnasio", "Desayuno incluido", "Servicio de habitaciones", "Parking privado", "Discoteca", "Equipamiento audiovisual y tecnológico", "Adaptado silla de ruedas", "Nevera incluida"]
             }
         ];
 
@@ -326,19 +345,19 @@
             const idUrl = parseInt(params.get('id'));
 
             // FINDING THE HOTEL
-            hotelActual = hoteles.find(h => h.id === idUrl);
-            if (!hotelActual) hotelActual = hoteles[0]; // Fallback
+            actualHotel = hotels.find(h => h.id === idUrl);
+            if (!actualHotel) actualHotel = hotels[0]; // Fallback
 
             // FILL THE TEXTS OF EACH HOTEL
-            document.getElementById('h-nombre').innerText = hotelActual.nombre;
-            document.getElementById('h-tipo').innerText = hotelActual.tipo;
-            document.getElementById('h-ubicacion').innerText = hotelActual.ubicacion;
-            document.getElementById('h-precio').innerText = hotelActual.precio + " €";
-            document.getElementById('h-descripcion').innerText = hotelActual.descripcion;
+            document.getElementById('h-name').innerText = actualHotel.name;
+            document.getElementById('h-tipo').innerText = actualHotel.tipo;
+            document.getElementById('h-location').innerText = actualHotel.location;
+            document.getElementById('h-price').innerText = actualHotel.price + " €";
+            document.getElementById('h-description').innerText = actualHotel.description;
 
             // FILL THE HOTEL
             // WE PUT EACH PHOTO IN EACH SPACE
-            hotelActual.galeria.forEach((imgUrl, index) => {
+            actualHotel.galeria.forEach((imgUrl, index) => {
                 // ONLY FILL TILL SIXTH SPACE
                 if (index <= 6) {
                     const imgElement = document.getElementById(`gal-${index}`);
@@ -349,22 +368,22 @@
             });
 
             // CALCULATE THE NUMBER OF PHOTOS THAT DONT FILL
-            const totalFotos = hotelActual.galeria.length;
+            const totalFotos = actualHotel.galeria.length;
             const fotosEnMosaico = 7; // Mostramos 7 huecos (0 a 6)
 
-            const sobran = totalFotos - fotosEnMosaico;
+            const rest = totalFotos - fotosEnMosaico;
 
-            if (sobran > 0) {
+            if (rest > 0) {
                 // +1 TO INCLUDE THE PHOTO BELOW THE BLACK BACKGROUND
-                document.getElementById('contador-mas-fotos').innerText = `+${sobran + 1} fotos más`;
+                document.getElementById('more-photos-count').innerText = `+${rest + 1} fotos más`;
             } else {
-                document.getElementById('contador-mas-fotos').innerText = "Ver galería";
+                document.getElementById('more-photos-count').innerText = "Ver galería";
             }
 
             // FILL SERVICES
-            const divServicios = document.getElementById('h-servicios');
-            hotelActual.servicios.forEach(serv => {
-                divServicios.innerHTML += `
+            const divservices = document.getElementById('h-services');
+            actualHotel.services.forEach(serv => {
+                divservices.innerHTML += `
                         <div class="col-md-6 mb-2">
                             <i class="bi bi-check-circle-fill text-primary me-2"></i> ${serv}
                         </div>
@@ -373,14 +392,14 @@
         });
 
         // OPEN THE CARRUSELL
-        function abrirGaleria(indiceInicial) {
+        function openGallery(currentIndex) {
             const contenedorCarrusel = document.getElementById('carousel-items-container');
             contenedorCarrusel.innerHTML = ''; // CLEAN
 
             // GENERATR THE DIAPOSITIVES
-            hotelActual.galeria.forEach((imgUrl, index) => {
+            actualHotel.galeria.forEach((imgUrl, index) => {
                 // SELECT ACTIVE THE ONE CLICKED
-                const claseActive = index === indiceInicial ? 'active' : '';
+                const claseActive = index === currentIndex ? 'active' : '';
 
                 // HTML OF THE CARRUSELL
                 const itemHtml = `
@@ -391,7 +410,7 @@
                 contenedorCarrusel.innerHTML += itemHtml;
             });
 
-            const myModal = new bootstrap.Modal(document.getElementById('modalGaleria'));
+            const myModal = new bootstrap.Modal(document.getElementById('modalGallery'));
             myModal.show();
         }
     </script>
