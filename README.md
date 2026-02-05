@@ -138,7 +138,7 @@ Creador de la página principal (index) y la página de resumen de reservas, tam
 
 #### **Alumno 2 - Fernando Montero Molina**
 
-Creador de las paginas de perfil de usuario, login y registro de cuentas
+Creador de las paginas de perfil de usuario, login y registro de cuentas. Aportacion de pequeñas modificaciones en los estilos para mejorar el apartado visual 
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
