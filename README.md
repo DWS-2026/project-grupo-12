@@ -129,7 +129,6 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 
 
 
-#### **AQUÍ AÑADIR EL RESTO DE PÁGINAS**
 
 ### **Participación de Miembros en la Práctica 1**
 
