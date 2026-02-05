@@ -68,9 +68,55 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 ### **Capturas de Pantalla y Descripción de Páginas**
 
 #### **1. Página Principal / Home**
-![Página Principal](images/home-page.png)
+![Página Principal](images/index-page.png)
 
-> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+> [Página de inicio que muestra un banner promocional, información de servicios, contactos y tres de los hoteles más populares. Incluye barra de navegación, la barra de búsqueda, acceso a registro/login para usuarios no autenticados y acceso a secciones de información de servicios y contacto.]
+
+![Página de lista de hoteles](images/hotel-list-page.png)
+
+> [Página en la que se muestra una lista de hoteles desde la que se puede acceder a las páginas de los diferentes hoteles, incluye la barra de búsqueda y navegación con las opciones de acceso a perfil, al inicio de sesión y de vuelta al inicio.]
+
+![Página de hotel](images/hotel-page.png)
+
+> [Página con la información del hotel, incluye una galería de imágenes del hotel, las reseñas de otros usuarios, el formulario para añadir una reseña y una tarjeta en la que elegir las fechas y número de huéspedes para reservar, junto con el botón de acceso a la confirmación de la reserva.]
+
+![Página de resumen y confirmación de reserva](images/reserve-page.png)
+
+> [Página con dos tarjetas en la que se muestran los servicios y detalles de la reserva, además de un botón para finalizar la reserva.]
+
+![Página de inicio de sesión](images/sign-in-page.png)
+
+> [Página con un formulario para el inicio de sesión, además incluye la opción de acceder a la página de registro si no se posee un usuario registrado, y la opción de volver a la página principal.]
+
+![Página de registro](images/sign-up-page.png)
+
+> [Página que muestra un formulario para el registro de un usuario. Incluye un acceso a la página de inicio de sesión si se posee usuario registrado y la opción de volver al inicio.]
+
+![Página de perfil de usuario](images/profile-page.png)
+
+> [Página que muestra un panel con la información del usuario, junto a las opciones de modificar sus datos, subir una imagen de perfil y de cerrar sesión. Incluye también un panel mostrando las reservas y otro panel mostrando las reseñas del usuario, además de un botón para volver al incio o para acceder al panel de administrador. ]
+
+![Página de administración de hoteles](images/admin-hotel-page.png)
+
+> [Página a la que únicamente tiene acceso el administrador en la que se muestra la lista de hoteles junto con las opciones de añadir, editar o eliminar dichas entidades. Incluye un botón para cambiar a la ventana de administración de usuarios y para la vuelta al inicio.]
+
+![Página de edición de hoteles](images/edit-hotel-page.png)
+
+> [Página que cuenta con un formulario para que el administrador pueda editar la información del hotel seleccionado.]
+
+![Página de creación de hoteles](images/create-hotel-page.png)
+
+> [Página con un formulario para que el administrador pueda crear un hotel añadiendo la información.]
+
+![Página de administración de usuarios](images/admin-user-page.png)
+
+> [Página a la que únicamente tiene acceso el administrador y desde la que puede visualizar una lista de los usuarios junto con la opción de editar su información y eliminarlos.]
+
+![Página de edición de usuarios](images/edit-user-page.png)
+
+> [Página en la que el administrador puede editar la información de los usuarios.]
+
+
 
 #### **AQUÍ AÑADIR EL RESTO DE PÁGINAS**
 
