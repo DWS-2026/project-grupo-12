@@ -7,25 +7,29 @@
 // Scripts
 // 
 
-window.addEventListener('DOMContentLoaded', event => {
 
-    // Navbar shrink function
+//Dynamic transparency of the top bar
+// Navbar shrink function
+// Detects when the page has finished loading
+window.addEventListener('DOMContentLoaded', event => {
+    // Changes the appearance of the navbar according to the scroll position
     var navbarShrink = function () {
         const navbarCollapsible = document.body.querySelector('#mainNav');
         if (!navbarCollapsible) {
             return;
         }
+        // If we are at the very top (pixel 0), remove the solid background
         if (window.scrollY === 0) {
             navbarCollapsible.classList.remove('navbar-shrink')
         } else {
+             // When going down, add the class that sets the background to white/orange
             navbarCollapsible.classList.add('navbar-shrink')
         }
 
     };
-
+    // Initializes the state on load and listens for mouse movement
     // Shrink the navbar 
     navbarShrink();
-
     // Shrink the navbar when page is scrolled
     document.addEventListener('scroll', navbarShrink);
 
@@ -38,7 +42,7 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     };
 
-    // Collapse responsive navbar when toggler is visible
+    // Collapse responsive navbar when toggler is visible (mobiles)
     const navbarToggler = document.body.querySelector('.navbar-toggler');
     const responsiveNavItems = [].slice.call(
         document.querySelectorAll('#navbarResponsive .nav-link')
@@ -55,6 +59,7 @@ window.addEventListener('DOMContentLoaded', event => {
     new SimpleLightbox({
         elements: '#portfolio a.portfolio-box'
     });
+
 
 });
 

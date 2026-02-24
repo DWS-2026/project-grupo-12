@@ -1,29 +1,5 @@
-<!DOCTYPE html>
-<html lang="es">
+{{>header}}
 
-<head>
-    <meta charset="utf-8" />
-
-    <!--Configuration for Responsive web (adapts to mobile width)-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Mi Perfil - Hospédate</title>
-    <!-- Page metadata -->
-    <meta name="description" content="Profile Page" />
-    <meta name="author" content="" />
-    <!-- Icon shown in the browser tab -->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-
-    <!-- Loading Bootstrap icons (for stars, building, calendar, etc.) -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic"
-        rel="stylesheet" type="text/css" />
-
-    <!-- Custom stylesheet where we configure the .masthead background -->
-    <link href="css/styles.css" rel="stylesheet" />
-</head>
 
 <body id="page-top">
     <!-- NAVIGATION BAR -->
@@ -187,38 +163,5 @@
             </div>
         </div>
     </section>
-
-    <!-- FOOTER -->
-    <footer class="bg-light py-5">
-        <div class="container px-4 px-lg-5">
-            <div class="small text-center text-muted">Copyright &copy; 2026 - Hospédate.com</div>
-        </div>
-    </footer>
-
-    <!--Same script as index.html-->
-    <script>
-        window.addEventListener('DOMContentLoaded', event => {
-            // Find the navbar
-            var navbarShrink = function () {
-                const navbarCollapsible = document.body.querySelector('#mainNav');
-                if (!navbarCollapsible) {
-                    return;
-                }
-                if (window.scrollY === 0) {
-                    //If we are at the top 
-                    navbarCollapsible.classList.remove('navbar-shrink');
-                } else {
-                    // If we scroll down
-                    navbarCollapsible.classList.add('navbar-shrink');
-                }
-            };
-            //Execute the function once to set the initial state
-            navbarShrink();
-            // Execute the function when scrolling
-            document.addEventListener('scroll', navbarShrink);
-        });
-        
-    </script>
-</body>
-
-</html>
+    
+{{>footer}}
