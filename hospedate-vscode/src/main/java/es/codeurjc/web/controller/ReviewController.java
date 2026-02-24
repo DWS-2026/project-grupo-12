@@ -5,22 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
-public class HotelController {
-
-        @GetMapping("/")
-    public String index() {
-        return "index"; 
-    }
-
-
-    @GetMapping("/hotels")
-    public String showHotels(Model model) {
-        
-        return "HotelList"; 
-    }
+public class ReviewController {
 
     
-    @GetMapping("/hotel/{id}")
+    @GetMapping("/hotel/{id}#reviews")
     public String showHotel(@PathVariable long id, Model model) {
         return "hotel"; 
     }
