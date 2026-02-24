@@ -14,8 +14,4 @@ public class ReserveController {
     }
 
     
-    @GetMapping("/hotel/{id}")
-    public String showHotel(@PathVariable long id, Model model) {
-        return "hotel"; 
-    }
 }

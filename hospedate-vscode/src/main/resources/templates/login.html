@@ -1,67 +1,51 @@
 {{>header}}
 
-
 <body id="page-top">
-    <!-- NAVIGATION BAR -->
-    <!-- Fixed navigation bar at the top of the page -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
         <div class="container px-4 px-lg-5">
             <a class="navbar-brand" href="#page-top">Hospédate</a>
-            <!-- Button to return to homepage -->
-            <a class="btn btn-primary btn-sm ms-auto" href="index.html">Volver al inicio</a>
+            <a class="btn btn-primary btn-sm ms-auto" href="/">Volver al inicio</a>
         </div>
     </nav>
 
-    <!-- BACKGROUND SECTION -->
-    <!-- Reuses the masthead background image from the homepage (like profile and register)-->
-    <!-- masthead-full makes the section fill the full viewport height -->
     <section class="masthead masthead-full">
         <div class="container px-4 px-lg-5 h-100">
-
-            <!-- GRID SYSTEM -->
-            <!-- Centers the login card both vertically and horizontally -->
             <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center">
-
-                <!-- LOGIN CARD COLUMN -->
                 <div class="col-lg-5 col-md-8 text-center">
                     <div class="card shadow-lg border-0 rounded-lg">
-
-                        <!-- CARD BODY -->
                         <div class="card-body p-5">
-                            <!-- Login title -->
                             <h2 class="text-center font-weight-light text-dark">Iniciar Sesión</h2>
                             <p class="text-muted mb-5">Ingrese sus credenciales</p>
-                            <!-- LOGIN FORM -->
-                            <form>
-                                <!-- Email input field -->
+                            
+                            <form action="/login" method="post">
+                                
                                 <div class="form-floating mb-3">
-                                    <input class="form-control" id="inputEmail" type="email"
+                                    <input class="form-control" id="inputEmail" name="email" type="email"
                                         placeholder="nombre@ejemplo.com" required />
                                     <label for="inputEmail" class="opacity-50">Correo Electrónico</label>
                                 </div>
-                                <!-- Password input field -->
+                                
                                 <div class="form-floating mb-3">
-                                    <input class="form-control" id="inputPassword" type="password"
+                                    <input class="form-control" id="inputPassword" name="password" type="password"
                                         placeholder="Contraseña" required />
                                     <label for="inputPassword" class="opacity-50">Contraseña</label>
                                 </div>
-                                <!-- Remember password checkbox -->
+                                
                                 <div class="form-check mb-3 text-start">
                                     <input class="form-check-input" id="inputRememberPassword" type="checkbox" />
                                     <label class="form-check-label text-muted" for="inputRememberPassword">
                                         Recordar contraseña
                                     </label>
                                 </div>
-                                <!-- Login button -->
+                                
                                 <div class="d-grid gap-2 mt-4 mb-0">
                                     <button class="btn btn-primary btn-xl" type="submit">Entrar</button>
                                 </div>
                             </form>
                         </div>
-                        <!-- CARD FOOTER -->
-                        <!-- Link to register page -->
+                        
                         <div class="card-footer text-center py-3 bg-light border-0 rounded-bottom">
-                            <a href="register.html" class="text-decoration-none">Crear una cuenta</a>
+                            <a href="/registro" class="text-decoration-none">Crear una cuenta</a>
                         </div>
                     </div>
                 </div>
