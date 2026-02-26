@@ -1,8 +1,10 @@
 package es.codeurjc.web.model;
 
 public class User {
+    private Long id;
     private String name;
-    private String email;
+    private String email; 
+    private String role; // "Admin" or "User"
 
     public User(String name, String email) {
         this.name = name;
