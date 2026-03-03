@@ -1,4 +1,6 @@
 package es.codeurjc.web.model;
+
+import java.util.List;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,7 +10,7 @@ public class Hotel{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    
+
     private Long id;
 
     private String name;
