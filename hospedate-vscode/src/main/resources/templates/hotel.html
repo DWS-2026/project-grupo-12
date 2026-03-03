@@ -26,20 +26,19 @@
 
             <div class="row gx-4 gx-lg-5 mb-4">
                 <div class="col-lg-8">
-                    <span class="badge bg-primary mb-2" id="h-tipo">Categoría</span>
+                    <span class="badge bg-primary mb-2">{{hotel.tipo}}</span>
                     <!--We fill here the name of the hotel with id-->
-                    <h1 class="mt-0" id="h-name">Cargando Hotel...</h1>
+                    <h1 class="mt-0">{{hotel.name}}</h1>
                     <p class="text-muted mb-0"><i class="bi bi-geo-alt-fill text-primary"></i> 
                         <!--We fill here the location of the hotel-->
-                        <span
-                        
-                            id="h-location">Cargando dirección...</span></p>
+                        <span>{{hotel.location}}</span></p>
                 </div>
                 <div class="col-lg-4 text-lg-end align-self-center">
                     <div class="text-warning small mb-1">
-                        <!--We put the stars of the hotels (Same for both of them)-->
-                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
-                            class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        <!--We put the stars of the hotels -->
+                        {{#stars}}
+                        <i class="bi bi-star-fill"></i>
+                        {{/stars}}
                     </div>
                     <a href="#reserve" class="btn btn-primary btn-xl">Reservar Ahora</a>
                 </div>
@@ -50,38 +49,50 @@
                 <div class="row g-2 mb-2">
                     <div class="col-lg-8">
                         <!--We create the space for the main photo of the hotel-->
-                        <img id="gal-0" src="" class="img-fluid rounded img-main" alt="Principal"
-                            onclick="openGallery(0)">
+                        {{#hotel.galeria}}
+                        {{#@first}}
+                        <img src="{{this}}" class="img-fluid rounded img-main gallery-img" alt="Principal"
+                            onclick="openGallery(this)">
+                        {{/@first}}
+                        {{/hotel.galeria}}
                     </div>
 
                     <div class="col-lg-4 d-flex flex-column gap-2">
                         <!--Second row for the photos on the right (In computer Screen)-->
-                        <img id="gal-1" src="" class="img-fluid rounded img-side" alt="Lateral 1"
-                            onclick="openGallery(1)">
-                        <img id="gal-2" src="" class="img-fluid rounded img-side" alt="Lateral 2"
-                            onclick="openGallery(2)">
+                        {{#hotel.galeria}}
+                        {{^@first}}
+                        {{#@index}}{{#@isFirst}}
+                        <img src="{{this}}" class="img-fluid rounded img-side gallery-img" alt="Lateral"
+                            onclick="openGallery(this)">
+                        {{/@isFirst}}{{/@index}}
+                        {{^@index}}{{^@isFirst}}
+                        <img src="{{this}}" class="img-fluid rounded img-side gallery-img" alt="Lateral"
+                            onclick="openGallery(this)">
+                        {{/@isFirst}}{{/@index}}
+                        {{/^@first}}
+                        {{/hotel.galeria}}
                     </div>
                 </div>
 
                 <div class="row g-2">
+                    {{#hotel.galeria}}
+                    {{#@index}}{{#@isLast3}}
                     <div class="col-3">
-                        <!--The 3 final space for the rest of the photos-->
-                        <img id="gal-3" src="" class="img-fluid rounded img-bottom" alt="Inferior 1"
-                            onclick="openGallery(3)">
+                        <img src="{{this}}" class="img-fluid rounded img-bottom gallery-img" alt="Inferior"
+                            onclick="openGallery(this)">
                     </div>
-                    <div class="col-3">
-                        <img id="gal-4" src="" class="img-fluid rounded img-bottom" alt="Inferior 2"
-                            onclick="openGallery(4)">
-                    </div>
-                    <div class="col-3">
-                        <img id="gal-5" src="" class="img-fluid rounded img-bottom" alt="Inferior 3"
-                            onclick="openGallery(5)">
-                    </div>
+                    {{/@isLast3}}{{/@index}}
+                    {{/hotel.galeria}}
                     <!--The botton to open the rest of the gallery and see all photos-->
-                    <div class="col-3 position-relative" onclick="openGallery(0)">
-                        <img id="gal-6" src="" class="img-fluid rounded img-bottom" alt="Inferior 4">
-                        <div class="more-photos-overlay">
-                            <span id="more-photos-count">+10 fotos</span>
+                    <div class="col-3 position-relative">
+                        {{#hotel.galeria}}
+                        {{#@index}}{{#@last}}
+                        <img src="{{this}}" class="img-fluid rounded img-bottom gallery-img" alt="Inferior"
+                            onclick="openGallery(this)" style="cursor: pointer;">
+                        {{/@last}}{{/@index}}
+                        {{/hotel.galeria}}
+                        <div class="more-photos-overlay" style="cursor: pointer;" onclick="openGallery(document.querySelector('.gallery-img'))">
+                            <span id="more-photos-count">Ver galería</span>
                         </div>
                     </div>
                 </div>
@@ -129,13 +140,18 @@
 
                     <!--Creation of the space that will be filled by the description of each hotel-->
                     <h3 class="h4 mb-3">Descripción del alojamiento</h3>
-                    <p class="text-muted mb-5" id="h-description">
-                        Cargando descripción detallada...
+                    <p class="text-muted mb-5">
+                        {{hotel.description}}
                     </p>
 
                     <!--Creation of the space that will be filled with the services avai-->
                     <h3 class="h4 mb-3">Servicios disponibles</h3>
-                    <div class="row" id="h-services">
+                    <div class="row">
+                        {{#hotel.services}}
+                        <div class="col-md-6 mb-2">
+                            <i class="bi bi-check-circle-fill text-primary me-2"></i> {{this}}
+                        </div>
+                        {{/hotel.services}}
                     </div>
                 </div>
 
@@ -162,28 +178,32 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <span class="text-muted">Precio por noche</span>
-                                    <span class="h2 mb-0 text-primary" id="h-price">-- €</span>
+                                    <span class="h2 mb-0 text-primary">{{hotel.price}} €</span>
                                 </div>
                                 <hr>
-                                <form>
+                                <form method="POST" action="/reserve">
+                                    <input type="hidden" name="hotelId" value="{{hotel.id}}">
                                     <div class="mb-3">
                                         <label class="form-label small">Fecha de entrada</label>
-                                        <input type="date" class="form-control">
+                                        <input type="date" name="checkin" class="form-control" required>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label small">Fecha de salida</label>
-                                        <input type="date" class="form-control">
+                                        <input type="date" name="checkout" class="form-control" required>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label small fw-bold">Número de huéspedes</label>
-                                        <select class="form-select">
-                                            <option selected>1 persona</option>
-                                            <option>2 personas</option>
-                                            <option>3 personas</option>
+                                        <select name="guests" class="form-select" required>
+                                            <option selected value="">Selecciona una opción</option>
+                                            <option value="1">1 persona</option>
+                                            <option value="2">2 personas</option>
+                                            <option value="3">3 personas</option>
+                                            <option value="4">4 personas</option>
+                                            <option value="5">5 personas</option>
                                         </select>
                                     </div>
                                     <div class="d-grid">
-                                        <a  class="btn btn-primary btn-xl" href="reserve.html">Confirmar Reserva</a>
+                                        <button type="submit" class="btn btn-primary btn-xl">Confirmar Reserva</button>
                                     </div>
                                 </form>
                             </div>
@@ -277,126 +297,5 @@
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script>
-        //Global variable to hold the actual hotel
-        let actualHotel = null;
-        // 1. DATABASE (JSON)
-        const hotels = [
-            {
-                id: 1,
-                name: "UMusic Hotel Madrid",
-                tipo: "Alojamiento Deluxe con vistas al patio",
-                location: "Calle de la Paz 11, Centro de Madrid, 28012 Madrid, España",
-                price: 742,
-                description: "El UMusic Hotel Madrid en Madrid ofrece una experiencia de 5 estrellas con una piscina de agua salada, centro de fitness, terraza solarium, restaurante, bar y WiFi gratis. El check-in y check-out privados, la recepcion 24 horas y el servicio de consejeria garantizan una estancia comoda.",
-                galeria: [
-                    "assets/img/portfolio/hoteles/UMusic1.jpg",
-                    "assets/img/portfolio/hoteles/UMusic2.jpg",
-                    "assets/img/portfolio/hoteles/UMusic3.jpg",
-                    "assets/img/portfolio/hoteles/UMusic4.jpg",
-                    "assets/img/portfolio/hoteles/UMusic5.jpg",
-                    "assets/img/portfolio/hoteles/UMusic6.jpg",
-                    "assets/img/portfolio/hoteles/UMusic7.jpg",
-                    "assets/img/portfolio/hoteles/UMusic8.jpg"
-                ],
-                services: ["WiFi gratis", "Aire acondicionado", "Baño privado", "Cocina equipada", "Lavadora"]
-            },
-            {
-                id: 2,
-                name: "Hotel Riu Plaza España",
-                tipo: "Hotel 5 Estrellas",
-                location: "Gran Vía, 84, Madrid",
-                price: 426,
-                description: "Establecimiento muy bien situado en el centro de Madrid y ofrece aire acondicionado en sus habitaciones, un restaurante, WiFi gratuita y un bar. Este hotel cuenta con servicio de habitaciones, servicio de consejería, psicina climatizada al aire libre, centro de fitness, discoteca y recepción 24 horas.",
-                galeria: [
-                    "assets/img/portfolio/hoteles/Edificio_España_2025.jpg",
-                    "assets/img/portfolio/hoteles/Riu2.jpg",
-                    "assets/img/portfolio/hoteles/Riu3.jpg",
-                    "assets/img/portfolio/hoteles/Riu4.jpg",
-                    "assets/img/portfolio/hoteles/Riu5.jpg",
-                    "assets/img/portfolio/hoteles/Riu6.jpg",
-                    "assets/img/portfolio/hoteles/Riu7.jpg",
-                    "assets/img/portfolio/hoteles/Riu8.jpg"
-                ],
-                services: ["Piscina", "Rooftop Bar", "Gimnasio", "Desayuno incluido", "Servicio de habitaciones", "Parking privado", "Discoteca", "Equipamiento audiovisual y tecnológico", "Adaptado silla de ruedas", "Nevera incluida"]
-            }
-        ];
-
-        // 3. LOGIC WHEN LOADING THE PAGE
-        document.addEventListener('DOMContentLoaded', () => {
-            const params = new URLSearchParams(window.location.search);
-            const idUrl = parseInt(params.get('id'));
-
-            // FINDING THE HOTEL
-            actualHotel = hotels.find(h => h.id === idUrl);
-            if (!actualHotel) actualHotel = hotels[0]; // Fallback
-
-            // FILL THE TEXTS OF EACH HOTEL
-            document.getElementById('h-name').innerText = actualHotel.name;
-            document.getElementById('h-tipo').innerText = actualHotel.tipo;
-            document.getElementById('h-location').innerText = actualHotel.location;
-            document.getElementById('h-price').innerText = actualHotel.price + " €";
-            document.getElementById('h-description').innerText = actualHotel.description;
-
-            // FILL THE HOTEL
-            // WE PUT EACH PHOTO IN EACH SPACE
-            actualHotel.galeria.forEach((imgUrl, index) => {
-                // ONLY FILL TILL SIXTH SPACE
-                if (index <= 6) {
-                    const imgElement = document.getElementById(`gal-${index}`);
-                    if (imgElement) {
-                        imgElement.src = imgUrl;
-                    }
-                }
-            });
-
-            // CALCULATE THE NUMBER OF PHOTOS THAT DONT FILL
-            const totalFotos = actualHotel.galeria.length;
-            const fotosEnMosaico = 7; // Mostramos 7 huecos (0 a 6)
-
-            const rest = totalFotos - fotosEnMosaico;
-
-            if (rest > 0) {
-                // +1 TO INCLUDE THE PHOTO BELOW THE BLACK BACKGROUND
-                document.getElementById('more-photos-count').innerText = `+${rest + 1} fotos más`;
-            } else {
-                document.getElementById('more-photos-count').innerText = "Ver galería";
-            }
-
-            // FILL SERVICES
-            const divservices = document.getElementById('h-services');
-            actualHotel.services.forEach(serv => {
-                divservices.innerHTML += `
-                        <div class="col-md-6 mb-2">
-                            <i class="bi bi-check-circle-fill text-primary me-2"></i> ${serv}
-                        </div>
-                    `;
-            });
-        });
-
-        // OPEN THE CARRUSELL
-        function openGallery(currentIndex) {
-            const contenedorCarrusel = document.getElementById('carousel-items-container');
-            contenedorCarrusel.innerHTML = ''; // CLEAN
-
-            // GENERATR THE DIAPOSITIVES
-            actualHotel.galeria.forEach((imgUrl, index) => {
-                // SELECT ACTIVE THE ONE CLICKED
-                const claseActive = index === currentIndex ? 'active' : '';
-
-                // HTML OF THE CARRUSELL
-                const itemHtml = `
-                        <div class="carousel-item ${claseActive}" style="height: 80vh;">
-                            <img src="${imgUrl}" class="d-block w-100 h-100" style="object-fit: contain;" alt="Foto ${index}">
-                        </div>
-                    `;
-                contenedorCarrusel.innerHTML += itemHtml;
-            });
-
-            const myModal = new bootstrap.Modal(document.getElementById('modalGallery'));
-            myModal.show();
-        }
-    </script>
 
 {{>footer}}
