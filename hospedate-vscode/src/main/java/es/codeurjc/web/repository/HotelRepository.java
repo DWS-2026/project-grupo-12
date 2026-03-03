@@ -1,5 +1,23 @@
 package es.codeurjc.web.repository;
 
-public class HotelRepository {
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import es.codeurjc.web.model.Hotel; 
+
+
+@Repository
+public interface HotelRepository extends JpaRepository<Hotel, Long> {
     
+    //the name of the hotel is unique, so we return an Optional<Hotel> 
+    Optional<Hotel> findByNameHotel(String name); 
+    
+    //we can search for hotels by city, type, location, price and rating, so we return a List<Hotel> for each of these attributes
+    List<Hotel> findByCity(String city);
+    List<Hotel> findByTipo(String tipo);
+    List<Hotel> findByLocation(String location);
+    List<Hotel> findByPrice(double price);
+    List<Hotel> findByRating(double rating);
 }
