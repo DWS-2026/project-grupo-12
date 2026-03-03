@@ -17,22 +17,20 @@
                             <h2 class="text-center font-weight-light text-dark">Iniciar Sesión</h2>
                             <p class="text-muted mb-5">Ingrese sus credenciales</p>
                             
-                            <form action="/login" method="post">
+                            <form action="/login" method="POST"> 
                                 
                                 <div class="form-floating mb-3">
-                                    <input class="form-control" id="inputEmail" name="email" type="email"
-                                        placeholder="nombre@ejemplo.com" required />
+                                    <input class="form-control" id="inputEmail" name="email" type="email" placeholder="nombre@ejemplo.com" required />
                                     <label for="inputEmail" class="opacity-50">Correo Electrónico</label>
                                 </div>
                                 
                                 <div class="form-floating mb-3">
-                                    <input class="form-control" id="inputPassword" name="password" type="password"
-                                        placeholder="Contraseña" required />
+                                    <input class="form-control" id="inputPassword" name="password" type="password" placeholder="Contraseña" required />
                                     <label for="inputPassword" class="opacity-50">Contraseña</label>
                                 </div>
                                 
                                 <div class="form-check mb-3 text-start">
-                                    <input class="form-check-input" id="inputRememberPassword" type="checkbox" />
+                                    <input class="form-check-input" id="inputRememberPassword" type="checkbox" name="remember-me" />
                                     <label class="form-check-label text-muted" for="inputRememberPassword">
                                         Recordar contraseña
                                     </label>
@@ -41,6 +39,7 @@
                                 <div class="d-grid gap-2 mt-4 mb-0">
                                     <button class="btn btn-primary btn-xl" type="submit">Entrar</button>
                                 </div>
+                                
                             </form>
                         </div>
                         
