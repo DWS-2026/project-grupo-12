@@ -22,4 +22,6 @@ public class ReviewController {
     
     return "redirect:/hotel/" + id; // Recargamos la página del hotel
     }
+
+    
 }
