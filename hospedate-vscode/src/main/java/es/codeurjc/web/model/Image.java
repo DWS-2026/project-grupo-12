@@ -15,7 +15,7 @@ public class Image {
     @Lob
     private Blob imageFile;
 
-    // Copied from Repo-0
+    //Empty constructor for JPA
     public Image() {
     }
 
