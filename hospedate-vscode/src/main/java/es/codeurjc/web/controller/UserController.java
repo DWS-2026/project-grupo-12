@@ -15,24 +15,19 @@ import es.codeurjc.web.model.User;
 import es.codeurjc.web.repository.ReserveRepository;
 import es.codeurjc.web.repository.ReviewRepository;
 import es.codeurjc.web.repository.UserRepository;
+import es.codeurjc.web.service.ImageService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
+import org.springframework.http.*;
+import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
-import java.sql.Blob;
 import java.sql.SQLException;
 
 @Controller
@@ -47,6 +42,9 @@ public class UserController {
     private ReserveRepository reserveRepository; 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ImageService imageService; 
 
     @ModelAttribute
     public void addAttributes(Model model, HttpServletRequest request) {
@@ -94,7 +92,10 @@ public class UserController {
             return "redirect:/login"; 
         }
 
+
+        //SELECT * FROM review WHERE user_id = ?
         List<Review> userReviews = reviewRepository.findByUserId(userId);
+        //SELECT * FROM reserve WHERE user_id = ?
         List<Reserve> userReserves = reserveRepository.findByUserId(userId);;
 
 
@@ -107,65 +108,38 @@ public class UserController {
     }
 
 
-
+    //to change the profile picture of the user, not used if the user doesn't upload a new one
     @PostMapping("/profile/update")
-    public String processProfileUpdate(
-        @RequestParam String username,
-        @RequestParam String phone,
-        @RequestParam String email,
-        @RequestParam("foto") MultipartFile foto,
-        HttpSession session) throws IOException {
-    
-    User currentUser = userRepository.findById(userId).orElseThrow();
-    Long userId = (Long) session.getAttribute("userId");
-    if (userId == null) {
-        return "redirect:/login";
+    public String updateProfile(
+            @RequestParam("photo") MultipartFile photo, 
+            HttpSession session) throws Exception { 
+            
+        Long userId = (Long) session.getAttribute("userId");
+        User user = userRepository.findById(userId).orElseThrow();
+
+        if (!photo.isEmpty()) {
+            Image avatar = imageService.createImage(photo); 
+            user.setProfileImage(avatar); 
+        }
+        userRepository.save(user);
+        return "redirect:/profile";
     }
 
-    if (!foto.isEmpty()) {
-    Image newImage = new Image();
-    newImage.setImage(foto.getBytes());
+    //Adapted from Repo-0, makes a GET request to the server to get the profile picture of the user, and returns it as a Resource to be displayed in the profile page
+    @GetMapping("/profile/avatar")
+    public ResponseEntity<Object> getProfileAvatar(HttpSession session) throws SQLException {
+        
+        Long userId = (Long) session.getAttribute("userId");
+        User user = userRepository.findById(userId).orElseThrow();
 
-    // 3. Establecemos la relación: Le entregamos la imagen al usuario
-    currentUser.setProfileImage(newImage);
+        if (user.getProfileImage() != null) {
+            Resource imageFile = imageService.getImageFile(user.getProfileImage().getId()); 
+            MediaType mediaType = MediaTypeFactory.getMediaType(imageFile).orElse(MediaType.IMAGE_JPEG); 
+            return ResponseEntity.ok().contentType(mediaType).body(imageFile); 
+        }
+
+        return ResponseEntity.notFound().build();
     }
-    User currentUser = userRepository.findById(userId).orElseThrow();
-
-
-    currentUser.setName(username);
-    currentUser.setEmail(email);
-
-
-    userRepository.save(currentUser);
-
-    session.setAttribute("username", username);
-
-    return "redirect:/profile"; 
-        
-
-}
-
-@GetMapping("/profile/avatar")
-public ResponseEntity<byte[]> serveAvatar(HttpSession session) throws SQLException {
-    
-    Long userId = (Long) session.getAttribute("userId");
-    User currentUser = userRepository.findById(userId).orElseThrow();
-
-    if (currentUser.getProfileImage() != null) {
-        
-        // 1. Extraemos el objeto Blob de la base de datos
-        Blob fotoBlob = currentUser.getProfileImage().getImageFile();
-        
-        // 2. Extraemos los píxeles puros del Blob. 
-        // El método getBytes pide la posición inicial (1) y la cantidad a leer.
-        byte[] pixelesPuros = fotoBlob.getBytes(1, (int) fotoBlob.length());
-        
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
-                .body(pixelesPuros);
-    }
-    return ResponseEntity.notFound().build();
-}
 
 
     @GetMapping("/login")
@@ -173,10 +147,12 @@ public ResponseEntity<byte[]> serveAvatar(HttpSession session) throws SQLExcepti
         return "login"; 
     }
 
+
     @GetMapping("/register")
     public String register() {
         return "register"; 
     }
+
 
     //Provisional function
     @PostMapping("/register")

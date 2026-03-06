@@ -1,46 +1,28 @@
 package es.codeurjc.web.model;
 
-import java.sql.Blob;
-
 import jakarta.persistence.*;
-
+import java.sql.Blob;
 
 @Entity
 public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private long id;
 
     @Lob
-    private Blob imageFile;
+    private Blob imageFile; 
 
-    //Empty constructor for JPA
-    public Image() {
+    public Image() {}
+
+    public long getId() { return id; }
+    public void setId(long id) { this.id = id; }
+
+    public Blob getImageFile() { 
+        return imageFile; 
     }
-
-    public Image(Blob imageFile) {
-        this.imageFile = imageFile;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Blob getImage() {
-        return imageFile;
-    }
-
-    public void setImage(Blob imageFile) {
-        this.imageFile = imageFile;
-    }
-
-    @Override
-    public String toString() {
-        return "Image [id=" + id + "]";
+    
+    public void setImageFile(Blob imageFile) { 
+        this.imageFile = imageFile; 
     }
 }

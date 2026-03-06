@@ -81,22 +81,23 @@
                         <form action="/profile/update" method="POST" enctype="multipart/form-data">
                             <div class="mb-4 text-center">
                                 <div class="position-relative d-inline-block">
-                                    <!-- Avatar display with conditional logic (to implement) -->
-                                    {{^hasProfileImage}}
+                                    <!--If the user has no profile image -->
+                                    {{^hasProfileImage}} 
                                     <div
                                         class="rounded-circle bg-light d-flex align-items-center justify-content-center shadow-sm profile-avatar-container">
                                         <i class="bi bi-person-fill text-primary profile-avatar-icon"></i>
                                     </div>
                                     {{/hasProfileImage}}
 
+                                    <!--If the user has a profile image -->
                                     {{#hasProfileImage}}
                                     <img src="/profile/avatar" alt="Foto de perfil" class="rounded-circle shadow-sm"
                                         style="width: 120px; height: 120px; object-fit: cover; border: 3px solid white;">
                                     {{/hasProfileImage}}
-                                    <!-- Hidden file input for profile picture upload -->
-                                    <input type="file" id="fotoPerfilInput" name="foto" class="d-none" accept="image/*">
-                                    <!-- Label styled as a button to trigger file input -->
-                                    <label for="fotoPerfilInput"
+                                    <!-- "hidden" file input for profile picture upload -->
+                                    <input type="file" id="profilePhotoInput" name="photo" class="d-none" accept="image/*">
+                                    <!-- Label styled as a button to trigger file input when clicked -->
+                                    <label for="profilePhotoInput"
                                         class="position-absolute bottom-0 end-0 mb-2 me-1 btn btn-primary rounded-circle d-flex align-items-center justify-content-center border border-2 border-white shadow-sm profile-edit-btn"
                                         title="Seleccionar nueva foto">
                                         <i class="bi bi-camera-fill text-white"></i>
