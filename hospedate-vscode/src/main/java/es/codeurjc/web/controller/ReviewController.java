@@ -13,6 +13,7 @@ public class ReviewController {
     @PostMapping("/hotel/{id}/review")
     public String showHotel(@PathVariable long id,
                             @RequestParam int rating, 
+                            @RequestParam String title,
                             @RequestParam String comment, 
                             Model model) {
         // 1. Aquí buscamos el Hotel en la base de datos usando su 'id'

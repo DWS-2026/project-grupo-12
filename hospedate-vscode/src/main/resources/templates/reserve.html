@@ -58,7 +58,7 @@
                                 <i class="bi bi-calendar-check text-primary me-3 fs-4"></i>
                                 <div>
                                     <label class="d-block small text-muted fw-bold text-uppercase">Entrada</label>
-                                    <span class="fw-bold">12 de Marzo, 2026</span>
+                                    <span class="fw-bold">{{entryDate}}</span>
                                 </div>
                             </div>
                             <!-- Calendar icon and departure date-->
@@ -66,7 +66,7 @@
                                 <i class="bi bi-calendar-x text-primary me-3 fs-4"></i>
                                 <div>
                                     <label class="d-block small text-muted fw-bold text-uppercase">Salida</label>
-                                    <span class="fw-bold">15 de Marzo, 2026</span>
+                                    <span class="fw-bold">{{departureDate}}</span>
                                 </div>
                             </div>
                             <!-- Icon and number of guests-->
@@ -74,15 +74,22 @@
                                 <i class="bi bi-people text-primary me-3 fs-4"></i>
                                 <div>
                                     <label class="d-block small text-muted fw-bold text-uppercase">Huéspedes</label>
-                                    <span class="fw-bold">2 personas</span>
+                                    <span class="fw-bold">{{guests}} persona/s</span>
                                 </div>
                             </div>
                             <!-- Divider bar-->
                             <hr class="my-4">
-                            <!-- Reserve confirmation with a temporary alert-->
-                            <button type="button" class="btn btn-primary w-100 py-3 fw-bold text-uppercase" onclick="alert('¡Reserva confirmada con éxito! Gracias por elegir Hospédate.')">
+                            <!-- Reserve confirmation that sends the data to the ReserveController-->
+                            <form action="reserve/process" method="POST">
+                                <input type="hidden"name="hotelId" value="{{hotelId}}">
+                                <input type="hidden"name="entryDate" value="{{entryDate}}">
+                                <input type="hidden"name="departureDate" value="{{departureDate}}">
+                                <input type="hidden"name="guests" value="{{guests}}">
+
+                            <button type="submit" class="btn btn-primary w-100 py-3 fw-bold text-uppercase">
                                 Confirmar la reserva
                             </button>
+                            </form>
                         </div>
                     </div>
                 </div>

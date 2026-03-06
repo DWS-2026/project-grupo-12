@@ -47,19 +47,28 @@ public class ReserveController {
         }
     }
     
-
-    @GetMapping("/reserve")
-    public String showReserve(Model model) {
+    // Method for painting the reservation data
+    @PostMapping("/reserve")
+    public String showReserve(@RequestParam Long hotelId,
+                            @RequestParam String entryDate, 
+                            @RequestParam String departureDate, 
+                            @RequestParam int guests,
+                            Model model) {
         
+        model.addAttribute("entryDate", entryDate);
+        model.addAttribute("departureDate", departureDate);
+        model.addAttribute("guests", guests);
+        model.addAttribute("hotelId", hotelId);
+
         return "reserve"; 
     }
 
-    //Comprobar esto ya que el form para rellenar los datos esta en hotel
+    //Method to save the reservation in the database and redirect to the profile
     @PostMapping("/reserve/process")
     public String processReserve(@RequestParam Long hotelId,
                                 @RequestParam String entryDate, 
                                 @RequestParam String departureDate, 
-                                @RequestParam int guest) {
+                                @RequestParam int guests) {
         // 1. Buscamos el Hotel en la BD con el hotelId
         // 2. Creamos una nueva Reserva con las fechas y los invitados
         // 3. Calculamos el precio total (noches * precio del hotel)

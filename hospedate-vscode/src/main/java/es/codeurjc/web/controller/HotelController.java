@@ -1,6 +1,7 @@
 package es.codeurjc.web.controller;
 
 import es.codeurjc.web.model.Hotel;
+import es.codeurjc.web.model.Review;
 import es.codeurjc.web.service.HotelService;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -75,7 +76,13 @@ public class HotelController {
             model.addAttribute("tab_title", hotel.get().getName() + " - Hospédate");
             model.addAttribute("metadata_content", "Reserva tu estancia en " + hotel.get().getName() + ", situado en " + hotel.get().getLocation());
             
-            // Crear lista de estrellas basada en el rating
+            // 1. AQUÍ ESTÁ LA CLAVE: Sacamos la lista de reseñas que tiene este hotel
+            List<Review> reviewList = hotel.getReviews(); 
+            
+            // 2. Las metemos en la bandeja con la etiqueta "reviews"
+            model.addAttribute("reviews", reviewList);
+
+            // Create a star list based on the rating
             List<Integer> stars = new ArrayList<>();
             int starsCount = (int) Math.round(hotel.get().getRating());
             for (int i = 0; i < starsCount; i++) {
