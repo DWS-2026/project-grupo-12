@@ -6,6 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
+import es.codeurjc.web.model.Reserve;
+import es.codeurjc.web.model.Review;
+import es.codeurjc.web.repository.ReserveRepository;
+import es.codeurjc.web.repository.ReviewRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -18,42 +25,40 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @Controller
 public class UserController {
 
     //Path de las imagenes de perfil en el disco duro. En un proyecto real, esto se configuraría por base de datos
     //y no se haría con una carpeta dentro del proyecto.
+
+    @Autowired
+    private ReviewRepository reviewRepository; 
+
+    @Autowired
+    private ReserveRepository reserveRepository; 
     private static final Path RUTAS_FOTOS = Paths.get("data/imagenes/perfiles");
 
 
     @GetMapping("/profile")
     public String profile(Model model, HttpSession session) {
-        /* 
-       String username = (String) session.getAttribute("username");
-        
-        String phone = (String) session.getAttribute("phone");
-        String email = (String) session.getAttribute("email");
-        String profileImage = (String) session.getAttribute("profileImage");
-        
-        // 2. Si la sesión está vacía (acaba de entrar), ponemos valores por defecto
-        if (username == null) {
-            username = "Usuario_Nuevo";
-            phone = "+34 000 000 000";
-            email = "nuevo@hospedate.com";
+
+        Long userId = (Long) session.getAttribute("userId");
+
+        if (userId == null) {
+            return "redirect:/login"; 
         }
+
+        List<Review> userReviews = reviewRepository.findByUserId(userId);
+        List<Reserve> userReserves = reserveRepository.findByUserId(userId);;
+
+
+        model.addAttribute("username", session.getAttribute("username"));
+        model.addAttribute("reviews", userReviews);
+        model.addAttribute("reserves", userReserves);
+
         
-        // 3. Inyectamos los datos obligatoriamente en el Model para que Mustache pueda pintar el HTML
-        model.addAttribute("username", username);
-        model.addAttribute("phone", phone);
-        model.addAttribute("email", email);
-        
-        if (profileImage != null) {
-            model.addAttribute("profileImageUrl", "/profile/avatar");
-        }   else {
-            model.addAttribute("profileImageUrl", "/images/default-avatar.jpg");
-        }
-        */
         return "profile"; 
     }
 
