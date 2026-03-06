@@ -31,11 +31,11 @@ public class Image {
         this.id = id;
     }
 
-    public Blob getImageFile() {
+    public Blob getImage() {
         return imageFile;
     }
 
-    public void setImageFile(Blob imageFile) {
+    public void setImage(Blob imageFile) {
         this.imageFile = imageFile;
     }
 

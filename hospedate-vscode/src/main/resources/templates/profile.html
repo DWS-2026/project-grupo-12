@@ -25,10 +25,10 @@
                                         <h5 class="mb-1 fw-bold text-primary">
                                             <a class="bi bi-building me-2 remove-hyperlink" href="/hotel/{{hotel.id}}">{{hotel.name}}</a>
                                         </h5>
-                                        <span class="text-warning fs-6">{{ratingStars}}</span>
+                                        <span class="text-warning fs-6">{{rating}}</span>
                                     </div>
                                     <small class="text-muted d-block mb-2">Publicado el {{publishDate}}</small>
-                                    <p class="text-dark small mb-0">"{{content}}"</p>
+                                    <p class="text-dark small mb-0">"{{comment}}"</p>
                                 </div>
                                 {{/reviews}}
                                 {{^reviews}}
@@ -79,7 +79,6 @@
 
                         <!-- Form for profile update -->
                         <form action="/profile/update" method="POST" enctype="multipart/form-data">
-
                             <div class="mb-4 text-center">
                                 <div class="position-relative d-inline-block">
                                     <!-- Avatar display with conditional logic (to implement) -->
