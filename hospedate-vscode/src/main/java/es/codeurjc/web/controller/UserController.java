@@ -8,7 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import es.codeurjc.web.model.Image;
+import es.codeurjc.web.model.Reserve;
+import es.codeurjc.web.model.Review;
 import es.codeurjc.web.model.User;
+import es.codeurjc.web.repository.ReserveRepository;
+import es.codeurjc.web.repository.ReviewRepository;
 import es.codeurjc.web.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,17 +30,21 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.Principal;
+import java.util.List;
 
+import java.sql.Blob;
+import java.sql.SQLException;
 
 @Controller
 public class UserController {
 
     //Path de las imagenes de perfil en el disco duro. En un proyecto real, esto se configuraría por base de datos
     //y no se haría con una carpeta dentro del proyecto.
-    private static final Path RUTAS_FOTOS = Paths.get("data/imagenes/perfiles");
 
-
+    @Autowired
+    private ReviewRepository reviewRepository; 
+    @Autowired
+    private ReserveRepository reserveRepository; 
     @Autowired
     private UserRepository userRepository;
 
@@ -78,93 +87,85 @@ public class UserController {
 
     @GetMapping("/profile")
     public String profile(Model model, HttpSession session) {
-        /* 
-       String username = (String) session.getAttribute("username");
-        
-        String phone = (String) session.getAttribute("phone");
-        String email = (String) session.getAttribute("email");
-        String profileImage = (String) session.getAttribute("profileImage");
-        
-        // 2. Si la sesión está vacía (acaba de entrar), ponemos valores por defecto
-        if (username == null) {
-            username = "Usuario_Nuevo";
-            phone = "+34 000 000 000";
-            email = "nuevo@hospedate.com";
+
+        Long userId = (Long) session.getAttribute("userId");
+
+        if (userId == null) {
+            return "redirect:/login"; 
         }
+
+        List<Review> userReviews = reviewRepository.findByUserId(userId);
+        List<Reserve> userReserves = reserveRepository.findByUserId(userId);;
+
+
+        model.addAttribute("username", session.getAttribute("username"));
+        model.addAttribute("reviews", userReviews);
+        model.addAttribute("reserves", userReserves);
+
         
-        // 3. Inyectamos los datos obligatoriamente en el Model para que Mustache pueda pintar el HTML
-        model.addAttribute("username", username);
-        model.addAttribute("phone", phone);
-        model.addAttribute("email", email);
-        
-        if (profileImage != null) {
-            model.addAttribute("profileImageUrl", "/profile/avatar");
-        }   else {
-            model.addAttribute("profileImageUrl", "/images/default-avatar.jpg");
-        }
-        */
         return "profile"; 
     }
 
 
 
     @PostMapping("/profile/update")
-    public String processProfileUpdate() {
-        /* 
-            @RequestParam String username,
-            @RequestParam String phone,
-            @RequestParam String email,
-            @RequestParam("foto") MultipartFile foto,
-            HttpSession session) throws IOException {
-
-        // 1. Guardamos los nuevos datos de texto en la memoria del usuario
-        session.setAttribute("username", username);
-        session.setAttribute("phone", phone);
-        session.setAttribute("email", email);
-
-        // 2. Procesamiento del fichero si el usuario ha adjuntado uno
-        if (!foto.isEmpty()) {
-            // Creamos la carpeta en el disco duro si no existía previamente
-            Files.createDirectories(RUTAS_FOTOS);
-
-            // Generamos un nombre único para evitar que se sobreescriban fotos
-            String nombreArchivo = "avatar_" + username + "_" + System.currentTimeMillis() + ".jpg";
-            
-            // Construimos la ruta exacta y guardamos los bytes físicamente
-            Path rutaFisica = RUTAS_FOTOS.resolve(nombreArchivo);
-            foto.transferTo(rutaFisica);
-
-            // Le decimos a la sesión cómo se llama la foto de este usuario
-            session.setAttribute("profileImage", nombreArchivo);
-        }
-            */
-
-        // Redirigimos al GET de arriba para que vuelva a cargar la página con los datos actualizados
-        return "redirect:/profile"; 
+    public String processProfileUpdate(
+        @RequestParam String username,
+        @RequestParam String phone,
+        @RequestParam String email,
+        @RequestParam("foto") MultipartFile foto,
+        HttpSession session) throws IOException {
+    
+    User currentUser = userRepository.findById(userId).orElseThrow();
+    Long userId = (Long) session.getAttribute("userId");
+    if (userId == null) {
+        return "redirect:/login";
     }
 
+    if (!foto.isEmpty()) {
+    Image newImage = new Image();
+    newImage.setImage(foto.getBytes());
 
-    @GetMapping("/profile/avatar")
-    public ResponseEntity<Resource> serveAvatar(HttpSession session) throws MalformedURLException {
-        /* 
-        // Leemos qué foto le pertenece a este usuario concreto
-        String profileImage = (String) session.getAttribute("profileImage");
+    // 3. Establecemos la relación: Le entregamos la imagen al usuario
+    currentUser.setProfileImage(newImage);
+    }
+    User currentUser = userRepository.findById(userId).orElseThrow();
 
-        if (profileImage != null) {
-            Path rutaFisica = RUTAS_FOTOS.resolve(profileImage);
-            Resource recurso = new UrlResource(rutaFisica.toUri());
 
-            // Si el archivo sigue existiendo en el disco duro, lo enviamos al HTML
-            if (recurso.exists() && recurso.isReadable()) {
-                return ResponseEntity.ok()
-                        .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
-                        .body(recurso);
-            }
-        }
-    */
-        return ResponseEntity.notFound().build();
+    currentUser.setName(username);
+    currentUser.setEmail(email);
+
+
+    userRepository.save(currentUser);
+
+    session.setAttribute("username", username);
+
+    return "redirect:/profile"; 
         
+
+}
+
+@GetMapping("/profile/avatar")
+public ResponseEntity<byte[]> serveAvatar(HttpSession session) throws SQLException {
+    
+    Long userId = (Long) session.getAttribute("userId");
+    User currentUser = userRepository.findById(userId).orElseThrow();
+
+    if (currentUser.getProfileImage() != null) {
+        
+        // 1. Extraemos el objeto Blob de la base de datos
+        Blob fotoBlob = currentUser.getProfileImage().getImageFile();
+        
+        // 2. Extraemos los píxeles puros del Blob. 
+        // El método getBytes pide la posición inicial (1) y la cantidad a leer.
+        byte[] pixelesPuros = fotoBlob.getBytes(1, (int) fotoBlob.length());
+        
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+                .body(pixelesPuros);
     }
+    return ResponseEntity.notFound().build();
+}
 
 
     @GetMapping("/login")
