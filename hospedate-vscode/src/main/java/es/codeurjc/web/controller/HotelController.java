@@ -58,7 +58,12 @@ public class HotelController {
     }
 
     @GetMapping("/")
-    public String index() {
+    public String index(Model model) {
+
+        List<Hotel> topHoteles = hotelService.getTop3Hotels(); // Asumiendo que añades este método a tu servicio
+        
+        model.addAttribute("hotels", topHoteles);
+
         return "index"; 
     }
 

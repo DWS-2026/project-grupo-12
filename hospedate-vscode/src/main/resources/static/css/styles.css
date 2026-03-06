@@ -11021,6 +11021,11 @@ header.masthead h1, header.masthead .h1 {
 .top-view {
     object-position: top !important;
 }
+.portfolio-img-fixed {
+    width: 100%;       /* Ocupa todo el ancho */
+    height: 300px;     /* AQUÍ está el límite. Si la foto es más alta, aquí es donde empieza el recorte */
+    object-fit: cover; /* Esto es vital: rellena el hueco de 300px recortando lo que sobre */
+}
 /* GALERY STYLES */
 .gallery-container .img-main {
     height: 400px; /* HEIGH OF MAIN IMAGE */

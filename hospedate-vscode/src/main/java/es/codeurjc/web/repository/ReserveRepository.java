@@ -10,8 +10,8 @@ import es.codeurjc.web.model.User;
 
 @Repository
 public interface ReserveRepository extends JpaRepository<Reserve,Long>{
-    List<Reserve> findByUser(User user);
-    List<Reserve> findByUserId(Long userId);
+    List<Reserve> findByCustomer(User user);
+    List<Reserve> findByCustomerId(Long userId);
 }
 
 

@@ -93,10 +93,10 @@ public class UserController {
         }
 
 
-        //SELECT * FROM review WHERE user_id = ?
-        List<Review> userReviews = reviewRepository.findByUserId(userId);
-        //SELECT * FROM reserve WHERE user_id = ?
-        List<Reserve> userReserves = reserveRepository.findByUserId(userId);;
+        //SELECT * FROM review WHERE author_id = ?
+        List<Review> userReviews = reviewRepository.findByAuthorId(userId);
+        //SELECT * FROM reserve WHERE customer_id = ?
+        List<Reserve> userReserves = reserveRepository.findByCustomerId(userId);;
 
 
         model.addAttribute("username", session.getAttribute("username"));

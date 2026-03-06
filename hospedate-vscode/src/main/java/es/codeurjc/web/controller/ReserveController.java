@@ -82,7 +82,7 @@ public class ReserveController {
             User usuarioLogueado = userRepository.findByEmail("pepe@gmail.com").get();
             
             // 3. ¡AQUÍ USAS EL SETTER! Le asignas el dueño por primera vez
-            nuevaReserva.setClient(usuarioLogueado); 
+            nuevaReserva.setCustomer(usuarioLogueado); 
             
             // 4. Le asignas el hotel
             nuevaReserva.setHotel(hotelSeleccionado);

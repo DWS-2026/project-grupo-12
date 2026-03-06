@@ -95,4 +95,8 @@ public class HotelService {
     public void addHotel(Hotel hotel) {
         hotelRepository.save(hotel);
     }
+
+    public List<Hotel> getTop3Hotels() {
+        return hotelRepository.findTop3ByOrderByRatingDesc();
+    }
 }

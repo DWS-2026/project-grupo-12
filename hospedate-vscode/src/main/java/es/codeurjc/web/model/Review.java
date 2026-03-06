@@ -18,7 +18,7 @@ public class Review {
 
     @Column(columnDefinition = "TEXT")
     private String comment; //User review text
-    
+
     private LocalDate date;
 
     //Empty constructor for JPA
@@ -46,6 +46,14 @@ public class Review {
 
     public void setAuthor(User author){
         this.author = author;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getRating(){
