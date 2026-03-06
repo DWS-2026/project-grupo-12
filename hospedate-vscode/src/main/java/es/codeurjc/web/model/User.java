@@ -21,6 +21,9 @@ public class User {
         this.name = name;
         this.email = email;
     }
+    
+    //Empty constructor for JPA 
+    public User(){}
 
     public String getName() {
         return name;

@@ -1,11 +1,14 @@
 package es.codeurjc.web.model;
 
 import java.util.List;
+
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+@Entity
 public class Hotel{
 
     @Id
@@ -19,10 +22,13 @@ public class Hotel{
     private String location;
     private double price;
     private String description;
+    @ElementCollection
     private List<String> galeria;
+    @ElementCollection
     private List<String> services;
     private double rating;
 
+    //Empty constructor for JPA
     public Hotel() {}
 
     public Hotel(Long id, String name, String tipo, String city, String location, 
