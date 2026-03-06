@@ -2,8 +2,10 @@ package es.codeurjc.web.model;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,28 +15,31 @@ public class Hotel{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-
     private Long id;
 
     private String name;
     private String tipo;
-    private String city;
+    private String city;    
     private String location;
     private double price;
+
+    @Column(columnDefinition = "TEXT")
     private String description;
-    @ElementCollection
+
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> galeria;
-    @ElementCollection
+
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> services;
+
     private double rating;
 
     //Empty constructor for JPA
     public Hotel() {}
 
-    public Hotel(Long id, String name, String tipo, String city, String location, 
+    public Hotel(String name, String tipo, String city, String location, 
                  double price, String description, List<String> galeria, 
                  List<String> services, double rating) {
-        this.id = id;
         this.name = name;
         this.tipo = tipo;
         this.city = city;

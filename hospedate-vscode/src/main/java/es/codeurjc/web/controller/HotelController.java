@@ -4,7 +4,6 @@ import es.codeurjc.web.model.Hotel;
 import es.codeurjc.web.service.HotelService;
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +17,11 @@ import java.util.Optional;
 @Controller
 public class HotelController {
 
-    @Autowired
-    private HotelService hotelService;
+    private final HotelService hotelService;
+
+    public HotelController(HotelService hotelService) {
+        this.hotelService = hotelService;
+    }
 
     @ModelAttribute
     public void addAttributes(Model model, HttpServletRequest request) {

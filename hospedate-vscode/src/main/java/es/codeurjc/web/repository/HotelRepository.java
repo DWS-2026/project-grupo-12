@@ -12,7 +12,7 @@ import es.codeurjc.web.model.Hotel;
 public interface HotelRepository extends JpaRepository<Hotel, Long> {
     
     //the name of the hotel is unique, so we return an Optional<Hotel> 
-    Optional<Hotel> findByNameHotel(String name); 
+    Optional<Hotel> findByName(String name); 
     
     //we can search for hotels by city, type, location, price and rating, so we return a List<Hotel> for each of these attributes
     List<Hotel> findByCity(String city);
