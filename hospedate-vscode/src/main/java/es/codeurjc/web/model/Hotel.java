@@ -1,7 +1,9 @@
 package es.codeurjc.web.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -9,6 +11,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Hotel{
@@ -33,6 +36,12 @@ public class Hotel{
     private List<String> services;
 
     private double rating;
+
+    // A hotel has MANY reviews.
+    // mappedBy = "hotel" means that the Review class will contain a variable called "hotel".
+    // cascade = CascadeType.ALL means that if you delete the hotel, its reviews will be automatically deleted.
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
 
     //Empty constructor for JPA
     public Hotel() {}
@@ -59,6 +68,14 @@ public class Hotel{
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 
     public String getName() {

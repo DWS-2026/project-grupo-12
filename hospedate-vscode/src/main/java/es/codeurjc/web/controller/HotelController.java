@@ -72,21 +72,22 @@ public class HotelController {
     public String showHotel(@PathVariable long id, Model model) {
         Optional<Hotel> hotel = hotelService.getHotelById(id);
         if (hotel.isPresent()) {
-            model.addAttribute("hotel", hotel.get());
+            Hotel h = hotel.get();
+            model.addAttribute("hotel", h);
 
             // Dynamic title for the tab
-            model.addAttribute("tab_title", hotel.get().getName() + " - Hospédate");
-            model.addAttribute("metadata_content", "Reserva tu estancia en " + hotel.get().getName() + ", situado en " + hotel.get().getLocation());
+            model.addAttribute("tab_title", h.getName() + " - Hospédate");
+            model.addAttribute("metadata_content", "Reserva tu estancia en " + h.getName() + ", situado en " + h.getLocation());
             
             // 1. AQUÍ ESTÁ LA CLAVE: Sacamos la lista de reseñas que tiene este hotel
-            List<Review> reviewList = hotel.getReviews(); 
+            List<Review> reviewList = h.getReviews(); 
             
             // 2. Las metemos en la bandeja con la etiqueta "reviews"
             model.addAttribute("reviews", reviewList);
 
             // Create a star list based on the rating
             List<Integer> stars = new ArrayList<>();
-            int starsCount = (int) Math.round(hotel.get().getRating());
+            int starsCount = (int) Math.round(h.getRating());
             for (int i = 0; i < starsCount; i++) {
                 stars.add(1);
             }

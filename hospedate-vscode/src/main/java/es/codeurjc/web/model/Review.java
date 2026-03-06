@@ -2,6 +2,7 @@ package es.codeurjc.web.model;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
@@ -14,7 +15,10 @@ public class Review {
     private Long id;
 
     private int rating; //Rating from 1 to 5
+
+    @Column(columnDefinition = "TEXT")
     private String comment; //User review text
+    
     private LocalDate date;
 
     //Empty constructor for JPA
