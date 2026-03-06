@@ -8,15 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-<<<<<<< HEAD
 import es.codeurjc.web.model.Reserve;
 import es.codeurjc.web.model.Review;
+import es.codeurjc.web.model.User;
 import es.codeurjc.web.repository.ReserveRepository;
 import es.codeurjc.web.repository.ReviewRepository;
-=======
-import es.codeurjc.web.model.User;
 import es.codeurjc.web.repository.UserRepository;
->>>>>>> fdbe4282d7be58714f956884bb84f04970d3f95e
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -32,6 +29,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @Controller
 public class UserController {
