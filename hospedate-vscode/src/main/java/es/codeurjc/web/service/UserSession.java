@@ -2,31 +2,48 @@ package es.codeurjc.web.service;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
-
-import es.codeurjc.web.model.User; 
+import es.codeurjc.web.model.User;
 
 @Component
 @SessionScope
 public class UserSession {
-    
-    // el dato principal que guardamos
-    private User loggedUser;
 
-    public User getLoggedUser() {
-        return loggedUser;
+    private Long idUser;
+    private String username;
+    private String role; // "Admin" or "User"
+
+    public void login(User user) {
+        this.idUser = user.getId();
+        this.username = user.getName();
+        this.role = user.getRole(); 
     }
 
-    public void setLoggedUser(User loggedUser) {
-        this.loggedUser = loggedUser;
+    public void logout() {
+        this.idUser = null;
+        this.username = null;
+        this.role = null; 
     }
 
-    //comprueba si hay alguien en esa session
     public boolean isLogged() {
-        return this.loggedUser != null;
+        return this.idUser != null;
     }
 
-   //comprueba si el usuario logueado es admin
+
     public boolean isAdmin() {
-        return this.loggedUser != null && "ADMIN".equals(this.loggedUser.getRole());
+        return "Admin".equals(this.role);
+    }
+
+    public Long getIdUser() { 
+        return idUser; 
+    }
+
+    public String getUsername() { 
+        return username; 
+
+    }
+
+    public String getRole() {
+        return role; 
+
     }
 }

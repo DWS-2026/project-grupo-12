@@ -21,13 +21,24 @@ public class User {
     private String name;
     private String email; 
     private String role; // "Admin" or "User"
+    private String password; // Add this field for the password    
 
     
     
 
-    public User(String name, String email) {
+    public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
+        this.password = password;
+        this.role = "User";//always create a user with role User if not specified, only admin can create another admin
+    }
+
+    //Constructor for ADMIN ONLY
+    public User(String name, String email, String password, String role) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
     }
     
     //Empty constructor for JPA 
@@ -71,5 +82,13 @@ public class User {
 
     public void setProfileImage(Image image) {
         this.image = image;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

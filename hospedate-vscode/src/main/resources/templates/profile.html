@@ -5,7 +5,6 @@
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
         <div class="container-fluid px-4 px-lg-5">
             <a class="navbar-brand ms-5" href="#page-top">Hospédate</a>
-            <a class="btn btn-primary btn-sm ms-4" href="/admin/hotels">Ventana de administracion</a>
             <a class="btn btn-primary btn-sm ms-auto" href="/">Volver al inicio</a>
         </div>
     </nav>
@@ -14,11 +13,11 @@
         <div class="container px-4 px-lg-5 h-100">
             <div class="row gx-4 gx-lg-5 h-100 align-items-start justify-content-center">
                 <div class="col-lg-6 col-md-10 mb-5 mb-lg-0 text-start">
+                    <!-- User's reviews -->
                     <div class="card shadow-lg border-0 rounded-lg mb-4">
                         <div class="card-body p-4">
                             <h3 class="font-weight-light text-dark mb-4 border-bottom pb-2">Mis Reseñas</h3>
                             <div id="reviews-container" class="scroll-container">
-                                <!-- Start to list all reviews -->
                                 {{#reviews}}
                                 <div class="review-item mb-3 border-bottom pb-3">
                                     <div class="d-flex justify-content-between align-items-start">
@@ -32,118 +31,99 @@
                                 </div>
                                 {{/reviews}}
                                 {{^reviews}}
-                                <p class="text-muted text-center small mt-3">No has publicado ninguna reseña todavía.
-                                </p>
+                                <p class="text-muted text-center small mt-3">No has publicado ninguna reseña todavía.</p>
                                 {{/reviews}}
-
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- Reservations Section -->
-                <div class="card shadow-lg border-0 rounded-lg">
-                    <div class="card-body p-4">
-                        <h3 class="font-weight-light text-dark mb-4 border-bottom pb-2">Mis Reservas</h3>
-                        <div id="reservations-container" class="scroll-container">
-                            <!--Start to list all reservations-->
-                            {{#reserves}}
-                            <div class="reservation-item mb-3 border-bottom pb-3">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <h5 class="mb-1 fw-bold text-primary">
-                                        <a class="bi bi-calendar-check me-2 remove-hyperlink" href="/hotel/{{hotel.id}}"> {{hotel.name}}</a>
-                                    </h5>
-                                </div>
-                                <div class="mt-2">
-                                    <small class="text-muted d-block">
-                                        <i class="bi bi-clock me-1"></i>Entrada: {{entryDate}}
-                                    </small>
-                                    <small class="text-muted d-block">
-                                        <i class="bi bi-clock-history me-1"></i>Salida: {{departureDate}}
-                                    </small>
-                                </div>
-                                <p class="text-dark small mt-2 mb-0">{{guests}} Adultos</p>
-                            </div>
-                            {{/reserves}}
-                            {{^reserves}}
-                            <p class="text-muted text-center small mt-3">No existen reservas este usuario.</p>
-                            {{/reserves}}
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Profile Update Form -->
-            <div class="col-lg-5 col-md-10">
-                <div class="card shadow-lg border-0 rounded-lg">
-                    <div class="card-body p-5">
-
-                        <!-- Form for profile update -->
-                        <form action="/profile/update" method="POST" enctype="multipart/form-data">
-                            <div class="mb-4 text-center">
-                                <div class="position-relative d-inline-block">
-                                    <!--If the user has no profile image -->
-                                    {{^hasProfileImage}} 
-                                    <div
-                                        class="rounded-circle bg-light d-flex align-items-center justify-content-center shadow-sm profile-avatar-container">
-                                        <i class="bi bi-person-fill text-primary profile-avatar-icon"></i>
+                    <!-- User's reserves-->
+                    <div class="card shadow-lg border-0 rounded-lg">
+                        <div class="card-body p-4">
+                            <h3 class="font-weight-light text-dark mb-4 border-bottom pb-2">Mis Reservas</h3>
+                            <div id="reserve-container" class="scroll-container">
+                                {{#reserves}}
+                                <div class="reserve-item mb-3 border-bottom pb-3">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <h5 class="mb-1 fw-bold text-primary">
+                                            <a class="bi bi-calendar-check me-2 remove-hyperlink" href="/hotel/{{hotel.id}}"> {{hotel.name}}</a>
+                                        </h5>
                                     </div>
-                                    {{/hasProfileImage}}
-
-                                    <!--If the user has a profile image -->
-                                    {{#hasProfileImage}}
-                                    <img src="/profile/avatar" alt="Foto de perfil" class="rounded-circle shadow-sm"
-                                        style="width: 120px; height: 120px; object-fit: cover; border: 3px solid white;">
-                                    {{/hasProfileImage}}
-                                    <!-- "hidden" file input for profile picture upload -->
-                                    <input type="file" id="profilePhotoInput" name="photo" class="d-none" accept="image/*">
-                                    <!-- Label styled as a button to trigger file input when clicked -->
-                                    <label for="profilePhotoInput"
-                                        class="position-absolute bottom-0 end-0 mb-2 me-1 btn btn-primary rounded-circle d-flex align-items-center justify-content-center border border-2 border-white shadow-sm profile-edit-btn"
-                                        title="Seleccionar nueva foto">
-                                        <i class="bi bi-camera-fill text-white"></i>
-                                    </label>
+                                    <div class="mt-2">
+                                        <small class="text-muted d-block">
+                                            <i class="bi bi-clock me-1"></i>Entrada: {{entryDate}}
+                                        </small>
+                                        <small class="text-muted d-block">
+                                            <i class="bi bi-clock-history me-1"></i>Salida: {{departureDate}}
+                                        </small>
+                                    </div>
+                                    <p class="text-dark small mt-2 mb-0">{{guests}} Adultos</p>
                                 </div>
+                                {{/reserves}}
+                                {{^reserves}}
+                                <p class="text-muted text-center small mt-3">No existen reservas este usuario.</p>
+                                {{/reserves}}
                             </div>
-                            <!-- Input fields for profile information -->
-                            <h2 class="text-center font-weight-light text-dark">Mi Perfil</h2>
-                            <p class="text-muted text-center mb-4">Información de la cuenta</p>
-
-                            <div>
-                                <div class="form-floating mb-3">
-                                    <input class="form-control bg-white" id="inputUsername" name="username" type="text"
-                                        value="{{username}}" required />
-                                    <label for="inputUsername" class="opacity-50">Nombre de Usuario</label>
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <input class="form-control bg-white" id="inputPhone" name="phone" type="tel"
-                                        value="{{phone}}" required />
-                                    <label for="inputPhone" class="opacity-50">Número de teléfono</label>
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <input class="form-control bg-white" id="inputEmail" name="email" type="email"
-                                        value="{{email}}" required />
-                                    <label for="inputEmail" class="opacity-50">Correo Electrónico</label>
-                                </div>
-                            </div>
-                            <!-- Submit button -->
-                            <div class="mt-4 text-center">
-                                <button type="submit" class="btn btn-primary rounded-pill px-4 shadow-sm w-100">
-                                    <i class="bi bi-save me-2"></i> Guardar Cambios
-                                </button>
-                            </div>
-
-                        </form>
+                        </div>
                     </div>
-                    <!-- Logout button in the card footer -->
-                    <div class="card-footer text-center py-4 bg-light border-0 rounded-bottom">
-                        <a href="/logout" class="btn btn-outline-danger rounded-pill px-4 shadow-sm">
-                            <i class="bi bi-box-arrow-right me-2"></i> Cerrar Sesión
-                        </a>
+                </div> <div class="col-lg-5 col-md-10">
+                    <div class="card shadow-lg border-0 rounded-lg">
+                        <div class="card-body p-5">
+                            <form action="/profile/update" method="POST" enctype="multipart/form-data">
+                                <div class="mb-4 text-center">
+                                    <div class="position-relative d-inline-block">
+                                        <!-- Default avatar if no profile image -->
+                                        {{^hasProfileImage}} 
+                                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center shadow-sm profile-avatar-container">
+                                            <i class="bi bi-person-fill text-primary profile-avatar-icon"></i>
+                                        </div>
+                                        {{/hasProfileImage}}
+                                        <!-- User's profile image -->
+                                        {{#hasProfileImage}}
+                                        <img src="/profile/avatar" alt="Foto de perfil" class="rounded-circle shadow-sm"
+                                            style="width: 120px; height: 120px; object-fit: cover; border: 3px solid white;">
+                                        {{/hasProfileImage}}
+                                        
+                                        <input type="file" id="profilePhotoInput" name="photo" class="d-none" accept="image/*">
+                                        <label for="profilePhotoInput"
+                                            class="position-absolute bottom-0 end-0 mb-2 me-1 btn btn-primary rounded-circle d-flex align-items-center justify-content-center border border-2 border-white shadow-sm profile-edit-btn"
+                                            title="Seleccionar nueva foto">
+                                            <i class="bi bi-camera-fill text-white"></i>
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- Profile information -->
+                                <h2 class="text-center font-weight-light text-dark">Mi Perfil</h2>
+                                <p class="text-muted text-center mb-4">Información de la cuenta</p>
+                                <!-- Username -->
+                                <div>
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control bg-white" id="inputUsername" name="username" type="text"
+                                            value="{{username}}" required />
+                                        <label for="inputUsername" class="opacity-50">Nombre de Usuario</label>
+                                    </div>
+                                    <!-- Email -->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control bg-white" id="inputEmail" name="email" type="email"
+                                            value="{{email}}" required />
+                                        <label for="inputEmail" class="opacity-50">Correo Electrónico</label>
+                                    </div>
+                                </div>
+                                <!-- Submit button -->
+                                <div class="mt-4 text-center">
+                                    <button type="submit" class="btn btn-primary rounded-pill px-4 shadow-sm w-100">
+                                        <i class="bi bi-save me-2"></i> Guardar Cambios
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- Logout button -->
+                        <div class="card-footer text-center py-4 bg-light border-0 rounded-bottom">
+                            <a href="/logout" class="btn btn-outline-danger rounded-pill px-4 shadow-sm">
+                                <i class="bi bi-box-arrow-right me-2"></i> Cerrar Sesión
+                            </a>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        </div>
+                </div> </div> </div>
     </section>
 
     {{>footer}}

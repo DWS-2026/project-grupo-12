@@ -14,21 +14,22 @@ import es.codeurjc.web.model.Review;
 import es.codeurjc.web.model.User;
 import es.codeurjc.web.repository.ReserveRepository;
 import es.codeurjc.web.repository.ReviewRepository;
-import es.codeurjc.web.repository.UserRepository;
 import es.codeurjc.web.service.ImageService;
+import es.codeurjc.web.service.UserService;
+import es.codeurjc.web.service.UserSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
-import org.springframework.http.MediaTypeFactory;
-import org.springframework.http.ResponseEntity;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
-
+import java.util.Optional;
 import java.sql.SQLException;
+
+
 
 @Controller
 public class UserController {
@@ -37,15 +38,20 @@ public class UserController {
     //y no se haría con una carpeta dentro del proyecto.
 
     @Autowired
-    private ReviewRepository reviewRepository; 
+    private ReviewRepository reviewService; 
     @Autowired
-    private ReserveRepository reserveRepository; 
-    @Autowired
-    private UserRepository userRepository;
+    private ReserveRepository reserveService; 
 
     @Autowired
     private ImageService imageService; 
+    @Autowired
+    private UserService userService;
 
+    //User session to not use HttpSession, improves individual sessions access and management 
+    @Autowired
+    private UserSession userSession;
+
+    //to show bar info and metadata
     @ModelAttribute
     public void addAttributes(Model model, HttpServletRequest request) {
         /* 
@@ -84,100 +90,42 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public String profile(Model model, HttpSession session) {
+    public String profile(Model model) {
 
-        Long userId = (Long) session.getAttribute("userId");
-
-        if (userId == null) {
+        if (!userSession.isLogged()) {
             return "redirect:/login"; 
         }
 
+        Long userId = userSession.getIdUser();
+        User user = userService.findById(userId).orElseThrow();
 
         //SELECT * FROM review WHERE author_id = ?
-        List<Review> userReviews = reviewRepository.findByAuthorId(userId);
+        List<Review> userReviews = reviewService.findByAuthorId(userId);
         //SELECT * FROM reserve WHERE customer_id = ?
-        List<Reserve> userReserves = reserveRepository.findByCustomerId(userId);;
+        List<Reserve> userReserves = reserveService.findByCustomerId(userId);;
 
-
-        model.addAttribute("username", session.getAttribute("username"));
-        model.addAttribute("reviews", userReviews);
+        model.addAttribute("username", userSession.getUsername()); 
+        model.addAttribute("email", user.getEmail());       
+        model.addAttribute("reviews", userReviews); 
         model.addAttribute("reserves", userReserves);
-
         
+
         return "profile"; 
     }
 
-
-    //to change the profile picture of the user, not used if the user doesn't upload a new one
-    @PostMapping("/profile/update")
-    public String updateProfile(
-            @RequestParam("photo") MultipartFile photo, 
-            HttpSession session) throws Exception { 
-            
-        Long userId = (Long) session.getAttribute("userId");
-        User user = userRepository.findById(userId).orElseThrow();
-
-        if (!photo.isEmpty()) {
-            Image avatar = imageService.createImage(photo); 
-            user.setProfileImage(avatar); 
-        }
-        userRepository.save(user);
-        return "redirect:/profile";
-    }
-
-    //Adapted from Repo-0, makes a GET request to the server to get the profile picture of the user, and returns it as a Resource to be displayed in the profile page
-    @GetMapping("/profile/avatar")
-    public ResponseEntity<Object> getProfileAvatar(HttpSession session) throws SQLException {
-        
-        Long userId = (Long) session.getAttribute("userId");
-        User user = userRepository.findById(userId).orElseThrow();
-
-        if (user.getProfileImage() != null) {
-            Resource imageFile = imageService.getImageFile(user.getProfileImage().getId()); 
-            MediaType mediaType = MediaTypeFactory.getMediaType(imageFile).orElse(MediaType.IMAGE_JPEG); 
-            return ResponseEntity.ok().contentType(mediaType).body(imageFile); 
-        }
-
-        return ResponseEntity.notFound().build();
-    }
-
-
+    //obtain login page
     @GetMapping("/login")
     public String login() {
         return "login"; 
     }
 
-
+    //obtain register page
     @GetMapping("/register")
     public String register() {
         return "register"; 
     }
 
-
-    //Provisional function
-    @PostMapping("/register")
-    public String processRegister(@RequestParam String email, 
-                                @RequestParam String username, 
-                                @RequestParam String password) {
-        
-        //Create the user using your model's constructor
-        User nuevoUsuario = new User(username, email);
-        // ***(Acuérdate de añadir la contraseña a tu modelo User)****
-        
-        //Save to the database
-        userRepository.save(nuevoUsuario);
-        
-        //Redirect to the login page to log in
-    return "redirect:/login"; 
-}
-
-    @PostMapping("/login")
-    public String processLogin(@RequestParam String email, @RequestParam String password, Model model, HttpSession session) {
-        System.out.println("Intento de login con email: " + email);
-        return "redirect:/"; 
-    }
-
-    @GetMapping("/logout")
+     @GetMapping("/logout")
     public String processLogout(HttpSession session) {
         session.invalidate();
         return "redirect:/"; 
@@ -187,4 +135,95 @@ public class UserController {
     public String images() {
         return "images";
     }
+
+
+    //for registering a new user only, need to login after 
+    @PostMapping("/register")
+    public String processRegister(@RequestParam String email, 
+                                @RequestParam String username, 
+                                @RequestParam String password) {
+        
+        userService.registerUser(username, email, password);
+        
+        
+    return "redirect:/"; 
+    }
+
+    //service uses the repository to check the database
+    @PostMapping("/login")
+    public String processLogin(@RequestParam String email, @RequestParam String password, Model model) {
+        Optional<User> checkUser = userService.authenticateUser(email, password); 
+        if (checkUser.isPresent()) { //is present means exists and the password is correct 
+            User user = checkUser.get();
+            userSession.login(user);
+            return "redirect:/profile";
+        } else {
+            model.addAttribute("error", "Credenciales inválidas");
+            return "login";
+        }
+    }
+
+   
+
+    //to change the profile picture of the user, not used if the user doesn't upload a new one
+    @PostMapping("/profile/update")
+    public String updateProfile(
+            @RequestParam String username,
+            @RequestParam String phone,
+            @RequestParam String email,
+            @RequestParam("photo") MultipartFile photo) throws Exception {
+        
+        //to prevent not logged users from accessing profile page    
+        if (!userSession.isLogged()) {
+            return "redirect:/login";
+        }
+
+        Long userId = userSession.getIdUser(); //is logged, so we obtain session id
+        Optional<User> userOp = userService.findById(userId); //recover user from database
+
+        if (!userOp.isPresent()) {//if user doesn't exist, something went wrong
+            return "redirect:/login";
+        }
+
+        User user = userOp.get(); //get the logged user 
+
+        if (!photo.isEmpty()) { //if the user is uploading a photo, we change it 
+            Image newImage = imageService.createImage(photo);
+            user.setProfileImage(newImage);
+        }
+        //modify the logged fields based on the inputs
+        user.setName(username);
+        user.setEmail(email);
+        userService.updateUser(user);
+
+        userSession.login(user); //update session info with new username and profile picture
+        return "redirect:/profile";
+    }
+
+
+    //adapted from Repo-0, makes a GET request to the server to get the profile picture of the user, and returns it as a Resource to be displayed in the profile page
+    @GetMapping("/profile/avatar")
+    public ResponseEntity<Object> getProfileAvatar() throws SQLException {
+        
+        if (!userSession.isLogged()){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); //if the user is not logged, we return 401 Unauthorized (ReponseEntity)
+        }  
+
+        Long userId = userSession.getIdUser();
+        Optional<User> userOp = userService.findById(userId);
+
+        if (!userOp.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        User user = userOp.get();
+        if (user.getProfileImage() != null) {
+            Resource imageFile = imageService.getImageFile(user.getProfileImage().getId()); 
+            MediaType mediaType = MediaTypeFactory.getMediaType(imageFile).orElse(MediaType.IMAGE_JPEG); 
+            return ResponseEntity.ok().contentType(mediaType).body(imageFile); 
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
 }
