@@ -160,10 +160,10 @@ public class UserController {
 
         if (checkUser.isPresent()) { //is present means exists and the password is correct 
             User user = checkUser.get();
-            userSession.login(user);
+            userSession.modifySessionInfo(user);
             return "redirect:/profile";
         } else {
-            model.addAttribute("attemptError", "Credenciales inválidas"); //if else 
+            model.addAttribute("attemptError", "Credenciales inválidas"); //if else in mustache
             return "login";
         }
     }
@@ -200,7 +200,7 @@ public class UserController {
         user.setEmail(email);
         userService.updateUser(user);
 
-        userSession.login(user); //update session info with new username and profile picture
+        userSession.modifySessionInfo(user); //update session info with new username and profile picture
         return "redirect:/profile";
     }
 
