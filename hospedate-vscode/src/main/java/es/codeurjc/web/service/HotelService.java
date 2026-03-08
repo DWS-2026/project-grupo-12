@@ -99,4 +99,12 @@ public class HotelService {
     public List<Hotel> getTop3Hotels() {
         return hotelRepository.findTop3ByOrderByRatingDesc();
     }
+
+    public void saveHotel(Hotel hotel) {
+        hotelRepository.save(hotel);
+    }
+
+    public void deleteHotel(Long id) {
+        hotelRepository.deleteById(id);
+    }
 }
