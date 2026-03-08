@@ -153,23 +153,24 @@ public class UserController {
     @PostMapping("/login")
     public String processLogin(@RequestParam String email, @RequestParam String password, Model model) {
         Optional<User> checkUser = userService.authenticateUser(email, password); 
+        model.addAttribute("attemptError", false);
+
         if (checkUser.isPresent()) { //is present means exists and the password is correct 
             User user = checkUser.get();
             userSession.login(user);
             return "redirect:/profile";
         } else {
-            model.addAttribute("error", "Credenciales inválidas");
+            model.addAttribute("attemptError", "Credenciales inválidas");
             return "login";
         }
     }
 
    
 
-    //to change the profile picture of the user, not used if the user doesn't upload a new one
+    //to update the user's profile information
     @PostMapping("/profile/update")
     public String updateProfile(
             @RequestParam String username,
-            @RequestParam String phone,
             @RequestParam String email,
             @RequestParam("photo") MultipartFile photo) throws Exception {
         
@@ -191,7 +192,7 @@ public class UserController {
             Image newImage = imageService.createImage(photo);
             user.setProfileImage(newImage);
         }
-        //modify the logged fields based on the inputs
+        //modify the logged container with the new information
         user.setName(username);
         user.setEmail(email);
         userService.updateUser(user);

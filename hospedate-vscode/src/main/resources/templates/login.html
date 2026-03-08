@@ -19,6 +19,11 @@
                             <!-- Login form -->
                             <form action="/login" method="POST"> 
                                 <!-- Email -->
+                                 {{#attemptError}}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{attemptError}}
+                                    </div>
+                                {{/attemptError}}
                                 <div class="form-floating mb-3">
                                     <input class="form-control" id="inputEmail" name="email" type="email" placeholder="nombre@ejemplo.com" required />
                                     <label for="inputEmail" class="opacity-50">Correo Electrónico</label>
