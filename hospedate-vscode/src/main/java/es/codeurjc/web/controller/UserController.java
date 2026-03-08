@@ -102,7 +102,10 @@ public class UserController {
         //SELECT * FROM review WHERE author_id = ?
         List<Review> userReviews = reviewService.findByAuthorId(userId);
         //SELECT * FROM reserve WHERE customer_id = ?
-        List<Reserve> userReserves = reserveService.findByCustomerId(userId);;
+        List<Reserve> userReserves = reserveService.findByCustomerId(userId);
+
+        
+        model.addAttribute("hasProfileImage", user.getProfileImage() != null); //we check the profile image, if null then we show the default icon
 
         model.addAttribute("username", userSession.getUsername()); 
         model.addAttribute("email", user.getEmail());       
@@ -160,7 +163,7 @@ public class UserController {
             userSession.login(user);
             return "redirect:/profile";
         } else {
-            model.addAttribute("attemptError", "Credenciales inválidas");
+            model.addAttribute("attemptError", "Credenciales inválidas"); //if else 
             return "login";
         }
     }
