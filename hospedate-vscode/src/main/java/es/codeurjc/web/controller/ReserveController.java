@@ -1,4 +1,9 @@
 package es.codeurjc.web.controller;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,30 +13,34 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import es.codeurjc.web.model.Hotel;
+import es.codeurjc.web.model.User;
 import es.codeurjc.web.model.Reserve;
+import es.codeurjc.web.repository.ReserveRepository;
+import es.codeurjc.web.service.HotelService;
+import es.codeurjc.web.service.UserService;
+import es.codeurjc.web.service.UserSession;
 import jakarta.servlet.http.HttpServletRequest;
 
 
 @Controller
 public class ReserveController {
 
+        @Autowired
+    private ReserveRepository reserveRepository;
 
-// Comprobar si hace falta saber s esta logueado ya que sino, nos ahorramos este code y añadimos el tab_title 
-// y metadata_content directamente en el método showReserve() y no hace falta el @ModelAttribute
+    @Autowired
+    private HotelService hotelService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserSession userSession;
+
  @ModelAttribute
     public void addAttributes(Model model, HttpServletRequest request) {
-        /* 
-        // --- A) Lógica de sesión (Para saber si está logueado) ---
-        Principal principal = request.getUserPrincipal();
-        if (principal != null) {
-            model.addAttribute("logged", true);
-            model.addAttribute("userName", principal.getName());
-            model.addAttribute("admin", request.isUserInRole("ADMIN"));
-        } else {
-            model.addAttribute("logged", false);
-        }
-            */
-        // --- B) Lógica de Títulos y Metadatos según la URL --- 
+        
         String currentRoute = request.getRequestURI(); 
 
         switch (currentRoute) {
@@ -40,57 +49,79 @@ public class ReserveController {
                 model.addAttribute("metadata_content", "Reserva tu alojamiento ideal.");
                 break;
             default:
-                // Por si acaso añades una ruta nueva en el futuro y se te olvida ponerla aquí
+                // In case a new tab is created and we forget to edit it specifically
                 model.addAttribute("tab_title", "Área de Usuario - Hospédate"); 
                 model.addAttribute("metadata_content", "Área personal de Hospédate.");
                 break;
         }
     }
     
-    // Method for painting the reservation data
+    // Method to display the reservation and collect the data from the form, 
+    // and create the reservation as "PENDING" so that the data cannot be modified and we have greater security
     @PostMapping("/reserve")
     public String showReserve(@RequestParam Long hotelId,
-                            @RequestParam String entryDate, 
-                            @RequestParam String departureDate, 
+                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate entryDate, 
+                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate departureDate,
                             @RequestParam int guests,
                             Model model) {
+         // If the user is not logged in, redirect to the login page                    
+        if(!userSession.isLogged()){
+            return "redirect:/login";
+        }
+
+        //We search for the Hotel and the User in the database
+        Hotel hotel = hotelService.getHotelById(hotelId).orElseThrow();
+        User customer = userService.findById(userSession.getIdUser()).orElseThrow();
+
+        //We use ChronoUnit to calculate the nights between dates and calculate the price
+        long nights = ChronoUnit.DAYS.between(entryDate, departureDate);
+        if (nights <= 0) nights = 1; 
+        double totalPrice = nights * hotel.getPrice();
+
+        //We created the draft of the reservation using the constructor
+        Reserve pendingReserve = new Reserve(hotel, customer, totalPrice, guests, entryDate, departureDate);
+        pendingReserve.setStatus("PENDIENTE");
         
+        //We saved the reserve in the database;
+        reserveRepository.save(pendingReserve);
+
+        // We passed the data to the view (including the ID of this draft)
+        model.addAttribute("reserveId", pendingReserve.getId());
+        model.addAttribute("hotel", hotel); 
         model.addAttribute("entryDate", entryDate);
         model.addAttribute("departureDate", departureDate);
         model.addAttribute("guests", guests);
-        model.addAttribute("hotelId", hotelId);
+        model.addAttribute("nights", nights);
+        model.addAttribute("totalPrice", totalPrice);
 
-        return "reserve"; 
+        return "reserve";
     }
-
-    //Method to save the reservation in the database and redirect to the profile
+    //Method to save the confirmed reservation in the database and redirect to the profile
     @PostMapping("/reserve/process")
-    public String processReserve(@RequestParam Long hotelId,
-                                @RequestParam String entryDate, 
-                                @RequestParam String departureDate, 
-                                @RequestParam int guests) {
-        // 1. Buscamos el Hotel en la BD con el hotelId
-        // 2. Creamos una nueva Reserva con las fechas y los invitados
-        // 3. Calculamos el precio total (noches * precio del hotel)
-        // 4. Guardamos en la base de datos
+    public String processReserve(@RequestParam Long reserveId) {
         
-        /*Como sería
-            // 1. Nace la reserva (el cliente es null)
-            Reserve nuevaReserva = new Reserve(); 
-            
-            // 2. Buscas quién es el usuario que está navegando
-            User usuarioLogueado = userRepository.findByEmail("pepe@gmail.com").get();
-            
-            // 3. ¡AQUÍ USAS EL SETTER! Le asignas el dueño por primera vez
-            nuevaReserva.setCustomer(usuarioLogueado); 
-            
-            // 4. Le asignas el hotel
-            nuevaReserva.setHotel(hotelSeleccionado);
-            
-            // 5. Ahora sí, la guardas en la base de datos
-            reserveRepository.save(nuevaReserva);*/
+        // If the user is not logged in, redirect to the login page
+        if(!userSession.isLogged()){
+            return "redirect:/login";
+        }
 
-    return "redirect:/profile"; // Mandamos al usuario a su perfil para ver sus reservas
-}
+        // We are looking for the pending reservation using your ID.
+        Reserve reserve = reserveRepository.findById(reserveId).orElseThrow();
+
+        // Protection against IDOR
+        // We compare the reservation owner's ID with the logged-in user's ID
+        if (!reserve.getCustomer().getId().equals(userSession.getIdUser())) {
+            //If you try to modify a reservation that is not yours, we will send you back to the beginning.
+            return "redirect:/"; 
+        }
+
+        // We changed its status to confirmed
+        reserve.setStatus("CONFIRMADA");
+        
+        // We save again to update it
+        reserveRepository.save(reserve);
+
+        return "redirect:/profile"; 
+    }
    
 }

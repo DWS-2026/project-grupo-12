@@ -27,9 +27,15 @@
             <!-- Links to different sections or pages-->
                 <ul class="navbar-nav ms-auto my-2 my-lg-0">
                     <li class="nav-item"><a class="nav-link" href="#services">Servicios</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/profile">Perfil</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contáctanos</a></li>
+                    <!-- If you are not logged in, "Iniciar Sesión" will appear.-->
+                    {{^logged}}
                     <li class="nav-item"><a class="nav-link" href="/login">Iniciar Sesión</a></li>
+                    {{/logged}}
+                    <!-- If you are logged in, "Mi Perfil" will appear-->
+                    {{#logged}}
+                    <li class="nav-item"><a class="nav-link" href="/profile">Mi Perfil</a></li>
+                    {{/logged}}
                 </ul>
             </div>
         </div>

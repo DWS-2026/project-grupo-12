@@ -24,9 +24,12 @@
                                         <h5 class="mb-1 fw-bold text-primary">
                                             <a class="bi bi-building me-2 remove-hyperlink" href="/hotel/{{hotel.id}}">{{hotel.name}}</a>
                                         </h5>
-                                        <span class="text-warning fs-6">{{rating}}</span>
+                                        <span class="text-warning fs-6">{{rating}} ★</span>
                                     </div>
-                                    <small class="text-muted d-block mb-2">Publicado el {{publishDate}}</small>
+                                    <small class="text-muted d-block mb-2">Publicado el {{formattedDate}}</small>
+
+                                    <h6 class="fw-bold text-dark mt-2">{{title}}</h6>
+                                    
                                     <p class="text-dark small mb-0">"{{comment}}"</p>
                                 </div>
                                 {{/reviews}}
@@ -56,11 +59,11 @@
                                             <i class="bi bi-clock-history me-1"></i>Salida: {{departureDate}}
                                         </small>
                                     </div>
-                                    <p class="text-dark small mt-2 mb-0">{{guests}} Adultos</p>
+                                    <p class="text-dark small mt-2 mb-0">{{guests}} personas</p>
                                 </div>
                                 {{/reserves}}
                                 {{^reserves}}
-                                <p class="text-muted text-center small mt-3">No existen reservas este usuario.</p>
+                                <p class="text-muted text-center small mt-3">No existen reservas activas</p>
                                 {{/reserves}}
                             </div>
                         </div>

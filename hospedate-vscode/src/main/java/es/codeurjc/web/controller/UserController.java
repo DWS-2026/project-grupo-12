@@ -38,12 +38,13 @@ public class UserController {
     //y no se haría con una carpeta dentro del proyecto.
 
     @Autowired
-    private ReviewRepository reviewService; 
+    private ReviewRepository reviewRepository; 
     @Autowired
-    private ReserveRepository reserveService; 
+    private ReserveRepository reserveRepository; 
 
     @Autowired
     private ImageService imageService; 
+    
     @Autowired
     private UserService userService;
 
@@ -66,7 +67,7 @@ public class UserController {
         }
             */
         // --- B) Lógica de Títulos y Metadatos según la URL --- 
-        String currentRoute = request.getRequestURI(); // Ej: "/login" o "/register"
+        String currentRoute = request.getRequestURI();
 
         switch (currentRoute) {
             case "/login":
@@ -82,7 +83,7 @@ public class UserController {
                 model.addAttribute("metadata_content", "Gestiona tus datos y reservas activas.");
                 break;
             default:
-                // Por si acaso añades una ruta nueva en el futuro y se te olvida ponerla aquí
+                // Just in case you add a new route in the future and forget to put it here
                 model.addAttribute("tab_title", "Área de Usuario - Hospédate"); 
                 model.addAttribute("metadata_content", "Área personal de Hospédate.");
                 break;
@@ -99,19 +100,19 @@ public class UserController {
         Long userId = userSession.getIdUser();
         User user = userService.findById(userId).orElseThrow();
 
-        //SELECT * FROM review WHERE author_id = ?
-        List<Review> userReviews = reviewService.findByAuthorId(userId);
-        //SELECT * FROM reserve WHERE customer_id = ?
-        List<Reserve> userReserves = reserveService.findByCustomerId(userId);
-
-        
-        model.addAttribute("hasProfileImage", user.getProfileImage() != null); //we check the profile image, if null then we show the default icon
+        //we check the profile image, if null then we show the default icon
+        model.addAttribute("hasProfileImage", user.getProfileImage() != null); 
 
         model.addAttribute("username", userSession.getUsername()); 
         model.addAttribute("email", user.getEmail());       
-        model.addAttribute("reviews", userReviews); 
+
+        //SELECT * FROM review WHERE author_id = ?
+        List<Review> userReviews = reviewRepository.findByAuthorId(userId);
+        model.addAttribute("reviews", userReviews);
+
+        //SELECT * FROM reserve WHERE customer_id = ?
+        List<Reserve> userReserves = reserveRepository.findByCustomerId(userId);
         model.addAttribute("reserves", userReserves);
-        
 
         return "profile"; 
     }

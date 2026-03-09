@@ -3,8 +3,10 @@ package es.codeurjc.web.controller;
 import es.codeurjc.web.model.Hotel;
 import es.codeurjc.web.model.Review;
 import es.codeurjc.web.service.HotelService;
+import es.codeurjc.web.service.UserSession;
 import jakarta.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,24 +22,15 @@ public class HotelController {
 
     private final HotelService hotelService;
 
+    @Autowired
+    private UserSession userSession;
+
     public HotelController(HotelService hotelService) {
         this.hotelService = hotelService;
     }
 
     @ModelAttribute
     public void addAttributes(Model model, HttpServletRequest request) {
-        /* 
-        // --- A) Lógica de sesión (Para saber si está logueado) ---
-        Principal principal = request.getUserPrincipal();
-        if (principal != null) {
-            model.addAttribute("logged", true);
-            model.addAttribute("userName", principal.getName());
-            model.addAttribute("admin", request.isUserInRole("ADMIN"));
-        } else {
-            model.addAttribute("logged", false);
-        }
-            */
-        // --- B) Lógica de Títulos y Metadatos según la URL --- 
         String currentRoute = request.getRequestURI(); 
 
         switch (currentRoute) {
@@ -50,17 +43,19 @@ public class HotelController {
                 model.addAttribute("metadata_content", "Explora nuestra selección de hoteles.");
                 break;
             default:
-                // Por si acaso añades una ruta nueva en el futuro y se te olvida ponerla aquí
+                // Just in case you add a new route in the future and forget to put it here
                 model.addAttribute("tab_title", "Hoteles - Hospédate"); 
                 model.addAttribute("metadata_content", "Hoteles de Hospédate.");
                 break;
         }
+
+        model.addAttribute("logged", userSession.isLogged());
     }
 
     @GetMapping("/")
     public String index(Model model) {
 
-        List<Hotel> topHoteles = hotelService.getTop3Hotels(); // Asumiendo que añades este método a tu servicio
+        List<Hotel> topHoteles = hotelService.getTop3Hotels();
         
         model.addAttribute("hotels", topHoteles);
 

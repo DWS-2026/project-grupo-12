@@ -40,7 +40,7 @@
                             </ul>
                             <!-- Price information-->
                             <div class="mt-4 p-3 bg-light rounded">
-                                <span class="h4 price-tag mb-0">Total: 426€</span>
+                                <span class="h4 price-tag mb-0">Total: {{totalPrice}}€</span>
                                 <small class="text-muted d-block">Impuestos incluidos</small>
                             </div>
                         </div>
@@ -79,12 +79,9 @@
                             </div>
                             <!-- Divider bar-->
                             <hr class="my-4">
-                            <!-- Reserve confirmation that sends the data to the ReserveController-->
-                            <form action="reserve/process" method="POST">
-                                <input type="hidden"name="hotelId" value="{{hotelId}}">
-                                <input type="hidden"name="entryDate" value="{{entryDate}}">
-                                <input type="hidden"name="departureDate" value="{{departureDate}}">
-                                <input type="hidden"name="guests" value="{{guests}}">
+                            <!-- Reserve confirmation which sends the reservation ID to the ReserveController-->
+                            <form action="/reserve/process" method="POST">
+                                <input type="hidden" name="reserveId" value="{{reserveId}}">
 
                             <button type="submit" class="btn btn-primary w-100 py-3 fw-bold text-uppercase">
                                 Confirmar la reserva

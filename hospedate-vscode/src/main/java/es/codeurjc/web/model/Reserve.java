@@ -28,6 +28,12 @@ public class Reserve {
     private LocalDate entryDate;
     private LocalDate departureDate;
 
+    //We have a status to save reservation data in the database
+    //such as "Pending_confirmation" or "CONFIRMED" so that no one can modify the data.
+    private String status; 
+
+    
+
     @ElementCollection
     private List<String> extras = new ArrayList<>();
 
@@ -103,5 +109,13 @@ public class Reserve {
 
     public void setExtras(List<String> extras){
         this.extras = extras;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

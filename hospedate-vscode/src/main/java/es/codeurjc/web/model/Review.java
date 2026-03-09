@@ -6,8 +6,10 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 @Entity
 public class Review {
     @Id
@@ -16,13 +18,30 @@ public class Review {
 
     private int rating; //Rating from 1 to 5
 
+    private String title; //Review title
+
     @Column(columnDefinition = "TEXT")
     private String comment; //User review text
 
-    private LocalDate date;
+    private LocalDate publishDate;
 
     //Empty constructor for JPA
     public Review(){}
+
+    public Review(int rating,String title, String comment, User author, Hotel hotel){
+        this.rating = rating;
+        this.title = title;
+        this.comment = comment;
+        this.author = author;
+        this.hotel = hotel;
+    }
+
+    @PrePersist //It is executed before the .save, and saves the date it is done
+    protected void initializePublishDate() {
+        this.publishDate = LocalDate.now();
+    }
+
+
     //Relationships with other entities
     @ManyToOne
     private User author;    //Many reviews belong to one author
@@ -72,14 +91,26 @@ public class Review {
         this.comment = comment;
     }
 
-    public LocalDate getDate(){
-        return date;
+    public String getTitle(){
+        return title;
     }
 
-    public void setDate(LocalDate date){
-        this.date = date;
+    public void setTitle(String title){
+        this.title = title;
     }
 
+    public LocalDate getPublishDate(){
+        return publishDate;
+    }
+
+    // Formatted date getter
+    public String getFormattedDate() {
+        if (this.publishDate == null) {
+            return "Fecha desconocida";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return this.publishDate.format(formatter);
+    }
 
 
 }
