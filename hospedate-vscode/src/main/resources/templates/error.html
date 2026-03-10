@@ -32,12 +32,11 @@
                 </div>
                 
                 <div class="col-lg-8 align-self-baseline">
-                    <h3 class="text-white mb-4">¡Ups! Parece que te has perdido en tu viaje.</h3>
+                    <h3 class="text-white mb-4">{{errorTitle}}</h3>
                     
                     <p class="text-white-75 mb-5 fs-5">
-                        No pudimos encontrar tu destino. La ruta <strong>{{path}}</strong> no existe o el hotel ha sido movido.
-                        <br>
-                        <small class="text-white-50">({{error}})</small>
+                        {{errorSubtitle}}
+                        <br><br>
                     </p>
                     
                     <a class="btn btn-primary btn-xl" href="/">Volver al Inicio</a>
