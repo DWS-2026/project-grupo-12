@@ -12,21 +12,27 @@
                 aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 
             <div class="mx-auto my-3 my-lg-0 navbar-search-container">
-                <div class="input-group">
+                <form action="/hotels" method="GET" class="input-group">
                     <span class="input-group-text bg-white border-end-0 search-icon-box">
                         <i class="bi bi-search text-muted"></i>
                     </span>
-                    <input type="text" id="searchInput" class="form-control border-start-0 ps-0 search-input"
-                        placeholder="¿A dónde vas?">
-                    <button class="btn btn-primary px-4" type="button">Buscar</button>
-                </div>
+                    <input type="text" name="keyword" class="form-control border-start-0 ps-0 search-input"
+                        placeholder="¿A dónde vas?" value="{{#keyword}}{{keyword}}{{/keyword}}">
+                    <button class="btn btn-primary px-4" type="submit">Buscar</button>
+                </form>
             </div>
 
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto my-2 my-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="/profile">Perfil</a></li>
                     <li class="nav-item"><a class="nav-link" href="/">Volver al inicio</a></li>
+                    
+                    {{^logged}}
                     <li class="nav-item"><a class="nav-link" href="/login">Iniciar Sesión</a></li>
+                    {{/logged}}
+                    
+                    {{#logged}}
+                    <li class="nav-item"><a class="nav-link" href="/profile">Mi Perfil</a></li>
+                    {{/logged}}
                 </ul>
             </div>
         </div>

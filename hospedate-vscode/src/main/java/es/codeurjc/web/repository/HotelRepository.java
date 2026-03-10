@@ -22,4 +22,7 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
     List<Hotel> findByRating(double rating);
     // Search the first 3 (Top3), ordered by rating (OrderByRating), from highest to lowest (Desc)
     List<Hotel> findTop3ByOrderByRatingDesc();
+
+    List<Hotel> findByNameContainingIgnoreCaseOrCityContainingIgnoreCaseOrLocationContainingIgnoreCase(
+        String name, String city, String location);
 }

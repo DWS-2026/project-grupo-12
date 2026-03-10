@@ -100,6 +100,11 @@ public class HotelService {
         return hotelRepository.findTop3ByOrderByRatingDesc();
     }
 
+    public List<Hotel> searchHotels(String keyword) {
+        // We passed the word 3 times (so that it searches in name, city and location)
+        return hotelRepository.findByNameContainingIgnoreCaseOrCityContainingIgnoreCaseOrLocationContainingIgnoreCase(keyword, keyword, keyword);
+    }
+
     public void saveHotel(Hotel hotel) {
         hotelRepository.save(hotel);
     }

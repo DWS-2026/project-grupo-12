@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +35,19 @@ public class HotelController {
     }
 
     @GetMapping("/hotels")
-    public String showHotels(Model model) {
-        model.addAttribute("hotels", hotelService.getAllHotels());
+    public String showHotels(@RequestParam(required = false) String keyword, Model model) {
+List<Hotel> hotelsList;
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            // Si el usuario ha escrito algo en el buscador, usamos el método nuevo
+            hotelsList = hotelService.searchHotels(keyword); // (Crearemos este método en el servicio ahora)
+            model.addAttribute("keyword", keyword); // Pasamos la palabra de vuelta para mantenerla en la barra
+        } else {
+            // Si no hay búsqueda, devolvemos todos como antes
+            hotelsList = hotelService.getAllHotels();
+        }
+
+        model.addAttribute("hotels", hotelsList);
         return "HotelList"; 
     }
 
