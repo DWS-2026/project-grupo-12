@@ -1,31 +1,27 @@
 {{>header}}
 
 <body id="page-top">
-<!--Top Page-->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
         <div class="container px-4 px-lg-5">
-        <a class="navbar-brand text-dark" href="#page-top">Hospédate</a>
-        
-        <div class="ms-auto">
-            <a class="btn btn-outline-primary btn-sm me-2" href="/admin/users/">
-                <i class="bi bi-people"></i> Lista de Usuarios
-            </a>
-            <a class="btn btn-primary btn-sm" href="/">
-                Volver al inicio
-            </a>
-        </div>
+            <a class="navbar-brand text-dark" href="#page-top">Hospédate</a>
+            <div class="ms-auto">
+                <a class="btn btn-outline-primary btn-sm me-2" href="/admin/users">
+                    <i class="bi bi-people"></i> Lista de Usuarios
+                </a>
+                <a class="btn btn-primary btn-sm" href="/">
+                    Volver al inicio
+                </a>
+            </div>
         </div>
     </nav>
-    <!--Title-->
+
     <section class="page-section mt-5">
         <div class="container px-4 px-lg-5">
             <h2 class="text-center mt-0">Administración de Hoteles</h2>
-            <hr class="divider" /> 
+            <hr class="divider" />
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <!--Subtitle-->
                 <p class="text-muted m-0">Lista de hoteles registrados</p>
-                <!--Button "Add Hotel"-->
-                <a href="/admin/hotels/new/" class="btn btn-primary btn-xl shadow-sm">
+                <a href="/admin/hotels/new" class="btn btn-primary btn-xl shadow-sm">
                     <i class="bi bi-plus-lg"></i> Añadir Hotel
                 </a>
             </div>
@@ -34,39 +30,48 @@
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
                         <thead class="bg-light">
-                            <!--Table creation-->
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre</th>
-                                <th>Ubicación</th>
+                                <th>Ciudad</th>
                                 <th>Precio</th>
+                                <th>Rating</th>
                                 <th class="text-center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!--Added Hotel-->
+                            {{#hotels}}
                             <tr>
-                                <td class="text-muted">#001</td>
-                                <td><strong>Hotel Sol y Luna</strong></td>
-                                <td>Málaga, España</td>
-                                <td>85,00€</td>
+                                <td class="text-muted">{{id}}</td>
+                                <td><strong>{{name}}</strong></td>
+                                <td>{{city}}</td>
+                                <td>{{price}}€</td>
+                                <td>{{rating}} ★</td>
                                 <td class="text-center" style="width: 180px;">
-                                    
                                     <div class="d-flex flex-column align-items-center">
-                                        <a href="/admin/hotels/edit/" class="btn btn-outline-warning btn-sm mb-1 w-100">
+                                        <a href="/admin/hotels/edit/{{id}}" class="btn btn-outline-warning btn-sm mb-1 w-100">
                                             <i class="bi bi-pencil-square"></i> Editar
                                         </a>
-                                        <label for="del-check-1" class="btn btn-outline-danger btn-sm w-100" style="cursor: pointer;">
-                                            <i class="bi bi-trash"></i> Eliminar
-                                        </label>
+                                        <form action="/admin/hotels/delete/{{id}}" method="POST" class="w-100">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm w-100"
+                                                onclick="return confirm('¿Seguro que quieres eliminar este hotel?')">
+                                                <i class="bi bi-trash"></i> Eliminar
+                                            </button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
+                            {{/hotels}}
+                            {{^hotels}}
+                            <tr>
+                                <td colspan="6" class="text-center text-muted py-4">No hay hoteles registrados.</td>
+                            </tr>
+                            {{/hotels}}
                         </tbody>
                     </table>
                 </div>
-            </div> 
+            </div>
         </div>
     </section>
-    
+
 {{>footer}}
