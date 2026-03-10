@@ -76,6 +76,22 @@ List<Hotel> hotelsList;
             }
             model.addAttribute("stars", stars);
             
+            List<String> galeria = h.getGaleria();
+            if (galeria != null && !galeria.isEmpty()) {
+                // Sacamos la primera foto para el espacio grande
+                model.addAttribute("mainImage", galeria.get(0));
+                
+                // Sacamos de la foto 2 a la 4 para el lateral (si hay suficientes)
+                if (galeria.size() > 1) {
+                    model.addAttribute("sideImages", galeria.subList(1, Math.min(galeria.size(), 4)));
+                }
+                
+                // Sacamos el resto de fotos para la parte de abajo
+                if (galeria.size() > 4) {
+                    model.addAttribute("bottomImages", galeria.subList(4, galeria.size()));
+                }
+            }
+            
             return "hotel";
         }
         return "redirect:/hotels";

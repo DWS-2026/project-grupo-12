@@ -2,6 +2,7 @@ package es.codeurjc.web.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -17,7 +18,7 @@ import jakarta.persistence.OneToMany;
 public class Hotel{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -33,7 +34,7 @@ public class Hotel{
     private List<String> galeria;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> services;
+    private Set<String> services;
 
     private double rating;
 
@@ -48,7 +49,7 @@ public class Hotel{
 
     public Hotel(String name, String tipo, String city, String location, 
                  double price, String description, List<String> galeria, 
-                 List<String> services, double rating) {
+                 Set<String> services, double rating) {
         this.name = name;
         this.tipo = tipo;
         this.city = city;
@@ -134,11 +135,11 @@ public class Hotel{
         this.galeria = galeria;
     }
 
-    public List<String> getServices() {
+    public Set<String> getServices() {
         return services;
     }
 
-    public void setServices(List<String> services) {
+    public void setServices(Set<String> services) {
         this.services = services;
     }
 
