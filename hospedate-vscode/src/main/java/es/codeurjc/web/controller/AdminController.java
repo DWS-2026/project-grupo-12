@@ -36,7 +36,6 @@ public class AdminController {
     @ModelAttribute
     public void addAttributes(Model model, HttpServletRequest request) {
 
-        // --- B) Lógica de Títulos y Metadatos según la URL --- 
         String currentRoute = request.getRequestURI();
 
         //Prottection to secure that only admins can access /admin
