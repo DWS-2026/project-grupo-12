@@ -38,24 +38,7 @@ public class ReserveController {
     @Autowired
     private UserSession userSession;
 
- @ModelAttribute
-    public void addAttributes(Model model, HttpServletRequest request) {
-        
-        String currentRoute = request.getRequestURI(); 
-
-        switch (currentRoute) {
-            case "/reserve":
-                model.addAttribute("tab_title", "Confirmar Reserva - Hospédate");
-                model.addAttribute("metadata_content", "Reserva tu alojamiento ideal.");
-                break;
-            default:
-                // In case a new tab is created and we forget to edit it specifically
-                model.addAttribute("tab_title", "Área de Usuario - Hospédate"); 
-                model.addAttribute("metadata_content", "Área personal de Hospédate.");
-                break;
-        }
-    }
-    
+ 
     // Method to display the reservation and collect the data from the form, 
     // and create the reservation as "PENDING" so that the data cannot be modified and we have greater security
     @PostMapping("/reserve")

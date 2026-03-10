@@ -52,43 +52,6 @@ public class UserController {
     @Autowired
     private UserSession userSession;
 
-    //to show bar info and metadata
-    @ModelAttribute
-    public void addAttributes(Model model, HttpServletRequest request) {
-        /* 
-        // --- A) Lógica de sesión (Para saber si está logueado) ---
-        Principal principal = request.getUserPrincipal();
-        if (principal != null) {
-            model.addAttribute("logged", true);
-            model.addAttribute("userName", principal.getName());
-            model.addAttribute("admin", request.isUserInRole("ADMIN"));
-        } else {
-            model.addAttribute("logged", false);
-        }
-            */
-        // --- B) Lógica de Títulos y Metadatos según la URL --- 
-        String currentRoute = request.getRequestURI();
-
-        switch (currentRoute) {
-            case "/login":
-                model.addAttribute("tab_title", "Iniciar Sesión - Hospédate");
-                model.addAttribute("metadata_content", "Accede a tu cuenta para gestionar tus reservas.");
-                break;
-            case "/register":
-                model.addAttribute("tab_title", "Crear Cuenta - Hospédate");
-                model.addAttribute("metadata_content", "Regístrate gratis y empieza a viajar.");
-                break;
-            case "/profile":
-                model.addAttribute("tab_title", "Mi Perfil - Hospédate");
-                model.addAttribute("metadata_content", "Gestiona tus datos y reservas activas.");
-                break;
-            default:
-                // Just in case you add a new route in the future and forget to put it here
-                model.addAttribute("tab_title", "Área de Usuario - Hospédate"); 
-                model.addAttribute("metadata_content", "Área personal de Hospédate.");
-                break;
-        }
-    }
 
     @GetMapping("/profile")
     public String profile(Model model) {

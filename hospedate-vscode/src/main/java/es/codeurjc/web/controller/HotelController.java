@@ -3,8 +3,9 @@ package es.codeurjc.web.controller;
 import es.codeurjc.web.model.Hotel;
 import es.codeurjc.web.model.Review;
 import es.codeurjc.web.service.HotelService;
+import es.codeurjc.web.service.UserSession;
 
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,11 +19,12 @@ import java.util.Optional;
 @Controller
 public class HotelController {
 
-    private final HotelService hotelService;
+    @Autowired
+    private HotelService hotelService;
 
-    public HotelController(HotelService hotelService) {
-        this.hotelService = hotelService;
-    }
+    @Autowired
+    private UserSession userSession;
+
 
     @GetMapping("/")
     public String index(Model model) {
