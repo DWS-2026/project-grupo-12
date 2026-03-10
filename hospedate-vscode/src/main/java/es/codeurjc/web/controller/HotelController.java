@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -28,29 +27,6 @@ public class HotelController {
 
     public HotelController(HotelService hotelService) {
         this.hotelService = hotelService;
-    }
-
-    @ModelAttribute
-    public void addAttributes(Model model, HttpServletRequest request) {
-        String currentRoute = request.getRequestURI(); 
-
-        switch (currentRoute) {
-            case "/":
-                model.addAttribute("tab_title", "Inicio - Hospédate");
-                model.addAttribute("metadata_content", "Bienvenido a Hospédate, tu plataforma de reservas de alojamiento.");
-                break;
-            case "/hotels":
-                model.addAttribute("tab_title", "Lista de Hoteles - Hospédate");
-                model.addAttribute("metadata_content", "Explora nuestra selección de hoteles.");
-                break;
-            default:
-                // Just in case you add a new route in the future and forget to put it here
-                model.addAttribute("tab_title", "Hoteles - Hospédate"); 
-                model.addAttribute("metadata_content", "Hoteles de Hospédate.");
-                break;
-        }
-
-        model.addAttribute("logged", userSession.isLogged());
     }
 
     @GetMapping("/")
