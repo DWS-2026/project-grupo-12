@@ -3,10 +3,8 @@ package es.codeurjc.web.controller;
 import es.codeurjc.web.model.Hotel;
 import es.codeurjc.web.model.Review;
 import es.codeurjc.web.service.HotelService;
-import es.codeurjc.web.service.UserSession;
-import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,9 +18,6 @@ import java.util.Optional;
 public class HotelController {
 
     private final HotelService hotelService;
-
-    @Autowired
-    private UserSession userSession;
 
     public HotelController(HotelService hotelService) {
         this.hotelService = hotelService;
@@ -55,10 +50,10 @@ public class HotelController {
             model.addAttribute("tab_title", h.getName() + " - Hospédate");
             model.addAttribute("metadata_content", "Reserva tu estancia en " + h.getName() + ", situado en " + h.getLocation());
             
-            // 1. AQUÍ ESTÁ LA CLAVE: Sacamos la lista de reseñas que tiene este hotel
+            // We get the lisdt of the reviews for this exact hotel
             List<Review> reviewList = h.getReviews(); 
             
-            // 2. Las metemos en la bandeja con la etiqueta "reviews"
+            // We add the list of reviews to the model so that we can display them in the hotel page
             model.addAttribute("reviews", reviewList);
 
             // Create a star list based on the rating
