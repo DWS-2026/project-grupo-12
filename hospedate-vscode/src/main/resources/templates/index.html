@@ -13,17 +13,18 @@
             <!-- Search bar-->
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <div class="mx-auto my-3 my-lg-0 main-search">
-                <div class="input-group">
-                    <!-- Magnifying glass image and icon-->
-                    <span class="input-group-text bg-white border-end-0 search-icon-box">
-                        <i class="bi bi-search text-muted"></i>
-                    </span>
-                    <!--Text box and search button-->
-                    <input type="text" id="searchInput" class="form-control border-start-0 ps-0 search-input"
-                        placeholder="¿A dónde vas?">
-                    <button class="btn btn-primary px-4" type="button">Buscar</button>
+                    
+                    <form action="/hotels" method="GET" class="input-group">
+                        <!-- Magnifying glass image and icon-->
+                        <span class="input-group-text bg-white border-end-0 search-icon-box">
+                            <i class="bi bi-search text-muted"></i>
+                        </span>
+                        <!--Text box and search button-->
+                        <input type="text" name="keyword" class="form-control border-start-0 ps-0 search-input"
+                            placeholder="¿A dónde vas?" value="{{#keyword}}{{keyword}}{{/keyword}}">
+                        <button class="btn btn-primary px-4" type="submit">Buscar</button>
+                    </form>
                 </div>
-            </div>
             <!-- Links to different sections or pages-->
                 <ul class="navbar-nav ms-auto my-2 my-lg-0">
                     <li class="nav-item"><a class="nav-link" href="#services">Servicios</a></li>
