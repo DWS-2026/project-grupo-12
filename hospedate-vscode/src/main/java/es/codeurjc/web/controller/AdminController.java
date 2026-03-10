@@ -33,32 +33,7 @@ public class AdminController {
     private UserSession userSession;
 
 
-    @ModelAttribute
-    public void addAttributes(Model model, HttpServletRequest request) {
-
-        String currentRoute = request.getRequestURI();
-
-        //Prottection to secure that only admins can access /admin
-        model.addAttribute("isAdmin", userSession.isAdmin());
-        model.addAttribute("isLogged", userSession.isLogged());
-
-        if (currentRoute.equals("/admin/hotels")) {
-            model.addAttribute("tab_title", "Administración de Hoteles - Hospédate");
-            model.addAttribute("metadata_content", "Página de administración de hoteles.");
-        } else if (currentRoute.startsWith("/admin/hotels/new")) {
-            model.addAttribute("tab_title", "Crear Hotel - Hospédate");
-            model.addAttribute("metadata_content", "Página de creación de hoteles.");
-        } else if (currentRoute.startsWith("/admin/hotels/edit")) {
-            model.addAttribute("tab_title", "Editar Hotel - Hospédate");
-            model.addAttribute("metadata_content", "Página de edición de hoteles.");
-        } else if (currentRoute.startsWith("/admin/users")) {
-            model.addAttribute("tab_title", "Administración de Usuarios - Hospédate");
-            model.addAttribute("metadata_content", "Página de administración de usuarios.");
-        } else {
-            model.addAttribute("tab_title", "Administración - Hospédate");
-            model.addAttribute("metadata_content", "Página de administración.");
-        }
-    }
+    
     //List all the hotels
     @GetMapping("/admin/hotels")
     public String adminHotels(Model model) {

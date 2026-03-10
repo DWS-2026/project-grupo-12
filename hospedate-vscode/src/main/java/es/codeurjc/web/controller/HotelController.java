@@ -20,14 +20,12 @@ import java.util.Optional;
 @Controller
 public class HotelController {
 
-    private final HotelService hotelService;
+    @Autowired
+    private HotelService hotelService;
 
     @Autowired
     private UserSession userSession;
 
-    public HotelController(HotelService hotelService) {
-        this.hotelService = hotelService;
-    }
 
     @GetMapping("/")
     public String index(Model model) {
