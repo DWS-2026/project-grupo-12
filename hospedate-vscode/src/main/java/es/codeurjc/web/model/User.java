@@ -30,7 +30,7 @@ public class User {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.role = "User";//always create a user with role User if not specified, only admin can create another admin
+        this.role = "USER";//always create a user with role User if not specified, only admin can create another admin
     }
 
     //Constructor for ADMIN ONLY
