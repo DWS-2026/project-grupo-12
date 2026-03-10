@@ -10,7 +10,7 @@ public class UserSession {
 
     private Long idUser=null;
     private String username=null;
-    private String role=null; // "Admin" or "User"
+    private String role=null; // "ADMIN" or "USER"
 
     //saves user info in the actual session, we save id, name and role 
     public void modifySessionInfo(User user) {
@@ -33,7 +33,7 @@ public class UserSession {
 
     //check only role field of the user
     public boolean isAdmin() {
-        return "Admin".equals(this.role);
+        return "ADMIN".equals(this.role);
     }
 
     //getters 
