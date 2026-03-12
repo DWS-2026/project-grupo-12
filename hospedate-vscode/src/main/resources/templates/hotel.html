@@ -3,7 +3,7 @@
 
 <body id="page-top">
     <!--Definition of the top part of the page-->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3 navbar-shrink" id="mainNav">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3 navbar-always-dark" id="mainNav">
         <div class="container px-4 px-lg-5">
             <a class="navbar-brand" href="/">Hospédate</a>
             <!--If you are in mobile or in a smaller device you have a button to see the top part-->
@@ -45,54 +45,34 @@
             </div>
 
             <div class="container gallery-container mb-5">
-
+                
                 <div class="row g-2 mb-2">
                     <div class="col-lg-8">
-                        <!--We create the space for the main photo of the hotel-->
-                        {{#hotel.galeria}}
-                        {{#@first}}
-                        <img src="{{this}}" class="img-fluid rounded img-main gallery-img" alt="Principal"
-                            onclick="openGallery(this)">
-                        {{/@first}}
-                        {{/hotel.galeria}}
+                        {{#mainImage}}
+                        <img src="{{.}}" class="img-fluid rounded img-main gallery-img" alt="Principal" data-bs-toggle="modal" data-bs-target="#modalGallery" style="cursor: pointer;">
+                        {{/mainImage}}
                     </div>
 
                     <div class="col-lg-4 d-flex flex-column gap-2">
-                        <!--Second row for the photos on the right (In computer Screen)-->
-                        {{#hotel.galeria}}
-                        {{^@first}}
-                        {{#@index}}{{#@isFirst}}
-                        <img src="{{this}}" class="img-fluid rounded img-side gallery-img" alt="Lateral"
-                            onclick="openGallery(this)">
-                        {{/@isFirst}}{{/@index}}
-                        {{^@index}}{{^@isFirst}}
-                        <img src="{{this}}" class="img-fluid rounded img-side gallery-img" alt="Lateral"
-                            onclick="openGallery(this)">
-                        {{/@isFirst}}{{/@index}}
-                        {{/^@first}}
-                        {{/hotel.galeria}}
+                        {{#sideImages}}
+                        <img src="{{.}}" class="img-fluid rounded img-side gallery-img" alt="Lateral" data-bs-toggle="modal" data-bs-target="#modalGallery" style="cursor: pointer;">
+                        {{/sideImages}}
                     </div>
                 </div>
 
                 <div class="row g-2">
-                    {{#hotel.galeria}}
-                    {{#@index}}{{#@isLast3}}
+                    {{#bottomImages}}
                     <div class="col-3">
-                        <img src="{{this}}" class="img-fluid rounded img-bottom gallery-img" alt="Inferior"
-                            onclick="openGallery(this)">
+                        <img src="{{.}}" class="img-fluid rounded img-bottom gallery-img" alt="Inferior" data-bs-toggle="modal" data-bs-target="#modalGallery" style="cursor: pointer;">
                     </div>
-                    {{/@isLast3}}{{/@index}}
-                    {{/hotel.galeria}}
-                    <!--The botton to open the rest of the gallery and see all photos-->
+                    {{/bottomImages}}
+                    
                     <div class="col-3 position-relative">
-                        {{#hotel.galeria}}
-                        {{#@index}}{{#@last}}
-                        <img src="{{this}}" class="img-fluid rounded img-bottom gallery-img" alt="Inferior"
-                            onclick="openGallery(this)" style="cursor: pointer;">
-                        {{/@last}}{{/@index}}
-                        {{/hotel.galeria}}
-                        <div class="more-photos-overlay" style="cursor: pointer;" onclick="openGallery(document.querySelector('.gallery-img'))">
-                            <span id="more-photos-count">Ver galería</span>
+                        <img src="{{mainImage}}" class="img-fluid rounded img-bottom gallery-img" style="filter: brightness(40%); object-fit: cover;">
+                        
+                        <div class="more-photos-overlay w-100 h-100 position-absolute top-0 start-0 d-flex justify-content-center align-items-center rounded" 
+                             data-bs-toggle="modal" data-bs-target="#modalGallery" style="cursor: pointer; background: rgba(0,0,0,0.3);">
+                            <span class="text-white fw-bold fs-5">Ver galería</span>
                         </div>
                     </div>
                 </div>
@@ -100,23 +80,26 @@
 
             <div class="modal fade" id="modalGallery" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-xl">
-                    <div class="modal-content bg-dark">
+                    <div class="modal-content bg-transparent border-0">
                         <div class="modal-header border-0">
-                            <h5 class="modal-title text-white" id="modalGalleryTitle">Galería</h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body p-0">
-                            <div id="carruselHotel" class="carousel slide" data-bs-ride="false">
-                                <div class="carousel-inner" id="carousel-items-container">
+                            <div id="carruselHotel" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner rounded">
+                                    
+                                    {{#carouselImages}}
+                                    <div class="carousel-item {{#active}}active{{/active}}">
+                                        <img src="{{url}}" class="d-block w-100" style="height: 80vh; object-fit: contain; background-color: rgba(0,0,0,0.8);" alt="Foto de la galería">
+                                    </div>
+                                    {{/carouselImages}}
+
                                 </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carruselHotel"
-                                    data-bs-slide="prev">
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carruselHotel" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Anterior</span>
                                 </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carruselHotel"
-                                    data-bs-slide="next">
+                                <button class="carousel-control-next" type="button" data-bs-target="#carruselHotel" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Siguiente</span>
                                 </button>

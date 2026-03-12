@@ -11237,3 +11237,13 @@ top: 100px; /* stick when going down */
 .remove-hyperlink{
   text-decoration:none;
 }
+
+#mainNav.navbar-always-dark .navbar-brand,
+#mainNav.navbar-always-dark .navbar-nav .nav-item .nav-link {
+    color: #212529 !important; /* Color oscuro por defecto */
+}
+
+#mainNav.navbar-always-dark .navbar-brand:hover,
+#mainNav.navbar-always-dark .navbar-nav .nav-item .nav-link:hover {
+    color: #f4623a !important; /* Color naranja al pasar el ratón */
+}

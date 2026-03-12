@@ -1,9 +1,8 @@
 package es.codeurjc.web.controller;
 
-import es.codeurjc.web.model.Hotel;
-import es.codeurjc.web.model.Review;
-import es.codeurjc.web.service.HotelService;
-import es.codeurjc.web.service.UserSession;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,9 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import es.codeurjc.web.model.Hotel;
+import es.codeurjc.web.model.Review;
+import es.codeurjc.web.service.HotelService;
+import es.codeurjc.web.service.UserSession;
 
 @Controller
 public class HotelController {
@@ -64,7 +64,7 @@ List<Hotel> hotelsList;
             model.addAttribute("tab_title", h.getName() + " - Hospédate");
             model.addAttribute("metadata_content", "Reserva tu estancia en " + h.getName() + ", situado en " + h.getLocation());
             
-            // We get the lisdt of the reviews for this exact hotel
+            // We get the list of the reviews for this exact hotel
             List<Review> reviewList = h.getReviews(); 
             
             // We add the list of reviews to the model so that we can display them in the hotel page
@@ -80,18 +80,28 @@ List<Hotel> hotelsList;
             
             List<String> galeria = h.getGaleria();
             if (galeria != null && !galeria.isEmpty()) {
-                // Sacamos la primera foto para el espacio grande
+                // Wer take the first photo for the main image
                 model.addAttribute("mainImage", galeria.get(0));
                 
-                // Sacamos de la foto 2 a la 4 para el lateral (si hay suficientes)
+                // Wer take the next 3 photos for the side images, if there are enough photos
                 if (galeria.size() > 1) {
-                    model.addAttribute("sideImages", galeria.subList(1, Math.min(galeria.size(), 4)));
+                    model.addAttribute("sideImages", galeria.subList(1, Math.min(galeria.size(), 3)));
                 }
                 
-                // Sacamos el resto de fotos para la parte de abajo
-                if (galeria.size() > 4) {
-                    model.addAttribute("bottomImages", galeria.subList(4, galeria.size()));
+                // The rest of the photos to the bottom page
+                if (galeria.size() > 3) {
+                    model.addAttribute("bottomImages", galeria.subList(3,  Math.min(galeria.size(), 6)));
                 }
+                
+                //We prepare all the photos and tell mustache which one is the first
+                List<java.util.Map<String, Object>> carouselImages = new java.util.ArrayList<>();
+                for (int i = 0; i < galeria.size(); i++) {
+                    java.util.Map<String, Object> imgData = new java.util.HashMap<>();
+                    imgData.put("url", galeria.get(i));
+                    imgData.put("active", i == 0); // Only the first image will be active
+                    carouselImages.add(imgData);
+                }
+                model.addAttribute("carouselImages", carouselImages);
             }
             
             return "hotel";
