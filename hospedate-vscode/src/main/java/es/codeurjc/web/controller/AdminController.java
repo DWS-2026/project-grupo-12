@@ -3,7 +3,6 @@ package es.codeurjc.web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,7 +13,6 @@ import es.codeurjc.web.model.User;
 import es.codeurjc.web.repository.UserRepository;
 import es.codeurjc.web.service.HotelService;
 import es.codeurjc.web.service.UserSession;
-import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -79,8 +77,17 @@ public class AdminController {
             @RequestParam(required = false, defaultValue = "") String galeriaRaw,
             @RequestParam(required = false) Set<String> services) {
 
-        Hotel hotel = new Hotel();
-        hotel.setId(id); // If its null we create hotel, if not we edit the hotel
+        Hotel hotel;
+        if (id == null) {
+            hotel = new Hotel();
+        } else {
+            Optional<Hotel> existing = hotelService.getHotelById(id);
+            if (existing.isPresent()) {
+                hotel = existing.get();
+            } else {
+                hotel = new Hotel();
+            }
+        } // If its null we create hotel, if not we edit the hotel
         hotel.setName(name);
         hotel.setTipo(tipo);
         hotel.setCity(city);
@@ -134,6 +141,7 @@ public class AdminController {
             @RequestParam Long id,
             @RequestParam String name,
             @RequestParam String email,
+            @RequestParam String password,
             @RequestParam String role) {
 
         Optional<User> existing = userRepository.findById(id);
@@ -142,6 +150,7 @@ public class AdminController {
             User user = existing.get();
             user.setName(name);
             user.setEmail(email);
+            user.setPassword(password);
             user.setRole(role);
             userRepository.save(user);
         }
