@@ -11247,3 +11247,16 @@ top: 100px; /* stick when going down */
 #mainNav.navbar-always-dark .navbar-nav .nav-item .nav-link:hover {
     color: #f4623a !important; /* Color naranja al pasar el ratón */
 }
+
+/*We hide all the images except the first one */
+.list-img-container img:not(:first-child) {
+    display: none !important;
+}
+
+/* Shorten the description so that it measures the same */
+.text-truncate-multi {
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Max number os lines before puting the ... */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}

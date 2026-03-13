@@ -40,7 +40,6 @@
 
     <header class="masthead-short text-center text-white">
         <div class="container px-4 px-lg-5">
-            <!--The main title of this page-->
             <h1 class="mb-3">Encuentra tu alojamiento ideal</h1>
             <p class="font-weight-light mb-0">Los mejores hoteles en España a tu alcance</p>
         </div>
@@ -49,242 +48,64 @@
     <section class="page-section bg-light" id="hoteles">
         <div class="container px-4 px-lg-5">
 
-            <!--Centering the content in the middle of the page-->
             <div class="row gx-4 gy-5">
-                <!--Defining the columns-->
+                
+                {{#hotels}}
                 <div class="col-md-6 col-lg-4">
-                    <!--The cards are defined in Bootstrap, we only fill them-->
                     <div class="card hotel-card h-100">
                         <a href="/hotel/{{id}}">
-                            <!--One container per photo-->
-                            <div class="hotel-img-container">
-                                <!--The photo of the hotel -->
-                                <img src="assets/img/portfolio/hoteles/UMusic1.jpg" alt="Hotel UMusic Madrid">
+                            <div class="hotel-img-container list-img-container">
+                                {{#galeria}}
+                                <img src="{{.}}" alt="Foto de {{name}}">
+                                {{/galeria}}
                             </div>
                         </a>
-                        <!--The body of the card-->
                         <div class="card-body d-flex flex-column">
                             <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h5 class="card-title mb-0">Hotel UMusic Madrid</h5>
-                                <div class="small text-warning">
-                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star"></i><i class="fas fa-star"></i>
+                                <h5 class="card-title mb-0">{{name}}</h5>
+                                <div class="small text-warning fw-bold fs-6">
+                                    <i class="bi bi-star-fill"></i> {{rating}}
                                 </div>
                             </div>
                             <p class="card-text text-muted small mb-3">
-                                <i class="fas fa-map-marker-alt text-orange me-1"></i> Madrid, Centro
+                                <i class="bi bi-geo-alt-fill text-primary me-1"></i> {{city}}
                             </p>
-                            <p class="card-text flex-grow-1">Experiencia 5 estrellas en el centro de Madrid, con lujosas
-                                instalaciones.</p>
+                            <p class="card-text flex-grow-1 text-truncate-multi">
+                                {{description}}
+                            </p>
 
                             <hr class="divider my-3 mx-0" style="max-width: 100%;">
 
                             <div class="d-flex justify-content-between align-items-center mt-auto">
-                                <span class="price-tag">742€ <span
-                                        class="fs-6 text-muted fw-normal">/noche</span></span>
-                                        <!--The botton to be redirected to the hotel page-->
+                                <span class="price-tag">{{price}}€ <span class="fs-6 text-muted fw-normal">/noche</span></span>
                                 <a href="/hotel/{{id}}" class="btn btn-primary btn-xl py-2 px-4 fs-6">Ver Hotel</a>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!--Defining the columns-->
-                <div class="col-md-6 col-lg-4">
-                    <!--The cards are defined in Bootstrap, we only fill them-->
-                    <div class="card hotel-card h-100">
-                        <a href="/hotel/{{id}}">
-                            <!--One container per photo-->
-                            <div class="hotel-img-container">
-                                <!--The photo of the hotel -->
-                                <img src="assets/img/portfolio/hoteles/Edificio_España_2025.jpg"
-                                    alt="Hotel Riu Plaza España">
-                            </div>
-                        </a>
-                        <!--The body of the card, we define price, description and location -->
-                        <div class="card-body d-flex flex-column">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h5 class="card-title mb-0">Hotel Riu Plaza España</h5>
-                                <div class="small text-warning">
-                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star"></i>
-                                </div>
-                            </div>
-                            <p class="card-text text-muted small mb-3">
-                                <i class="fas fa-map-marker-alt text-orange me-1"></i> Madrid, Gran Vía
-                            </p>
-                            <p class="card-text flex-grow-1">Hotel con ubicación muy céntrica y una experiencia VIP para
-                                residir en madrid por vacaciones..</p>
-
-                            <hr class="divider my-3 mx-0" style="max-width: 100%;">
-
-                            <div class="d-flex justify-content-between align-items-center mt-auto">
-                                <span class="price-tag">426€ <span
-                                        class="fs-6 text-muted fw-normal">/noche</span></span>
-                                <a href="/hotel/{{id}}" class="btn btn-primary btn-xl py-2 px-4 fs-6">Ver Hotel</a>
-                            </div>
-                        </div>
-                    </div>
+                {{/hotels}}
+                {{^hotels}}
+                <div class="col-12 text-center py-5">
+                    <i class="bi bi-search fs-1 text-muted mb-3 d-block"></i>
+                    <h3>No hemos encontrado alojamientos</h3>
+                    <p class="text-muted">Prueba a buscar con otra ciudad o comprueba que esté bien escrito.</p>
+                    <a href="/hotels" class="btn btn-outline-primary mt-3">Ver todos los hoteles</a>
                 </div>
-
-                <!--Defining the columns-->
-                <div class="col-md-6 col-lg-4">
-                    <!--The cards are defined in Bootstrap, we only fill them-->
-                    <div class="card hotel-card h-100">
-                        <a href="detalle-hotel.html">
-                            <!--One container per photo-->
-                            <div class="hotel-img-container">
-                                <!--The photo of the hotel -->
-                                <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-                                    alt="Urban Hub Tech">
-                            </div>
-                        </a>
-                        <!--The body of the card, we define price, description and location -->
-                        <div class="card-body d-flex flex-column">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h5 class="card-title mb-0">Urban Hub Tech</h5>
-                                <div class="small text-warning">
-                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                                </div>
-                            </div>
-                            <p class="card-text text-muted small mb-3">
-                                <i class="fas fa-map-marker-alt text-orange me-1"></i> Valencia, Artes
-                            </p>
-                            <p class="card-text flex-grow-1">Coworking integrado y wifi 6 de alta velocidad para nómadas
-                                digitales.</p>
-
-                            <hr class="divider my-3 mx-0" style="max-width: 100%;">
-
-                            <div class="d-flex justify-content-between align-items-center mt-auto">
-                                <span class="price-tag">85€ <span class="fs-6 text-muted fw-normal">/noche</span></span>
-                                <a href="detalle-hotel.html" class="btn btn-primary btn-xl py-2 px-4 fs-6">Ver Hotel</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!--Defining the columns-->
-                <div class="col-md-6 col-lg-4">
-                    <!--The cards are defined in Bootstrap, we only fill them-->
-                    <div class="card hotel-card h-100">
-                        <a href="detalle-hotel.html">
-                            <!--One container per photo-->
-                            <div class="hotel-img-container">
-                                <!--The photo of the hotel -->
-                                <img src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-                                    alt="Eco Tech Lodge">
-                            </div>
-                        </a>
-                        <!--The body of the card, we define price, description and location -->
-                        <div class="card-body d-flex flex-column">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h5 class="card-title mb-0">Eco Tech Lodge</h5>
-                                <div class="small text-warning">
-                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star"></i><i class="fas fa-star"></i>
-                                </div>
-                            </div>
-                            <p class="card-text text-muted small mb-3">
-                                <i class="fas fa-map-marker-alt text-orange me-1"></i> Málaga, Montaña
-                            </p>
-                            <p class="card-text flex-grow-1">Sostenibilidad y tecnología. Monitorización de consumo
-                                energético en tiempo real.</p>
-
-                            <hr class="divider my-3 mx-0" style="max-width: 100%;">
-
-                            <div class="d-flex justify-content-between align-items-center mt-auto">
-                                <span class="price-tag">140€ <span
-                                        class="fs-6 text-muted fw-normal">/noche</span></span>
-                                <a href="detalle-hotel.html" class="btn btn-primary btn-xl py-2 px-4 fs-6">Ver Hotel</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!--Defining the columns-->
-                <div class="col-md-6 col-lg-4">
-                    <!--The cards are defined in Bootstrap, we only fill them-->
-                    <div class="card hotel-card h-100">
-                        <a href="detalle-hotel.html">
-                            <!--One container per photo-->
-                            <div class="hotel-img-container">
-                                <!--The photo of the hotel -->
-                                <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-                                    alt="Blue Horizon">
-                            </div>
-                        </a>
-                        <!--The body of the card, we define price, description and location -->
-                        <div class="card-body d-flex flex-column">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h5 class="card-title mb-0">Blue Horizon</h5>
-                                <div class="small text-warning">
-                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star"></i>
-                                </div>
-                            </div>
-                            <p class="card-text text-muted small mb-3">
-                                <i class="fas fa-map-marker-alt text-orange me-1"></i> Ibiza, Playa
-                            </p>
-                            <p class="card-text flex-grow-1">Vistas al mar con control de persianas y temperatura desde
-                                app móvil.</p>
-
-                            <hr class="divider my-3 mx-0" style="max-width: 100%;">
-
-                            <div class="d-flex justify-content-between align-items-center mt-auto">
-                                <span class="price-tag">250€ <span
-                                        class="fs-6 text-muted fw-normal">/noche</span></span>
-                                <a href="detalle-hotel.html" class="btn btn-primary btn-xl py-2 px-4 fs-6">Ver Hotel</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!--Defining the columns-->
-                <div class="col-md-6 col-lg-4">
-                    <!--The cards are defined in Bootstrap, we only fill them-->
-                    <div class="card hotel-card h-100">
-                        <a href="detalle-hotel.html">
-                            <!--One container per photo-->
-                            <div class="hotel-img-container">
-                                <!--The photo of the hotel -->
-                                <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-                                    alt="Minimalist Pods">
-                            </div>
-                        </a>
-                        <!--The body of the card, we define price, description and location -->
-                        <div class="card-body d-flex flex-column">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h5 class="card-title mb-0">Minimalist Pods</h5>
-                                <div class="small text-warning">
-                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                                </div>
-                            </div>
-                            <p class="card-text text-muted small mb-3">
-                                <i class="fas fa-map-marker-alt text-orange me-1"></i> Bilbao, Centro
-                            </p>
-                            <p class="card-text flex-grow-1">Cápsulas de descanso de alta tecnología para viajeros
-                                eficientes.</p>
-
-                            <hr class="divider my-3 mx-0" style="max-width: 100%;">
-
-                            <div class="d-flex justify-content-between align-items-center mt-auto">
-                                <span class="price-tag">55€ <span class="fs-6 text-muted fw-normal">/noche</span></span>
-                                <a href="detalle-hotel.html" class="btn btn-primary btn-xl py-2 px-4 fs-6">Ver Hotel</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {{/hotels}}
 
             </div>
+            
+            {{#hasHotels}}
             <div class="row mt-5">
                 <div class="col-12 text-center">
-                    <!--If we had more hotels, wen pressing this botton they would be charged-->
-                    <button class="btn btn-primary btn-xl">Cargar más hoteles</button>
+                    <button class="btn btn-outline-dark btn-xl">Cargar más hoteles</button>
                 </div>
             </div>
+            {{/hasHotels}}
 
         </div>
     </section>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
 {{>footer}}

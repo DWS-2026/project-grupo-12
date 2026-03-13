@@ -50,6 +50,9 @@ List<Hotel> hotelsList;
         }
 
         model.addAttribute("hotels", hotelsList);
+
+        model.addAttribute("hasHotels", !hotelsList.isEmpty());
+        
         return "HotelList"; 
     }
 
