@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import es.codeurjc.web.model.Hotel;
 import es.codeurjc.web.model.User;
 import es.codeurjc.web.model.Reserve;
-import es.codeurjc.web.repository.ReserveRepository;
 import es.codeurjc.web.service.HotelService;
+import es.codeurjc.web.service.ReserveService;
 import es.codeurjc.web.service.UserService;
 import es.codeurjc.web.service.UserSession;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,7 +27,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class ReserveController {
 
         @Autowired
-    private ReserveRepository reserveRepository;
+    private ReserveService reserveService;
 
     @Autowired
     private HotelService hotelService;
@@ -60,22 +60,12 @@ public class ReserveController {
             return "redirect:/hotel/" + hotelId; 
         }
 
-
         //We search for the Hotel and the User in the database
         Hotel hotel = hotelService.getHotelById(hotelId).orElseThrow();
         User customer = userService.findById(userSession.getIdUser()).orElseThrow();
 
-        //We use ChronoUnit to calculate the nights between dates and calculate the price
-        long nights = ChronoUnit.DAYS.between(entryDate, departureDate);
-        if (nights <= 0) nights = 1; 
-        double totalPrice = nights * hotel.getPrice();
-
-        //We created the draft of the reservation using the constructor
-        Reserve pendingReserve = new Reserve(hotel, customer, totalPrice, guests, entryDate, departureDate);
-        pendingReserve.setStatus("PENDIENTE");
-        
-        //We saved the reserve in the database;
-        reserveRepository.save(pendingReserve);
+        //We called the service, which created the pending reservation by calculating the number of nights and the total price.
+        Reserve pendingReserve = reserveService.createPendingReserve(hotel, customer, entryDate, departureDate, guests);
 
         // We passed the data to the view (including the ID of this draft)
         model.addAttribute("reserveId", pendingReserve.getId());
@@ -83,8 +73,8 @@ public class ReserveController {
         model.addAttribute("entryDate", entryDate);
         model.addAttribute("departureDate", departureDate);
         model.addAttribute("guests", guests);
-        model.addAttribute("nights", nights);
-        model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("nights", pendingReserve.getNights());
+        model.addAttribute("totalPrice", pendingReserve.getPrice());
 
         return "reserve";
     }
@@ -98,7 +88,7 @@ public class ReserveController {
         }
 
         // We are looking for the pending reservation using your ID.
-        Reserve reserve = reserveRepository.findById(reserveId).orElseThrow();
+        Reserve reserve = reserveService.getReserveById(reserveId).orElseThrow();
 
         // Protection against IDOR
         // We compare the reservation owner's ID with the logged-in user's ID
@@ -106,12 +96,9 @@ public class ReserveController {
             //If you try to modify a reservation that is not yours, we will send you back to the beginning.
             return "redirect:/"; 
         }
-
-        // We changed its status to confirmed
-        reserve.setStatus("CONFIRMADA");
         
-        // We save again to update it
-        reserveRepository.save(reserve);
+        // We called the service to change the reservation status to "CONFIRMED" and store it in the database.
+        reserveService.saveConfirmedReserve(reserve);
 
         return "redirect:/profile"; 
     }

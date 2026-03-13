@@ -27,6 +27,7 @@ public class Reserve {
     private int guests;
     private LocalDate entryDate;
     private LocalDate departureDate;
+    private long nights;
 
     //We have a status to save reservation data in the database
     //such as "Pending_confirmation" or "CONFIRMED" so that no one can modify the data.
@@ -38,13 +39,14 @@ public class Reserve {
     private List<String> extras = new ArrayList<>();
 
     //Reserve constructor
-    public Reserve(Hotel hotel, User customer, double price, int guests, LocalDate entryDate, LocalDate departureDate) {
+    public Reserve(Hotel hotel, User customer, double price, int guests, LocalDate entryDate, LocalDate departureDate, long nights) {
         this.hotel = hotel;
         this.customer = customer;
         this.price = price;
         this.guests = guests;
         this.entryDate = entryDate;
         this.departureDate = departureDate;
+        this.nights = nights;
     }
 
     //Empty constructor for JPA
@@ -118,4 +120,13 @@ public class Reserve {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public long getNights(){
+        return nights;
+    }
+
+    public void setNights(long nights){
+        this.nights = nights;
+    }
+
 }

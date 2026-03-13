@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import es.codeurjc.web.model.Hotel;
 import es.codeurjc.web.model.Review;
 import es.codeurjc.web.model.User;
-import es.codeurjc.web.repository.ReviewRepository;
+import es.codeurjc.web.service.ReviewService;
 import es.codeurjc.web.service.HotelService;
 import es.codeurjc.web.service.UserService;
 import es.codeurjc.web.service.UserSession;
@@ -19,7 +19,7 @@ import es.codeurjc.web.service.UserSession;
 public class ReviewController {
 
     @Autowired
-    private ReviewRepository reviewRepository;
+    private ReviewService reviewService;
 
     @Autowired
     private HotelService hotelService;
@@ -45,13 +45,10 @@ public class ReviewController {
         Hotel hotel = hotelService.getHotelById(id).orElseThrow();
         User author = userService.findById(userSession.getIdUser()).orElseThrow();
 
-        //We created the new Review using the constructor
-        Review review = new Review(rating, title, comment, author, hotel);
-
-        //We saved the review in the database; the publishDate will be automatically added thanks to @PrePersist.
-        reviewRepository.save(review);
+        //We created and saved the review in the database
+        reviewService.createReview(rating, title, comment, author, hotel);
         
-    return "redirect:/hotel/" + id; // Recargamos la página del hotel
+    return "redirect:/hotel/" + id; // We reloaded the hotel page
     }
 
     

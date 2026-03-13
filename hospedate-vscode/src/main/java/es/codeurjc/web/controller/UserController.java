@@ -12,8 +12,8 @@ import es.codeurjc.web.model.Image;
 import es.codeurjc.web.model.Reserve;
 import es.codeurjc.web.model.Review;
 import es.codeurjc.web.model.User;
-import es.codeurjc.web.repository.ReserveRepository;
-import es.codeurjc.web.repository.ReviewRepository;
+import es.codeurjc.web.service.ReserveService;
+import es.codeurjc.web.service.ReviewService;
 import es.codeurjc.web.service.ImageService;
 import es.codeurjc.web.service.UserService;
 import es.codeurjc.web.service.UserSession;
@@ -38,9 +38,9 @@ public class UserController {
     //y no se haría con una carpeta dentro del proyecto.
 
     @Autowired
-    private ReviewRepository reviewRepository; 
+    private ReviewService reviewService; 
     @Autowired
-    private ReserveRepository reserveRepository; 
+    private ReserveService reserveService; 
 
     @Autowired
     private ImageService imageService; 
@@ -70,11 +70,11 @@ public class UserController {
         model.addAttribute("email", user.getEmail());       
 
         //SELECT * FROM review WHERE author_id = ?
-        List<Review> userReviews = reviewRepository.findByAuthorId(userId);
+        List<Review> userReviews = reviewService.getReviewsByAuthorId(userId);
         model.addAttribute("reviews", userReviews);
 
         //SELECT * FROM reserve WHERE customer_id = ?
-        List<Reserve> userReserves = reserveRepository.findByCustomerId(userId);
+        List<Reserve> userReserves = reserveService.getReservesByCustomerId(userId);
         model.addAttribute("reserves", userReserves);
 
         return "profile"; 
