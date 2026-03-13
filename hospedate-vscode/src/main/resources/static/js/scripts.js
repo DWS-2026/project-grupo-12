@@ -112,6 +112,7 @@ function openGallery(clickedImage) {
     // Show the modal
     const myModal = new bootstrap.Modal(document.getElementById('modalGallery'));
     myModal.show();
+    }
 
     //Function to avoid missed days in the hotel calendar
     window.addEventListener('DOMContentLoaded', event => {
@@ -146,7 +147,6 @@ function openGallery(clickedImage) {
             });
         }
     });
-}
 
 
 

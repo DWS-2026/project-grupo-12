@@ -13,9 +13,15 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto my-2 my-lg-0">
                     <li class="nav-item"><a class="nav-link" href="#services">Servicios</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/profile">Perfil</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contáctanos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/hotels">Más Hoteles</a></li>
+                    <!-- If you are not logged in, "Iniciar Sesión" will appear.-->
+                    {{^logged}}
                     <li class="nav-item"><a class="nav-link" href="/login">Iniciar Sesión</a></li>
+                    {{/logged}}
+                    <!-- If you are logged in, "Mi Perfil" will appear-->
+                    {{#logged}}
+                    <li class="nav-item"><a class="nav-link" href="/profile">Mi Perfil</a></li>
+                    {{/logged}}
                 </ul>
             </div>
         </div>
@@ -128,7 +134,7 @@
                     </p>
 
                     <!--Creation of the space that will be filled with the services avai-->
-                    <h3 class="h4 mb-3">Servicios disponibles</h3>
+                    <h3 class="h4 mb-3" id="services">Servicios disponibles</h3>
                     <div class="row">
                         {{#hotel.services}}
                         <div class="col-md-6 mb-2">

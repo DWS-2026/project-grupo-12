@@ -150,4 +150,13 @@ public class Hotel{
     public void setRating(double rating) {
         this.rating = rating;
     }
+
+    // Method to return the first photo in the gallery list
+    public String getMainImage() {
+        if (this.galeria != null && !this.galeria.isEmpty()) {
+            return this.galeria.get(0); // Return the first photo on the list
+        }
+        // It returns a default image in case a hotel doesn't have photos.
+        return "/assets/img/portfolio/hoteles/default.jpg"; 
+    }
 }

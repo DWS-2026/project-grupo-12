@@ -18,11 +18,11 @@ public class GlobalControllerAdvice {
     public void addGlobalAttributes(Model model, HttpServletRequest request) {
         String currentRoute = request.getRequestURI(); 
 
-        // 1. PASAMOS LA SESIÓN A TODA LA WEB (Para que funcione la Navbar siempre)
+        // Centralized session management
         model.addAttribute("logged", userSession.isLogged());
-        model.addAttribute("isAdmin", userSession.isAdmin()); // Lo traemos del AdminController
+        model.addAttribute("isAdmin", userSession.isAdmin());
 
-        // 2. MANEJO DE TÍTULOS CENTRALIZADO
+        // Centralized title and metadata management
         if (currentRoute.startsWith("/error")) {
             model.addAttribute("tab_title", "Error - Hospédate");
             model.addAttribute("metadata_content", "Página no encontrada o error en Hospédate.");
@@ -39,7 +39,7 @@ public class GlobalControllerAdvice {
             model.addAttribute("tab_title", "Administración - Hospédate");
             model.addAttribute("metadata_content", "Página de administración.");
         } else {
-            // Rutas normales de usuario
+            // Normal user routes
             switch (currentRoute) {
                 case "/":
                     model.addAttribute("tab_title", "Inicio - Hospédate");
@@ -71,7 +71,7 @@ public class GlobalControllerAdvice {
                     break;
             }
         }
-        // 3. Pasamos la sesión a Mustache para que funcione el Navbar en todas las páginas
+        // We transferred the session to Mustache so that the Navbar works on all pages
         model.addAttribute("logged", userSession.isLogged());
     }
 }
