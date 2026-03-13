@@ -52,6 +52,15 @@ public class ReserveController {
             return "redirect:/login";
         }
 
+        //Logic for not being able to choose to book on the same day or in the past
+        LocalDate today = LocalDate.now();
+        // If the entry is in the past, OR the exit is before the entry, OR they are on the same day
+        if (entryDate.isBefore(today) || departureDate.isBefore(entryDate) || entryDate.isEqual(departureDate)) {
+            // We return the user to the hotel page
+            return "redirect:/hotel/" + hotelId; 
+        }
+
+
         //We search for the Hotel and the User in the database
         Hotel hotel = hotelService.getHotelById(hotelId).orElseThrow();
         User customer = userService.findById(userSession.getIdUser()).orElseThrow();

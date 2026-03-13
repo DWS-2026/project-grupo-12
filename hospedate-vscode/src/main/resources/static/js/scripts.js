@@ -112,6 +112,40 @@ function openGallery(clickedImage) {
     // Show the modal
     const myModal = new bootstrap.Modal(document.getElementById('modalGallery'));
     myModal.show();
+
+    //Function to avoid missed days in the hotel calendar
+    window.addEventListener('DOMContentLoaded', event => {
+        
+        const entryInput = document.getElementById('entryDate');
+        const departureInput = document.getElementById('departureDate');
+
+        // We check if we are on the hotel page by checking if the inputs are present
+        if (entryInput && departureInput) {
+            
+            // The entry date cannot be earlier than today.
+            const today = new Date().toISOString().split('T')[0];
+            entryInput.setAttribute('min', today);
+
+            // 2. When the user selects an entry date...
+            entryInput.addEventListener('change', function() {
+                if(this.value) {
+                    // We calculate that the departure date must be at least 1 day after the entry date
+                    let minDeparture = new Date(this.value);
+                    minDeparture.setDate(minDeparture.getDate() + 1);
+                    
+                    let minDepartureStr = minDeparture.toISOString().split('T')[0];
+                    
+                    // We update the minimum date for the departure calendar
+                    departureInput.setAttribute('min', minDepartureStr);
+                    
+                    // If the user had already set a departure date earlier than the new rule, we clear it
+                    if(departureInput.value && departureInput.value < minDepartureStr) {
+                        departureInput.value = '';
+                    }
+                }
+            });
+        }
+    });
 }
 
 
