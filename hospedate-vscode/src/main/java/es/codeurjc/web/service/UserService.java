@@ -22,7 +22,7 @@ public class UserService {
             return checkUser; 
         }
 
-        return checkUser; //return optional if does not match or with the user if exists and password is correct 
+        return Optional.empty(); //return optional if does not match or with the user if exists and password is correct 
     }
 
     public User registerUser(String name, String email, String password) {
