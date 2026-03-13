@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.Optional;
 
 @Controller
@@ -76,7 +77,7 @@ public class AdminController {
             @RequestParam String description,
             @RequestParam double rating,
             @RequestParam(required = false, defaultValue = "") String galeriaRaw,
-            @RequestParam(required = false) List <String> services) {
+            @RequestParam(required = false) Set<String> services) {
 
         Hotel hotel = new Hotel();
         hotel.setId(id); // If its null we create hotel, if not we edit the hotel
