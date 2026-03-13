@@ -162,9 +162,11 @@ public class UserController {
         //modify the logged container with the new information
         user.setName(username);
         user.setEmail(email);
-        userService.updateUser(user);
-
+        
+        userService.updateUser(user); //modify the user in database 
+        
         userSession.modifySessionInfo(user); //update session info with new username and profile picture
+
         return "redirect:/profile";
     }
 

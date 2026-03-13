@@ -40,4 +40,9 @@ public class ImageService {
             throw new RuntimeException("Image file not found"); 
         }
     }
+
+    public void deleteImage(long id) {
+        imageRepository.deleteById(id);
+    }
+    
 }
