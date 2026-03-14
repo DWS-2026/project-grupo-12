@@ -141,7 +141,8 @@ public class UserController {
     public String updateProfile(
             @RequestParam String username,
             @RequestParam String email,
-            @RequestParam("photo") MultipartFile photo) throws Exception {
+            @RequestParam("photo") MultipartFile photo,
+            Model model) throws Exception {
         
         //to prevent not logged users from accessing profile page    
         if (!userSession.isLogged()) {
@@ -156,10 +157,15 @@ public class UserController {
         }
 
         User user = userOp.get(); //get the logged user 
-
-        if (!photo.isEmpty()) { //if the user is uploading a photo, we change it 
-            Image newImage = imageService.createImage(photo);
-            user.setProfileImage(newImage);
+        //if the user is uploading a photo and its format is correct, we create a new image
+        if (!photo.isEmpty()) { //if the user is uploading a photo, we change it
+            if ((photo.getContentType().equals("image/jpeg") || photo.getContentType().equals("image/png"))) {
+                Image newImage = imageService.createImage(photo);
+                user.setProfileImage(newImage);
+            } else {
+                model.addAttribute("errorMessage", "Solo se permiten imágenes en formato JPG o PNG");
+                return "profile";
+            }
         }
         //modify the logged container with the new information
         user.setName(username);
