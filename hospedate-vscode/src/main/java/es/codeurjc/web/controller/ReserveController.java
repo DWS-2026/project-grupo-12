@@ -68,6 +68,14 @@ public class ReserveController {
         Reserve pendingReserve = reserveService.createPendingReserve(hotel, customer, entryDate, departureDate, guests);
 
         // We passed the data to the view (including the ID of this draft)
+        String mImage = hotel.getMainImage();
+
+        //if not starts with slash, we add it
+        if (mImage.startsWith("/")) {
+            mImage = mImage.substring(1); 
+        }
+        model.addAttribute("mainImage", "/" + mImage);
+
         model.addAttribute("reserveId", pendingReserve.getId());
         model.addAttribute("hotel", hotel); 
         model.addAttribute("entryDate", entryDate);

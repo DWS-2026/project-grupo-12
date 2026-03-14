@@ -59,10 +59,17 @@
                                             <i class="bi bi-clock-history me-1"></i>Salida: {{departureDate}}
                                         </small>
                                         <small class="text-muted d-block">
-                                            <i class="bi bi-info-circle me-1"></i>Estado: {{status}}
+                                            <i class="bi bi-clock-history me-1"></i>Estado: {{status}}
                                         </small>
                                     </div>
                                     <p class="text-dark small mt-2 mb-0">{{guests}} personas</p>
+                                    {{#pending}}
+                                    <div class="mt-3 text-end">
+                                        <a href="/reserve/resume/{{id}}" class="btn btn-sm btn-outline-warning rounded-pill shadow-sm">
+                                            <i class="bi bi-arrow-right-circle me-1"></i> Terminar Reserva
+                                        </a>
+                                    </div>
+                                    {{/pending}}
                                 </div>
                                 {{/reserves}}
                                 {{^reserves}}

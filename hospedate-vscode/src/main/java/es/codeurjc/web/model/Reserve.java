@@ -16,24 +16,21 @@ public class Reserve {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     @ManyToOne
     private Hotel hotel;    //Many reservations belong to a single hotel
-
     @ManyToOne
     private User customer;  //Many reservations belong to a single customer
-
     private double price;
     private int guests;
     private LocalDate entryDate;
     private LocalDate departureDate;
     private long nights;
+    //private String location; -> FUTURO CAMBIO: PARA AÑADIR LA LOCALIZACION DEL HOTEL EN LA RESERVA YA QUE SE MUESTRA EN EL HTML
 
     //We have a status to save reservation data in the database
     //such as "Pending_confirmation" or "CONFIRMED" so that no one can modify the data.
     private String status; 
 
-    
 
     @ElementCollection
     private List<String> extras = new ArrayList<>();
@@ -127,6 +124,11 @@ public class Reserve {
 
     public void setNights(long nights){
         this.nights = nights;
+    }
+
+    //used in profile to finish pending reservations
+    public boolean isPending() {
+    return "PENDIENTE".equals(this.status);
     }
 
 }

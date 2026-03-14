@@ -4,10 +4,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import es.codeurjc.web.model.Hotel;
 import es.codeurjc.web.model.Image;
 import es.codeurjc.web.model.Reserve;
 import es.codeurjc.web.model.Review;
@@ -25,9 +27,11 @@ import org.springframework.http.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.sql.SQLException;
+import java.time.temporal.ChronoUnit;
 
 
 
@@ -36,7 +40,7 @@ public class UserController {
 
     @Autowired
     private ReviewService reviewService; 
-    
+
     @Autowired
     private ReserveService reserveService; 
 
@@ -69,12 +73,12 @@ public class UserController {
 
         //SELECT * FROM review WHERE author_id = ?
         List<Review> userReviews = reviewService.getReviewsByAuthorId(userId);
-        model.addAttribute("reviews", userReviews);
+        model.addAttribute("reviews", userReviews); 
 
         //SELECT * FROM reserve WHERE customer_id = ?
         List<Reserve> userReserves = reserveService.getReservesByCustomerId(userId);
         model.addAttribute("reserves", userReserves);
-
+ 
         return "profile"; 
     }
 
@@ -192,6 +196,52 @@ public class UserController {
         }
 
         return ResponseEntity.notFound().build();
+    }
+
+    //method to resume a pending reservation, we check that the reservation belongs to the user and that is still pending
+    @GetMapping("/reserve/resume/{id}")
+    public String resumeReserve(@PathVariable Long id, Model model) {
+        ///check session
+        if (!userSession.isLogged()) {
+            return "redirect:/login";
+        }
+        //get reserve from database from the id recived
+        Reserve pendingReserve = reserveService.getReserveById(id).orElse(null);
+
+        if (pendingReserve == null) {
+            return "redirect:/profile";
+        }
+        //check that the reserve belongs to the user and that is still pending
+        if (!pendingReserve.getCustomer().getId().equals(userSession.getIdUser()) || 
+            !pendingReserve.getStatus().equals("PENDIENTE")) {
+            return "redirect:/profile";
+        }
+
+        //get the hotel from the pending reserve
+        Hotel hotel = pendingReserve.getHotel();
+        model.addAttribute("hotel", hotel);
+
+        //get the image path from the main hotel image to display it
+        String mImage = hotel.getMainImage();
+        //if not starts with slash, we add it
+        if (mImage.startsWith("/")) {
+            mImage = mImage.substring(1); 
+        }
+        model.addAttribute("mainImage", "/" + mImage);
+
+        //add the rest of the information (CREO QUE SOBRAN ATRIBUTOS)
+        model.addAttribute("reserveId", pendingReserve.getId());
+        model.addAttribute("entryDate", pendingReserve.getEntryDate());
+        model.addAttribute("departureDate", pendingReserve.getDepartureDate());
+        model.addAttribute("guests", pendingReserve.getGuests());
+        
+        long nights = java.time.temporal.ChronoUnit.DAYS.between(pendingReserve.getEntryDate(), pendingReserve.getDepartureDate());
+        if (nights <= 0) nights = 1;
+        
+        model.addAttribute("nights", nights);
+        model.addAttribute("totalPrice", pendingReserve.getPrice());
+
+        return "reserve";
     }
 
 }
