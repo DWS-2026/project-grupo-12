@@ -11193,41 +11193,52 @@ top: 100px; /* stick when going down */
     height: 46px;
     padding: 0 10px;
 }
-.rate:not(:checked) > input {
-    position:absolute;
-    top:-9999px;
+
+
+.rate > input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+    pointer-events: none;
 }
+
 /* We create the visual stars */
 .rate:not(:checked) > label {
-    float:right;
-    width:1em;
-    overflow:hidden;
-    white-space:nowrap;
-    cursor:pointer;
-    font-size:30px;
-    color:#ccc; /* Gray */
+    float: right;
+    width: 1em;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 30px;
+    color: #ccc; /* Gray */
 }
-/* Usamos el símbolo de estrella */
+
+/* star symbol */
 .rate:not(:checked) > label:before {
     content: '★ ';
 }
-/* Color naranja al hacer check o hover */
+
+/* orange colours on selection and hover */
 .rate > input:checked ~ label {
     color: #f4623a;    
 }
+
 .rate:not(:checked) > label:hover,
 .rate:not(:checked) > label:hover ~ label {
     color: #f4623a;  
 }
+
 .rate > input:checked + label:hover,
 .rate > input:checked + label:hover ~ label,
 .rate > input:checked ~ label:hover,
 .rate > input:checked ~ label:hover ~ label,
 .rate > label:hover ~ input:checked ~ label {
-    color: #cf5331; /* Un naranja un poco más oscuro al pasar por encima de una seleccionada */
+    color: #cf5331; /* darker orange while hovering */
 }
 
-/* Limpiar el float del sistema de estrellas para que no rompa el layout */
+
 .rate::after {
     content: "";
     display: block;

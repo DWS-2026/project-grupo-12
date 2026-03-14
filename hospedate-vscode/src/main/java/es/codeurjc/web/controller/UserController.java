@@ -34,11 +34,9 @@ import java.sql.SQLException;
 @Controller
 public class UserController {
 
-    //Path de las imagenes de perfil en el disco duro. En un proyecto real, esto se configuraría por base de datos
-    //y no se haría con una carpeta dentro del proyecto.
-
     @Autowired
     private ReviewService reviewService; 
+    
     @Autowired
     private ReserveService reserveService; 
 
