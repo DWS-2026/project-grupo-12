@@ -1,6 +1,7 @@
 package es.codeurjc.web.controller;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -110,5 +111,71 @@ public class ReserveController {
 
         return "redirect:/profile"; 
     }
+
+    @PostMapping("/reserve/delete/{id}")
+    public String deleteReserve(@PathVariable Long id) {
+        
+        // If the user is not logged in, redirect to the login page
+        if(!userSession.isLogged()){
+            return "redirect:/login"; 
+        }
+
+        Reserve reserve = reserveService.getReserveById(id).orElseThrow();
+        
+        // Protection against IDOR
+        // We compare the reservation owner's ID with the logged-in user's ID
+        if (!reserve.getCustomer().getId().equals(userSession.getIdUser())) {
+            //If you try to modify a reservation that is not yours, we will send you back to the beginning.
+             return "redirect:/"; 
+        }
+
+        reserveService.deleteReserve(id);
+        
+        return "redirect:/profile";
+    }
    
+     //method to resume a pending reservation, we check that the reservation belongs to the user and that is still pending
+    @GetMapping("/reserve/resume/{id}")
+    public String resumeReserve(@PathVariable Long id, Model model) {
+        ///check session
+        if (!userSession.isLogged()) {
+            return "redirect:/login";
+        }
+        //get reserve from database from the id received
+        Reserve pendingReserve = reserveService.getReserveById(id).orElseThrow();
+
+        if (pendingReserve == null) {
+            return "redirect:/profile";
+        }
+        //check that the reserve belongs to the user and that is still pending
+        if (!pendingReserve.getCustomer().getId().equals(userSession.getIdUser()) || 
+            !pendingReserve.isPending()) {
+            return "redirect:/profile";
+        }
+
+        //get the hotel from the pending reserve
+        Hotel hotel = pendingReserve.getHotel();
+
+
+        //get the image path from the main hotel image to display it
+        String mImage = hotel.getMainImage();
+        //if not starts with slash, we add it
+        if (!mImage.startsWith("/")) {
+            mImage = "/" + mImage; 
+        }
+        
+
+        //add the rest of the information
+        model.addAttribute("hotel", hotel);
+        model.addAttribute("mainImage", mImage);
+        model.addAttribute("reserveId", pendingReserve.getId());
+        model.addAttribute("entryDate", pendingReserve.getEntryDate());
+        model.addAttribute("departureDate", pendingReserve.getDepartureDate());
+        model.addAttribute("guests", pendingReserve.getGuests());
+        model.addAttribute("nights", pendingReserve.getNights());
+        model.addAttribute("totalPrice", pendingReserve.getPrice());
+
+        return "reserve";
+    }
+
 }

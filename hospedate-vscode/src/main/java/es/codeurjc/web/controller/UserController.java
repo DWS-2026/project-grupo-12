@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.sql.SQLException;
-import java.time.temporal.ChronoUnit;
+
 
 
 
@@ -202,52 +202,6 @@ public class UserController {
         }
 
         return ResponseEntity.notFound().build();
-    }
-
-    //method to resume a pending reservation, we check that the reservation belongs to the user and that is still pending
-    @GetMapping("/reserve/resume/{id}")
-    public String resumeReserve(@PathVariable Long id, Model model) {
-        ///check session
-        if (!userSession.isLogged()) {
-            return "redirect:/login";
-        }
-        //get reserve from database from the id recived
-        Reserve pendingReserve = reserveService.getReserveById(id).orElse(null);
-
-        if (pendingReserve == null) {
-            return "redirect:/profile";
-        }
-        //check that the reserve belongs to the user and that is still pending
-        if (!pendingReserve.getCustomer().getId().equals(userSession.getIdUser()) || 
-            !pendingReserve.getStatus().equals("PENDIENTE")) {
-            return "redirect:/profile";
-        }
-
-        //get the hotel from the pending reserve
-        Hotel hotel = pendingReserve.getHotel();
-        model.addAttribute("hotel", hotel);
-
-        //get the image path from the main hotel image to display it
-        String mImage = hotel.getMainImage();
-        //if not starts with slash, we add it
-        if (mImage.startsWith("/")) {
-            mImage = mImage.substring(1); 
-        }
-        model.addAttribute("mainImage", "/" + mImage);
-
-        //add the rest of the information (CREO QUE SOBRAN ATRIBUTOS)
-        model.addAttribute("reserveId", pendingReserve.getId());
-        model.addAttribute("entryDate", pendingReserve.getEntryDate());
-        model.addAttribute("departureDate", pendingReserve.getDepartureDate());
-        model.addAttribute("guests", pendingReserve.getGuests());
-        
-        long nights = java.time.temporal.ChronoUnit.DAYS.between(pendingReserve.getEntryDate(), pendingReserve.getDepartureDate());
-        if (nights <= 0) nights = 1;
-        
-        model.addAttribute("nights", nights);
-        model.addAttribute("totalPrice", pendingReserve.getPrice());
-
-        return "reserve";
     }
 
 }

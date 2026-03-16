@@ -1,4 +1,6 @@
 package es.codeurjc.web.controller;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,5 +53,24 @@ public class ReviewController {
     return "redirect:/hotel/" + id; // We reloaded the hotel page
     }
 
+    @PostMapping("/review/delete/{id}")
+    public String deleteReview(@PathVariable long id){
+        // If the user is not logged in, redirect to the login page
+        if(!userSession.isLogged()){
+            return "redirect:/login"; 
+        }
+
+        Review review = reviewService.getReviewById(id).orElseThrow();
+
+        // Protection against IDOR
+        // We compare the review owner's ID with the logged-in user's ID
+        if (!review.getAuthor().getId().equals(userSession.getIdUser())) {
+                return "redirect:/";
+            }
+        
+            reviewService.deleteReview(id);
+
+        return "redirect:/profile";
+    }
     
 }

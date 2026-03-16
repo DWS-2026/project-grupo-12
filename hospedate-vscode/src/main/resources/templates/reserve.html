@@ -23,9 +23,8 @@
                         <!-- Hotel information-->
                         <div class="card-body p-4">
                             <!-- Name and address of the hotel-->
-                            <h2 class="h3 fw-bold text-primary mb-2">Hotel Riu Plaza España</h2>
-                            <p class="text-muted small"><i class="bi bi-geo-alt-fill me-2"></i>Calle Gran Vía, 84,
-                                Madrid</p>
+                            <h2 class="h3 fw-bold text-primary mb-2">{{hotel.name}}</h2>
+                            <p class="text-muted small"><i class="bi bi-geo-alt-fill me-2"></i>{{hotel.location}}</p>
                             <!-- Divider bar-->
                             <hr class="divider ms-0 mb-4">
                             <!-- Service details-->
@@ -38,6 +37,17 @@
                                 <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Cancelación
                                     gratuita</li>
                             </ul>
+                            <!-- Provisional dynamic services list 
+                            <ul class="list-unstyled small">
+                                {{#hotel.services}}
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> {{this}}</li>
+                                {{/hotel.services}}
+                                
+                                {{^hotel.services}}
+                                <li class="mb-2"><i class="bi bi-info-circle text-primary me-2"></i> Servicios estándar del alojamiento</li>
+                                {{/hotel.services}}
+                            </ul>
+                            -->
                             <!-- Price information-->
                             <div class="mt-4 p-3 bg-light rounded">
                                 <span class="h4 price-tag mb-0">Total: {{totalPrice}}€</span>

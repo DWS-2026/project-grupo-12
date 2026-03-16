@@ -18,9 +18,12 @@ public class ReserveService {
     @Autowired
     private ReserveRepository reserveRepository;
 
-    // Métodos básicos de búsqueda
     public Optional<Reserve> getReserveById(Long id) {
         return reserveRepository.findById(id);
+    }
+
+    public void deleteReserve(Long id) {
+        reserveRepository.deleteById(id);
     }
 
     public List<Reserve> getReservesByCustomerId(Long userId) {

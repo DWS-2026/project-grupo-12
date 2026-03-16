@@ -32,6 +32,13 @@
                                     <h6 class="fw-bold text-dark mt-2">{{title}}</h6>
                                     
                                     <p class="text-dark small mb-0">"{{comment}}"</p>
+                                    <div class="mt-2 text-end">
+                                        <form action="/review/delete/{{id}}" method="POST" class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger shadow-sm">
+                                                <i class="bi bi-trash"></i> Borrar
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                                 {{/reviews}}
                                 {{^reviews}}
@@ -53,26 +60,38 @@
                                             <a class="bi bi-calendar-check me-2 remove-hyperlink" href="/hotel/{{hotel.id}}"> {{hotel.name}}</a>
                                         </h5>
                                     </div>
-                                    <div class="mt-2">
-                                        <small class="text-muted d-block">
-                                            <i class="bi bi-clock me-1"></i>Entrada: {{entryDate}}
-                                        </small>
-                                        <small class="text-muted d-block">
-                                            <i class="bi bi-clock-history me-1"></i>Salida: {{departureDate}}
-                                        </small>
-                                        <small class="text-muted d-block">
-                                            <i class="bi bi-clock-history me-1"></i>Estado: {{status}}
-                                        </small>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center mt-2">
+                                        
+                                        <div>
+                                            <small class="text-muted d-block">
+                                                <i class="bi bi-clock me-1"></i>Entrada: {{entryDate}}
+                                            </small>
+                                            <small class="text-muted d-block">
+                                                <i class="bi bi-clock-history me-1"></i>Salida: {{departureDate}}
+                                            </small>
+                                            <small class="text-muted d-block mt-1">
+                                                <i class="bi bi-info-circle me-1"></i>Estado: <span class="fw-bold">{{status}}</span>
+                                            </small>
+                                            <p class="text-dark small mt-2 mb-0"><i class="bi bi-people me-1"></i>{{guests}} personas</p>
+                                        </div>
+                                        
+                                        <div class="d-flex flex-column gap-2 text-end">
+                                            
+                                            {{#pending}}
+                                            <a href="/reserve/resume/{{id}}" class="btn btn-sm btn-outline-warning rounded-pill shadow-sm">
+                                                <i class="bi bi-arrow-right-circle me-1"></i> Terminar Reserva
+                                            </a>
+                                            {{/pending}}
+                                            
+                                            <form action="/reserve/delete/{{id}}" method="POST" class="m-0">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill shadow-sm w-100">
+                                                    <i class="bi bi-trash me-1"></i> Cancelar Reserva
+                                                </button>
+                                            </form>
+                                            
+                                        </div>
                                     </div>
-                                    <p class="text-dark small mt-2 mb-0">{{guests}} personas</p>
-                                    <!-- If the reserve is pending, we show a button to finish it -->
-                                    {{#pending}}
-                                    <div class="mt-3 text-end">
-                                        <a href="/reserve/resume/{{id}}" class="btn btn-sm btn-outline-warning rounded-pill shadow-sm">
-                                            <i class="bi bi-arrow-right-circle me-1"></i> Terminar Reserva
-                                        </a>
-                                    </div>
-                                    {{/pending}}
                                 </div>
                                 {{/reserves}}
                                 {{^reserves}}
