@@ -255,13 +255,13 @@
                     <div class="card border-0 bg-light">
                         <div class="card-body p-0">
                             <h4 class="h5 mb-3">Deja tu reseña</h4>
-                            <form action="/hotel/{{hotel.id}}/review" method="POST">
+                            <form id="reviewForm" action="/hotel/{{hotel.id}}/review" method="POST">
                                 <div class="mb-3">
-                                    <label class="form-label small text-muted mb-1">Tu valoración</label>
+                                <div class="d-flex align-items-center">
 
                                     <!--Creation of the class rate to edit it in the styles.css-->
-                                    <div class="rate">
-                                        <input type="radio" id="star5" name="rating" value="5" />
+                                    <div class="rate ">
+                                        <input type="radio" id="star5" name="rating" value="5"  />
                                         <label for="star5" title="5 estrellas">5 stars</label>
                                         <input type="radio" id="star4" name="rating" value="4" />
                                         <label for="star4" title="4 estrellas">4 stars</label>
@@ -269,8 +269,14 @@
                                         <label for="star3" title="3 estrellas">3 stars</label>
                                         <input type="radio" id="star2" name="rating" value="2" />
                                         <label for="star2" title="2 estrellas">2 stars</label>
-                                        <input type="radio" id="star1" name="rating" value="1" />
+                                        <input type="radio" id="star1" name="rating" value="1"  />
                                         <label for="star1" title="1 estrella">1 star</label>
+                                    </div>
+                                    <label class="form-label small text-muted mb-0">Tu valoración</label>
+                                </div>
+                                    <div class="clearfix"></div>
+                                    <div id="ratingError" class="text-danger small mt-2 d-none fw-bold" style="clear: both; display: block;">
+                                        <i class="bi bi-exclamation-triangle-fill me-1"></i> ¡Por favor, selecciona cuántas estrellas le das al hotel!
                                     </div>
                                 </div>
 

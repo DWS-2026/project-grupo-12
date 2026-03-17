@@ -65,6 +65,35 @@ window.addEventListener('DOMContentLoaded', event => {
 
 });
 
+    // ============================================
+    // VALIDATION OF THE REVIEW FORM
+    // ============================================
+    const reviewForm = document.getElementById('reviewForm');
+    
+    if (reviewForm) {
+        reviewForm.addEventListener('submit', function(event) {
+            // We check if there are any selected stars
+            const ratingChecked = document.querySelector('input[name="rating"]:checked');
+            const ratingError = document.getElementById('ratingError');
+            
+            if (!ratingChecked) {
+                // If there are no selected stars, prevent form submission
+                event.preventDefault();
+                // Show the error message by removing the 'd-none' class
+                ratingError.classList.remove('d-none');
+            }
+        });
+        
+        // Hide the error as soon as the user clicks on a star
+        const ratingInputs = document.querySelectorAll('input[name="rating"]');
+        ratingInputs.forEach(input => {
+            input.addEventListener('change', () => {
+                document.getElementById('ratingError').classList.add('d-none');
+            });
+        });
+    }
+
+
     //Function to avoid missed days in the hotel calendar
     window.addEventListener('DOMContentLoaded', event => {
         
