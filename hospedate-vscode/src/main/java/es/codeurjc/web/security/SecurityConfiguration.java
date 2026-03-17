@@ -1,56 +1,92 @@
 package es.codeurjc.web.security;
 
-// Importaciones estándar de Spring
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-// Importaciones estrictas de Spring Security
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+//import the necessary classes to manage the user session and access the user data in the database
+import es.codeurjc.web.model.User;
+import es.codeurjc.web.repository.UserRepository;
+import es.codeurjc.web.service.UserSession;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-    //Inyect the service that implements UserDetailsService, we will use it in the authentication provider to load user data from the database
     @Autowired
     public RepositoryUserDetailsService userDetailService; 
 
+    @Autowired
+    private UserSession userSession;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-
-    //We create an authentication provider that uses our user details service and the password encoder, this will be used by Spring Security to 
-    //authenticate users
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        
         authProvider.setUserDetailsService(userDetailService); 
         authProvider.setPasswordEncoder(passwordEncoder()); 
-        
         return authProvider;
     }
 
-    
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         
         http.authenticationProvider(authenticationProvider());
         
-        http.authorizeHttpRequests(authorize -> authorize
-            .anyRequest().permitAll() 
-        );
+        http
+            .authorizeHttpRequests(authorize -> authorize
+            //public routes
+            .requestMatchers("/").permitAll()
+            .requestMatchers("/login").permitAll()
+            .requestMatchers("/register").permitAll()
+            .requestMatchers("/hotels").permitAll()
+            .requestMatchers("/hotel/**").permitAll() 
+            .requestMatchers("/assets/**", "/css/**", "/js/**").permitAll()
+            
+            //private routes
+            .requestMatchers("/admin/**").hasRole("ADMIN")    
+            .requestMatchers("/profile/**").hasAnyRole("USER")
+            .requestMatchers("/reserve/**").hasAnyRole("USER")
+            .requestMatchers("/review/delete/**").hasAnyRole("USER")
+
+            .anyRequest().authenticated()
+        )
         
+        .formLogin(formLogin -> formLogin
+            .loginPage("/login")
+            .usernameParameter("email") 
+            .failureUrl("/login?error=true")
+            //user session after successful login
+            .successHandler((request, response, authentication) -> {
+                String email = authentication.getName();
+                User user = userRepository.findByEmail(email).orElseThrow();
+                
+                //fill the user session with the logged user's data
+                userSession.modifySessionInfo(user);
+                response.sendRedirect("/profile");
+            })
+            .permitAll()
+    )
+    .logout(logout -> logout
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/")
+            .permitAll()
+    );
+    
         http.csrf(csrf -> csrf.disable());
-        
         return http.build(); 
     }
 }

@@ -82,9 +82,12 @@ public class UserController {
         return "profile"; 
     }
 
-    //obtain login page
     @GetMapping("/login")
-    public String login() {
+    public String login(@RequestParam(value = "error", required = false) String error, Model model) {
+        
+        if (error != null) { //error parametrer is added by spring security when login fails
+            model.addAttribute("attemptError", "Credenciales inválidas.");
+        }
         return "login"; 
     }
 
@@ -118,6 +121,7 @@ public class UserController {
     return "redirect:/"; 
     }
 
+    /* 
     //service uses the repository to check the database
     @PostMapping("/login")
     public String processLogin(@RequestParam String email, @RequestParam String password, Model model) {
@@ -133,6 +137,8 @@ public class UserController {
             return "login";
         }
     }
+*/
+
 
    
 
