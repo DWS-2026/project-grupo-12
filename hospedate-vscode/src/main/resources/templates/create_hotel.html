@@ -5,7 +5,7 @@
     <!--Logo with button to go backwards-->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3 navbar-shrink" id="mainNav">
         <div class="container px-4 px-lg-5">
-            <a class="navbar-brand fw-bold" href="/admin/hotels/new/">Hospédate</a>
+            <a class="navbar-brand fw-bold" href="/admin/hotels">Hospédate</a>
         </div>
     </nav>
 
@@ -17,40 +17,59 @@
                     <h2 class="text-center mt-0">Registrar Nuevo Hotel</h2>
                     <hr class="divider" /> 
                     <!--Creation of the form-->
-                    <form action="guardar_nuevo_hotel.php" method="POST" class="mt-4">
-                        
+                    <form action="/admin/hotels/save" method="POST" class="mt-4">
+
                         <div class="mb-4">
-                            <label for="hotelName" class="form-label fw-bold">Nombre del Hotel</label>
-                            <input type="text" class="form-control form-control-lg" id="hotelName" name="hotelName" placeholder="Ejemplo: Hotel Paraíso" required>
+                            <label for="name" class="form-label fw-bold">Nombre del Hotel</label>
+                            <input type="text" class="form-control form-control-lg" id="name" name="name" placeholder="Ejemplo: Hotel Paraíso" required>
                         </div>
 
                         <div class="mb-4">
-                            <label for="location" class="form-label fw-bold">Ubicación</label>
-                            <input type="text" class="form-control form-control-lg" id="location" name="location" placeholder="Ciudad, País" required>
+                            <label for="tipo" class="form-label fw-bold">Tipo de Hotel</label>
+                            <input type="text" class="form-control form-control-lg" id="tipo" name="tipo" placeholder="Ejemplo: Resort, Boutique, Urbano..." required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="city" class="form-label fw-bold">Ciudad</label>
+                            <input type="text" class="form-control form-control-lg" id="city" name="city" placeholder="Ejemplo: Madrid" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="location" class="form-label fw-bold">Ubicación (dirección)</label>
+                            <input type="text" class="form-control form-control-lg" id="location" name="location" placeholder="Ejemplo: Calle Gran Vía 1, Madrid" required>
                         </div>
 
                         <div class="mb-4">
                             <label for="price" class="form-label fw-bold">Precio por Noche (€)</label>
-                            <input type="number" class="form-control form-control-lg" id="price" name="price" step="0.01" min="0" placeholder="0.00">
+                            <input type="number" class="form-control form-control-lg" id="price" name="price" step="0.01" min="0" placeholder="0.00" required>
                         </div>
 
-                        <div class="mb-5">
+                        <div class="mb-4">
+                            <label for="rating" class="form-label fw-bold">Rating (0-5)</label>
+                            <input type="number" class="form-control form-control-lg" id="rating" name="rating" step="0.1" min="0" max="5" placeholder="0.0" required>
+                        </div>
+
+                        <div class="mb-4">
                             <label for="description" class="form-label fw-bold">Descripción</label>
                             <textarea class="form-control" id="description" name="description" rows="4" placeholder="Escribe aquí los servicios o detalles del hotel..."></textarea>
                         </div>
+
+                        <div class="mb-5">
+                            <label for="galeriaRaw" class="form-label fw-bold">Imágenes de galería (URLs separadas por comas)</label>
+                            <textarea class="form-control" id="galeriaRaw" name="galeriaRaw" rows="2" placeholder="/assets/img/hotel1.jpg, /assets/img/hotel2.jpg"></textarea>
+                        </div>
+
                         <div class="d-flex justify-content-center gap-3">
-                            <!--Button to save the form-->
                             <button type="submit" class="btn btn-primary btn-xl shadow">
                                 Guardar Hotel
                             </button>
-                            <!--Button to cancel the form and go backwards-->
-                            <a href="/admin/hotels/new/" class="btn btn-light btn-xl border">
+                            <a href="/admin/hotels" class="btn btn-light btn-xl border">
                                 Cancelar
                             </a>
                         </div>
 
                     </form>
-                    </div>
+                </div>
             </div>
         </div>
     </section>

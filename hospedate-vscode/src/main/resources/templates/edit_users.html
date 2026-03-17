@@ -4,7 +4,7 @@
     <!--Title-->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3 navbar-shrink" id="mainNav">
         <div class="container px-4 px-lg-5">
-            <a class="navbar-brand fw-bold" href="/admin_users">Hospédate</a>
+            <a class="navbar-brand fw-bold" href="/admin/users">Hospédate</a>
         </div>
     </nav>
 
@@ -16,36 +16,37 @@
                     <h2 class="text-center mt-0">Editar Información del Usuario</h2>
                     <hr class="divider" /> 
                     <!--Creation of the form-->
-                    <form action="update_user.php" method="POST" class="mt-4">
-                        
-                        <input type="hidden" name="user_id" value="1">
+                    <form action="/admin/users/save" method="POST" class="mt-4">
+                        <input type="hidden" name="id" value="{{id}}">
 
                         <div class="mb-4">
-                            <label for="UserName" class="form-label fw-bold">Nombre de Usuario</label>
-                            <input type="text" class="form-control form-control-lg" id="UserName" name="UserName" value="Marta Gomez" required>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="NumPhone" class="form-label fw-bold">Número de teléfono</label>
-                            <input type="number" class="form-control form-control-lg" id="NumPhone" name="NumPhone" value="685656412" required>
+                            <label for="name" class="form-label fw-bold">Nombre de Usuario</label>
+                            <input type="text" class="form-control form-control-lg" id="name" name="name" value="{{name}}" required>
                         </div>
 
                         <div class="mb-4">
                             <label for="email" class="form-label fw-bold">Email</label>
-                            <input type="email" class="form-control form-control-lg" id="Email" name="Email" value="martagomez@gmail.com" required>
+                            <input type="email" class="form-control form-control-lg" id="email" name="email" value="{{email}}" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password" class="form-label fw-bold">Contraseña</label>
+                            <input type="password" class="form-control form-control-lg" id="password" name="password" value="{{password}}" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="role" class="form-label fw-bold">Rol</label>
+                            <input type="text" class="form-control form-control-lg" id="role" name="role" value="{{role}}" required>
                         </div>
 
                         <div class="d-flex justify-content-center gap-3">
-                            <!--Button to submit the changes-->
                             <button type="submit" class="btn btn-primary btn-xl shadow">
                                 Actualizar cambios
                             </button>
-                            <!--Button to cancel the form and go backwards-->
-                            <a href="/admin_users" class="btn btn-light btn-xl border">
+                            <a href="/admin/users" class="btn btn-light btn-xl border">
                                 Cancelar
                             </a>
                         </div>
-
                     </form>
                     </div>
             </div>
