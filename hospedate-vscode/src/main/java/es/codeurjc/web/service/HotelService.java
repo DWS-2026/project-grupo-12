@@ -2,8 +2,9 @@ package es.codeurjc.web.service;
 
 import es.codeurjc.web.model.Hotel;
 import es.codeurjc.web.repository.HotelRepository;
-import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,8 +20,8 @@ public class HotelService {
         this.hotelRepository = hotelRepository;
     }
 
-    @PostConstruct
-    private void initializeDatabase() {
+    @EventListener(ApplicationReadyEvent.class)
+    public void initializeDatabase() {
         if (hotelRepository.count() == 0) {
             Hotel hotel1 = new Hotel(
                 "UMusic Hotel Madrid",

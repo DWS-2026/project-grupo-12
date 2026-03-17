@@ -41,13 +41,13 @@ public class CustomErrorController implements ErrorController {
             model.addAttribute("status", "Error Desconocido");
         }
 
-        // 4. We put the variables in the model for Mustache to be able to show them in the error.html template
+        // We put the variables in the model for Mustache to be able to show them in the error.html template
         model.addAttribute("errorTitle", errorTitle);
         model.addAttribute("errorSubtitle", errorSubtitle);
         model.addAttribute("path", path != null ? path : "Ruta desconocida");
         model.addAttribute("error", message != null && !message.toString().isEmpty() ? message : "");
 
-        // 5. We call the error.html template to show the error page to the user
+        // We call the error.html template to show the error page to the user
         return "error";
     }
 }

@@ -6,8 +6,10 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
-@Entity(name = "UserTable")
+@Entity
+@Table(name = "users") // "user" is a reserved word in SQL, so we use "users" as the table name
 public class User {
     //1 to 1 relation with image 
     @OneToOne(cascade=CascadeType.ALL)
