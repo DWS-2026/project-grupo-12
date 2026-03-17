@@ -8,7 +8,7 @@
 // 
 
 
-//Dynamic transparency of the top bar
+// Dynamic transparency of the top bar
 // Navbar shrink function
 // Detects when the page has finished loading
 window.addEventListener('DOMContentLoaded', event => {
@@ -56,9 +56,11 @@ window.addEventListener('DOMContentLoaded', event => {
     });
 
     // Activate SimpleLightbox plugin for portfolio items
-    new SimpleLightbox({
-        elements: '#portfolio a.portfolio-box'
-    });
+    if (typeof SimpleLightbox !== 'undefined' && document.querySelector('#portfolio a.portfolio-box')) {
+        new SimpleLightbox({
+            elements: '#portfolio a.portfolio-box'
+        });
+    }
 
 
 });

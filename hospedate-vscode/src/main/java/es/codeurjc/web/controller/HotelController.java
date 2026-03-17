@@ -38,7 +38,7 @@ public class HotelController {
 
     @GetMapping("/hotels")
     public String showHotels(@RequestParam(required = false) String keyword, Model model) {
-List<Hotel> hotelsList;
+        List<Hotel> hotelsList;
 
         if (keyword != null && !keyword.trim().isEmpty()) {
             // Si el usuario ha escrito algo en el buscador, usamos el método nuevo
