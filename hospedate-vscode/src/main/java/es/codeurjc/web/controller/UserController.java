@@ -62,6 +62,10 @@ public class UserController {
             return "redirect:/login"; 
         }
 
+        if (userSession.isAdmin()) {
+            return "redirect:/admin/hotels"; 
+        }
+
         Long userId = userSession.getIdUser();
         User user = userService.findById(userId).orElseThrow();
 

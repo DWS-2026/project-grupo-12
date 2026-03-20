@@ -61,7 +61,7 @@ public class SecurityConfiguration {
             
             //private routes
             .requestMatchers("/admin/**").hasRole("ADMIN")    
-            .requestMatchers("/profile/**").hasAnyRole("USER")
+            .requestMatchers("/profile/**").hasAnyRole("USER","ADMIN")
             .requestMatchers("/reserve/**").hasAnyRole("USER")
             .requestMatchers("/review/delete/**").hasAnyRole("USER")
 
