@@ -20,7 +20,6 @@ public class HotelService {
         this.hotelRepository = hotelRepository;
     }
 
-
     public List<Hotel> getAllHotels() {
         return hotelRepository.findAll();
     }

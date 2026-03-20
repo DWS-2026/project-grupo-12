@@ -102,8 +102,41 @@ public class DatabaseInitializer implements CommandLineRunner {
                 )),
                 4.8
             );
+
+            Hotel hotel3 = new Hotel(
+                "Hotel Playacanela en isla Canela",
+                "Hotel 4 Estrellas",
+                "Huelva",
+                "Av. de la Mojarra, 0, 21409, Huelva",
+                411.0,
+                "El Playacanela es un resort de 4 estrellas muy peculiar visualmente, ya que esta diseñado con un estilo mozárabe. COn sus cúpulas y arcos parece un palacio oriental. Es un hotel masiov y animado, con le objetivo de ser el destino definitivo de las familias. Además cuenta con una localización en primera linea de playa la cual es famosa por su inmensidad. Importante mencionar su cercanía a Portugal estando próximo a la desembocadura del Guadiana y la frontera con el Algarve portugués.",
+                Arrays.asList(
+                    "/assets/img/portfolio/hoteles/Playacanela1.jpg",
+                    "/assets/img/portfolio/hoteles/Playacanela2.jpg",
+                    "/assets/img/portfolio/hoteles/Playacanela3.jpg",
+                    "/assets/img/portfolio/hoteles/Playacanela4.jpg",
+                    "/assets/img/portfolio/hoteles/Playacanela5.jpg",
+                    "/assets/img/portfolio/hoteles/Playacanela6.jpg",
+                    "/assets/img/portfolio/hoteles/Playacanela7.jpg",
+                    "/assets/img/portfolio/hoteles/Playacanela8.jpg",
+                    "/assets/img/portfolio/hoteles/Playacanela9.jpg"
+                ),
+                new HashSet<>(Arrays.asList(
+                    "2 Piscinas",
+                    "Spa y centro de bienestar",
+                    "Traslado aeropuerto",
+                    "Parking en el alojamiento",
+                    "Habitaciones sin humo",
+                    "Bar",
+                    "Adaptado personas de movilidad reducida",
+                    "Calefacción",
+                    "Actividades diarias con monitores cualificados",
+                    "Actuaciones nocturnas para las familias"
+                )),
+                3.8
+            );
         
-            hotelRepository.saveAll(Arrays.asList(hotel1, hotel2));
+            hotelRepository.saveAll(Arrays.asList(hotel1, hotel2, hotel3));
             System.out.println("Database initialized with hotels.");
             
         } else {
