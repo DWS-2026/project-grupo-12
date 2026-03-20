@@ -1,6 +1,7 @@
 package es.codeurjc.web.service;
 
 import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder; // Importación obligatoria
@@ -34,4 +35,24 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public void saveUser(Long id, String name, String email, String password, String role) {
+        Optional<User> existing = userRepository.findById(id);
+
+        if (existing.isPresent()) {
+            User user = existing.get();
+            user.setName(name);
+            user.setEmail(email);
+            user.setPassword(passwordEncoder.encode(password)); // Encriptar la contraseña
+            user.setRole(role);
+            userRepository.save(user);
+        }
+    }
+
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
 }

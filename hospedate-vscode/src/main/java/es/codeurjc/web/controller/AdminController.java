@@ -10,12 +10,10 @@ import org.springframework.ui.Model;
  
 import es.codeurjc.web.model.Hotel;
 import es.codeurjc.web.model.User;
-import es.codeurjc.web.repository.UserRepository;
 import es.codeurjc.web.service.HotelService;
+import es.codeurjc.web.service.UserService;
 import es.codeurjc.web.service.UserSession;
- 
-import java.util.Arrays;
-import java.util.List;
+
 import java.util.Set;
 import java.util.Optional;
  
@@ -24,9 +22,9 @@ public class AdminController {
  
     @Autowired
     private HotelService hotelService;
- 
+
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
  
     @Autowired
     private UserSession userSession;
@@ -71,37 +69,7 @@ public class AdminController {
             @RequestParam(required = false, defaultValue = "") String galeriaRaw,
             @RequestParam(required = false) Set<String> services) {
  
-        Hotel hotel;
-        if (id == null) {
-            hotel = new Hotel();
-        } else {
-            Optional<Hotel> existing = hotelService.getHotelById(id);
-            if (existing.isPresent()) {
-                hotel = existing.get();
-            } else {
-                hotel = new Hotel();
-            }
-        }
- 
-        hotel.setName(name);
-        hotel.setTipo(tipo);
-        hotel.setCity(city);
-        hotel.setLocation(location);
-        hotel.setPrice(price);
-        hotel.setDescription(description);
-        hotel.setRating(rating);
- 
-        if (!galeriaRaw.isBlank()) {
-            List<String> galeria = Arrays.asList(galeriaRaw.split(","));
-            galeria.replaceAll(String::trim);
-            hotel.setGaleria(galeria);
-        }
- 
-        if (services != null) {
-            hotel.setServices(services);
-        }
- 
-        hotelService.saveHotel(hotel);
+        hotelService.saveOrUpdateHotel(id, name, tipo, city, location, price, description, rating, galeriaRaw, services);
         return "redirect:/admin/hotels";
     }
  
@@ -114,14 +82,14 @@ public class AdminController {
     // List all the users
     @GetMapping("/admin/users")
     public String adminUsers(Model model) {
-        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("users", userService.getAllUsers());
         return "admin_users";
     }
  
     // Shows the form to edit a single user
     @GetMapping("/admin/users/edit/{id}")
     public String editUserForm(@PathVariable Long id, Model model) {
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = userService.findById(id);
  
         if (user.isPresent()) {
             model.addAttribute("user", user.get());
@@ -139,23 +107,13 @@ public class AdminController {
             @RequestParam String password,
             @RequestParam String role) {
  
-        Optional<User> existing = userRepository.findById(id);
- 
-        if (existing.isPresent()) {
-            User user = existing.get();
-            user.setName(name);
-            user.setEmail(email);
-            user.setPassword(password);
-            user.setRole(role);
-            userRepository.save(user);
-        }
- 
+        userService.saveUser(id, name, email, password, role);
         return "redirect:/admin/users";
     }
  
     @PostMapping("/admin/users/delete/{id}")
     public String deleteUser(@PathVariable Long id) {
-        userRepository.deleteById(id);
+        userService.deleteUser(id);
         return "redirect:/admin/users";
     }
 }

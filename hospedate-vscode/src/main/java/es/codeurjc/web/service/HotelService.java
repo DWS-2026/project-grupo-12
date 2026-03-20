@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class HotelService {
@@ -47,5 +48,39 @@ public class HotelService {
 
     public void deleteHotel(Long id) {
         hotelRepository.deleteById(id);
+    }
+
+    public void saveOrUpdateHotel(Long id, String name, String tipo, String city, String location, double price, String description, double rating, String galeriaRaw, Set<String> services) {
+        Hotel hotel;
+        if (id == null) {
+            hotel = new Hotel();
+        } else {
+            Optional<Hotel> existing = hotelRepository.findById(id);
+            if (existing.isPresent()) {
+                hotel = existing.get();
+            } else {
+                hotel = new Hotel();
+            }
+        }
+
+        hotel.setName(name);
+        hotel.setTipo(tipo);
+        hotel.setCity(city);
+        hotel.setLocation(location);
+        hotel.setPrice(price);
+        hotel.setDescription(description);
+        hotel.setRating(rating);
+
+        if (!galeriaRaw.isBlank()) {
+            List<String> galeria = Arrays.asList(galeriaRaw.split(","));
+            galeria.replaceAll(String::trim);
+            hotel.setGaleria(galeria);
+        }
+
+        if (services != null) {
+            hotel.setServices(services);
+        }
+
+        hotelRepository.save(hotel);
     }
 }
