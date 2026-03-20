@@ -28,10 +28,12 @@ public class SecurityConfiguration {
     @Autowired
     private UserRepository userRepository;
 
+    
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -40,6 +42,7 @@ public class SecurityConfiguration {
         authProvider.setPasswordEncoder(passwordEncoder()); 
         return authProvider;
     }
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -70,13 +73,23 @@ public class SecurityConfiguration {
             .usernameParameter("email") 
             .failureUrl("/login?error=true")
             //user session after successful login
+            //user session after successful login
             .successHandler((request, response, authentication) -> {
                 String email = authentication.getName();
                 User user = userRepository.findByEmail(email).orElseThrow();
                 
                 //fill the user session with the logged user's data
                 userSession.modifySessionInfo(user);
-                response.sendRedirect("/profile");
+                
+                boolean isAdmin = authentication.getAuthorities().stream()
+                        .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+                if (isAdmin) {
+                    //if the user is an admin, we send him to the admin dashboard
+                    response.sendRedirect("/admin/hotels");
+                } else {
+                    //if the user is a normal user, we send him to his profile page
+                    response.sendRedirect("/profile");
+                }
             })
             .permitAll()
     )
