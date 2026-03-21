@@ -15,6 +15,7 @@ import es.codeurjc.web.service.UserService;
 import es.codeurjc.web.service.UserSession;
 
 import java.util.Set;
+import java.util.List;
 import java.util.Optional;
  
 @Controller
@@ -82,8 +83,11 @@ public class AdminController {
     // List all the users
     @GetMapping("/admin/users")
     public String adminUsers(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
-        return "admin_users";
+        // 1. Pedimos todos los usuarios a la base de datos
+        List<User> users = userService.getAllUsers();
+        users.removeIf(user -> "ADMIN".equals(user.getRole()));  //filter the admin user out of the list
+        model.addAttribute("users", users);
+        return "admin_users"; 
     }
  
     // Shows the form to edit a single user
@@ -111,9 +115,21 @@ public class AdminController {
         return "redirect:/admin/users";
     }
  
+    
     @PostMapping("/admin/users/delete/{id}")
     public String deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+        
+        // look for user in database
+        Optional<User> userToDelete = userService.findById(id);
+        
+        if (userToDelete.isPresent()) {
+            //not allowed to delete admin users
+            if (!"ADMIN".equals(userToDelete.get().getRole())) {
+                userService.deleteUser(id);
+            } else {
+                System.out.println("Tried to delete admin user");
+            }
+        }
         return "redirect:/admin/users";
     }
 }

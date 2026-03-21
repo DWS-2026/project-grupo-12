@@ -6,13 +6,18 @@
         <div class="container px-4 px-lg-5">
         <a class="navbar-brand text-dark" href="#page-top">Hospédate</a>
         
-        <div class="ms-auto">
+        <div class="ms-auto d-flex align-items-center">
             <a class="btn btn-outline-primary btn-sm me-2" href="/admin/hotels">
                 <i class="bi bi-buildings"></i> Lista de Hoteles
             </a>
-            <a class="btn btn-primary btn-sm" href="/">
+            <a class="btn btn-primary btn-sm me-2" href="/">
                 Volver al inicio
             </a>
+            <form action="/logout" method="POST" class="m-0">
+                <button type="submit" class="btn btn-outline-danger btn-sm">
+                    <i class="bi bi-box-arrow-right"></i> Salir
+                </button>
+            </form>
         </div>
         </div>
     </nav>
