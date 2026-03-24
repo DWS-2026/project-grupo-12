@@ -109,7 +109,7 @@ public class DatabaseInitializer implements CommandLineRunner {
                 "Huelva",
                 "Av. de la Mojarra, 0, 21409, Huelva",
                 411.0,
-                "El Playacanela es un resort de 4 estrellas muy peculiar visualmente, ya que esta diseñado con un estilo mozárabe. COn sus cúpulas y arcos parece un palacio oriental. Es un hotel masiov y animado, con le objetivo de ser el destino definitivo de las familias. Además cuenta con una localización en primera linea de playa la cual es famosa por su inmensidad. Importante mencionar su cercanía a Portugal estando próximo a la desembocadura del Guadiana y la frontera con el Algarve portugués.",
+                "El Playacanela es un resort de 4 estrellas muy peculiar visualmente, ya que esta diseñado con un estilo mozárabe. Con sus cúpulas y arcos parece un palacio oriental. Es un hotel masiov y animado, con le objetivo de ser el destino definitivo de las familias. Además cuenta con una localización en primera linea de playa la cual es famosa por su inmensidad. Importante mencionar su cercanía a Portugal estando próximo a la desembocadura del Guadiana y la frontera con el Algarve portugués.",
                 Arrays.asList(
                     "/assets/img/portfolio/hoteles/Playacanela1.jpg",
                     "/assets/img/portfolio/hoteles/Playacanela2.jpg",
