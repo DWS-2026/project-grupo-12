@@ -34,7 +34,7 @@ public class AdminController {
     @GetMapping("/admin/hotels")
     public String adminHotels(Model model) {
         model.addAttribute("hotels", hotelService.getAllHotels());
-        return "admin_hotel";
+        return "admin_hotels";
     }
  
     // Shows a form to create a new hotel (without ID yet)
@@ -68,8 +68,26 @@ public class AdminController {
             @RequestParam String description,
             @RequestParam double rating,
             @RequestParam(required = false, defaultValue = "") String galeriaRaw,
-            @RequestParam(required = false) Set<String> services) {
- 
+            @RequestParam(required = false) Set<String> services,
+            Model model) {
+        // Image upload validation in hotel creation
+        if (galeriaRaw == null || galeriaRaw.trim().isEmpty()) {
+            
+            // We created the appropriate error message
+            model.addAttribute("errorMessage", "Error: Es obligatorio añadir al menos una imagen para crear el hotel.");
+            
+            // We return the correct view without saving anything to the database.
+            if (id == null) {
+                return "create_hotel"; // If it was a new hotel
+            } else {
+                // If we were editing, we retrieved the data so we wouldn't leave it blank.
+                Optional<Hotel> hotel = hotelService.getHotelById(id);
+                if (hotel.isPresent()) {
+                    model.addAttribute("hotel", hotel.get());
+                }
+                return "edit_hotel";
+            }
+        }
         hotelService.saveOrUpdateHotel(id, name, tipo, city, location, price, description, rating, galeriaRaw, services);
         return "redirect:/admin/hotels";
     }
@@ -132,4 +150,5 @@ public class AdminController {
         }
         return "redirect:/admin/users";
     }
+
 }
