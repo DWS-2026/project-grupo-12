@@ -90,11 +90,11 @@
                             <!-- Divider bar-->
                             <hr class="my-4">
                             <!-- Reserve confirmation which sends the reservation ID to the ReserveController-->
-                            <form action="/reserve/process" method="POST">
+                            <form action="/reserve/payment" method="POST">
                                 <input type="hidden" name="reserveId" value="{{reserveId}}">
 
                             <button type="submit" class="btn btn-primary w-100 py-3 fw-bold text-uppercase">
-                                Confirmar la reserva
+                                Continuar al pago
                             </button>
                             </form>
                         </div>

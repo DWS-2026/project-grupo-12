@@ -178,4 +178,27 @@ public class ReserveController {
         return "reserve";
     }
 
+    @PostMapping("/reserve/payment")
+    public String showPaymentPage(@RequestParam Long reserveId, Model model) {
+        // If the user is not logged in, redirect to the login page
+        if(!userSession.isLogged()){
+            return "redirect:/login";
+        }
+
+        // We look for the pending reservation
+        Reserve reserve = reserveService.getReserveById(reserveId).orElseThrow();
+
+        // Protection against IDOR
+        if (!reserve.getCustomer().getId().equals(userSession.getIdUser())) {
+            return "redirect:/"; 
+        }
+
+        // we give the necessary data to the view to display the payment information
+        model.addAttribute("reserveId", reserve.getId());
+        model.addAttribute("totalPrice", reserve.getPrice());
+        model.addAttribute("hotelName", reserve.getHotel().getName());
+
+        return "payment"; // return the payment view
+    }
+
 }
