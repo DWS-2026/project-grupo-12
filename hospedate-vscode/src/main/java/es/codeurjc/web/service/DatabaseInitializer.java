@@ -68,7 +68,8 @@ public class DatabaseInitializer implements CommandLineRunner {
                     "Cocina equipada",
                     "Lavadora"
                 )),
-                5.0
+                5.0,
+                true, true, true, true
             );
             
             Hotel hotel2 = new Hotel(
@@ -100,7 +101,8 @@ public class DatabaseInitializer implements CommandLineRunner {
                     "Adaptado silla de ruedas",
                     "Nevera incluida"
                 )),
-                4.8
+                4.8,
+                true, true, true, true
             );
 
             Hotel hotel3 = new Hotel(
@@ -133,7 +135,8 @@ public class DatabaseInitializer implements CommandLineRunner {
                     "Actividades diarias con monitores cualificados",
                     "Actuaciones nocturnas para las familias"
                 )),
-                3.8
+                3.8,
+                true, true, true, true
             );
         
             hotelRepository.saveAll(Arrays.asList(hotel1, hotel2, hotel3));

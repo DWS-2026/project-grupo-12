@@ -28,6 +28,7 @@
                     <h2 class="text-center mt-0">Editar Información del Hotel</h2>
                     <hr class="divider" />
                     <!--Creation of the form-->
+
                     {{#hotel}}
                     <form action="/admin/hotels/save" method="POST" class="mt-4">
 
@@ -73,6 +74,34 @@
                             <label for="description" class="form-label fw-bold">Descripción</label>
                             <textarea class="form-control" id="description" name="description" rows="4"
                                 required>{{description}}</textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Características principales destacadas</label>
+                            <div class="d-flex flex-wrap gap-4">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="wifi" name="wifi" value="true" {{#wifi}}checked{{/wifi}}>
+                                    <label class="form-check-label" for="wifi"><i class="bi bi-wifi text-primary"></i> Wifi Gratis</label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="tv" name="tv" value="true" {{#tv}}checked{{/tv}}>
+                                    <label class="form-check-label" for="tv"><i class="bi bi-tv text-primary"></i> Televisión</label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="airConditioning" name="airConditioning" value="true" {{#airConditioning}}checked{{/airConditioning}}>
+                                    <label class="form-check-label" for="airConditioning"><i class="bi bi-snow text-primary"></i> Aire Acondicionado</label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="family" name="family" value="true" {{#family}}checked{{/family}}>
+                                    <label class="form-check-label" for="family"><i class="bi bi-people text-primary"></i> Familiar</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-5">
+                            <label for="galeriaRaw" class="form-label fw-bold">Actualizar imágenes (Opcional)</label>
+                            <textarea class="form-control" id="galeriaRaw" name="galeriaRaw" rows="2" placeholder="Ej: /assets/img/nueva1.jpg, /assets/img/nueva2.jpg"></textarea>
+                            <small class="text-muted fw-bold">Si dejas este campo en blanco, el hotel conservará sus fotos actuales. Si escribes nuevos enlaces, reemplazarán a la galería anterior.</small>
                         </div>
 
                         <div class="d-flex justify-content-center gap-3">

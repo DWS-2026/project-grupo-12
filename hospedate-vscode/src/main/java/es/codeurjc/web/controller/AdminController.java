@@ -69,6 +69,10 @@ public class AdminController {
             @RequestParam double rating,
             @RequestParam(required = false, defaultValue = "") String galeriaRaw,
             @RequestParam(required = false) Set<String> services,
+            @RequestParam(defaultValue = "false") boolean wifi,
+            @RequestParam(defaultValue = "false") boolean tv,
+            @RequestParam(defaultValue = "false") boolean airConditioning,
+            @RequestParam(defaultValue = "false") boolean family,
             Model model) {
         // Image upload validation in hotel creation
         if (galeriaRaw == null || galeriaRaw.trim().isEmpty()) {
@@ -77,18 +81,14 @@ public class AdminController {
             model.addAttribute("errorMessage", "Error: Es obligatorio añadir al menos una imagen para crear el hotel.");
             
             // We return the correct view without saving anything to the database.
-            if (id == null) {
-                return "create_hotel"; // If it was a new hotel
-            } else {
-                // If we were editing, we retrieved the data so we wouldn't leave it blank.
-                Optional<Hotel> hotel = hotelService.getHotelById(id);
-                if (hotel.isPresent()) {
-                    model.addAttribute("hotel", hotel.get());
-                }
-                return "edit_hotel";
-            }
+            if (id == null && (galeriaRaw == null || galeriaRaw.trim().isEmpty())) {
+            
+            model.addAttribute("errorMessage", "Error: Es obligatorio añadir al menos una imagen para crear un hotel nuevo.");
+            return "create_hotel"; // Devolvemos al formulario de creación
         }
-        hotelService.saveOrUpdateHotel(id, name, tipo, city, location, price, description, rating, galeriaRaw, services);
+        }
+        // If it is an edition (id != null) and it comes empty, the Service will ignore the field and keep the old photos.
+        hotelService.saveOrUpdateHotel(id, name, tipo, city, location, price, description, rating, galeriaRaw, services, wifi, tv, airConditioning, family);
         return "redirect:/admin/hotels";
     }
  

@@ -58,6 +58,27 @@
                             <label for="description" class="form-label fw-bold">Descripción</label>
                             <textarea class="form-control" id="description" name="description" rows="4" placeholder="Escribe aquí los servicios o detalles del hotel..."></textarea>
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Características principales destacadas</label>
+                            <div class="d-flex flex-wrap gap-4">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="wifi" name="wifi" value="true" {{#hotel.wifi}}checked{{/hotel.wifi}}>
+                                    <label class="form-check-label" for="wifi"><i class="bi bi-wifi text-primary"></i> Wifi Gratis</label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="tv" name="tv" value="true" {{#hotel.tv}}checked{{/hotel.tv}}>
+                                    <label class="form-check-label" for="tv"><i class="bi bi-tv text-primary"></i> Televisión</label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="airConditioning" name="airConditioning" value="true" {{#hotel.airConditioning}}checked{{/hotel.airConditioning}}>
+                                    <label class="form-check-label" for="airConditioning"><i class="bi bi-snow text-primary"></i> Aire Acondicionado</label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="family" name="family" value="true" {{#hotel.family}}checked{{/hotel.family}}>
+                                    <label class="form-check-label" for="family"><i class="bi bi-people text-primary"></i> Familiar</label>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="mb-5">
                             <label for="galeriaRaw" class="form-label fw-bold">Imágenes de galería (URLs separadas por comas)</label>

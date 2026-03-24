@@ -56,7 +56,11 @@ public class HotelService {
         hotelRepository.deleteById(id);
     }
 
-    public void saveOrUpdateHotel(Long id, String name, String tipo, String city, String location, double price, String description, double rating, String galeriaRaw, Set<String> services) {
+    public void saveOrUpdateHotel(Long id, String name, String tipo, 
+                                String city, String location, double price,
+                                String description, double rating, String galeriaRaw,  
+                                Set<String> services, boolean wifi, boolean tv, 
+                                boolean airConditioning, boolean family) {
         Hotel hotel;
         if (id == null) {
             hotel = new Hotel();
@@ -76,6 +80,10 @@ public class HotelService {
         hotel.setPrice(price);
         hotel.setDescription(description);
         hotel.setRating(rating);
+        hotel.setWifi(wifi);
+        hotel.setTv(tv);
+        hotel.setAirConditioning(airConditioning);
+        hotel.setFamily(family);
 
         if (!galeriaRaw.isBlank()) {
             List<String> galeria = Arrays.asList(galeriaRaw.split(","));
@@ -85,6 +93,9 @@ public class HotelService {
 
         if (services != null) {
             hotel.setServices(services);
+        } else {
+            // If null is found (all have been unchecked), we empty the database list.
+            hotel.setServices(new HashSet<>());
         }
 
         hotelRepository.save(hotel);

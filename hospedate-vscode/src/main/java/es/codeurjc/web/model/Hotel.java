@@ -37,6 +37,10 @@ public class Hotel{
     private Set<String> services;
 
     private double rating;
+    private boolean wifi;
+    private boolean tv;
+    private boolean airConditioning;
+    private boolean family;
 
     // A hotel has MANY reviews.
     // mappedBy = "hotel" means that the Review class will contain a variable called "hotel".
@@ -49,7 +53,8 @@ public class Hotel{
 
     public Hotel(String name, String tipo, String city, String location, 
                  double price, String description, List<String> galeria, 
-                 Set<String> services, double rating) {
+                 Set<String> services, double rating, boolean wifi, boolean tv,
+                 boolean airConditioning, boolean family) {
         this.name = name;
         this.tipo = tipo;
         this.city = city;
@@ -59,6 +64,10 @@ public class Hotel{
         this.galeria = galeria;
         this.services = services;
         this.rating = rating;
+        this.wifi = wifi;
+        this.tv = tv;
+        this.airConditioning = airConditioning;
+        this.family = family;
     }
 
     // Getters and Setters
@@ -150,6 +159,38 @@ public class Hotel{
     public void setRating(double rating) {
         this.rating = rating;
     }
+
+    public boolean isWifi() {
+        return wifi;
+    } 
+
+    public void setWifi(boolean wifi) {
+        this.wifi = wifi;
+    }
+
+    public boolean isTv() {
+        return tv;
+    }
+
+    public void setTv(boolean tv) {
+        this.tv = tv;
+    }
+
+    public boolean isAirConditioning() {
+        return airConditioning;
+    }   
+
+    public void setAirConditioning(boolean airConditioning) {
+        this.airConditioning = airConditioning;
+    }  
+
+    public boolean isFamily() {
+        return family;
+    }
+
+    public void setFamily(boolean family) {
+        this.family = family;
+    }   
 
     // Method to return the first photo in the gallery list
     public String getMainImage() {
