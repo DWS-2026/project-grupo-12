@@ -126,7 +126,7 @@ public class AdminController {
             @RequestParam Long id,
             @RequestParam String name,
             @RequestParam String email,
-            @RequestParam String password,
+            @RequestParam (required = false) String password,
             @RequestParam String role) {
  
         userService.saveUser(id, name, email, password, role);

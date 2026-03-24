@@ -46,7 +46,9 @@ public class UserService {
             User user = existing.get();
             user.setName(name);
             user.setEmail(email);
-            user.setPassword(passwordEncoder.encode(password)); // Encriptar la contraseña
+            if (password != null && !password.trim().isEmpty()) { //if the passsword field is not empty, update the password
+            user.setPassword(passwordEncoder.encode(password)); // encrypt the new password before saving it
+            }
             user.setRole(role);
             userRepository.save(user);
         }
