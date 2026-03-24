@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -20,9 +22,17 @@ public class HotelService {
     public HotelService(HotelRepository hotelRepository) {
         this.hotelRepository = hotelRepository;
     }
-
+    // Original method for the Admin panel
     public List<Hotel> getAllHotels() {
         return hotelRepository.findAll();
+    }
+    // New method for pagination of the public web
+    public Page<Hotel> getAllHotels(Pageable pageable) {
+        return hotelRepository.findAll(pageable);
+    }
+
+    public Page<Hotel> searchHotels(String keyword, Pageable pageable) {
+        return hotelRepository.findByNameContainingIgnoreCaseOrCityContainingIgnoreCaseOrLocationContainingIgnoreCase(keyword, keyword, keyword, pageable);
     }
 
     public Optional<Hotel> getHotelById(Long id) {
@@ -37,10 +47,6 @@ public class HotelService {
         return hotelRepository.findTop3ByOrderByRatingDesc();
     }
 
-    public List<Hotel> searchHotels(String keyword) {
-        // We passed the word 3 times (so that it searches in name, city and location)
-        return hotelRepository.findByNameContainingIgnoreCaseOrCityContainingIgnoreCaseOrLocationContainingIgnoreCase(keyword, keyword, keyword);
-    }
 
     public void saveHotel(Hotel hotel) {
         hotelRepository.save(hotel);

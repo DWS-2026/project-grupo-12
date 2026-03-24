@@ -3,6 +3,8 @@ package es.codeurjc.web.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import es.codeurjc.web.model.Hotel; 
@@ -23,6 +25,6 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
     // Search the first 3 (Top3), ordered by rating (OrderByRating), from highest to lowest (Desc)
     List<Hotel> findTop3ByOrderByRatingDesc();
 
-    List<Hotel> findByNameContainingIgnoreCaseOrCityContainingIgnoreCaseOrLocationContainingIgnoreCase(
-        String name, String city, String location);
+    Page<Hotel> findByNameContainingIgnoreCaseOrCityContainingIgnoreCaseOrLocationContainingIgnoreCase(
+        String name, String city, String location, Pageable pageable);
 }

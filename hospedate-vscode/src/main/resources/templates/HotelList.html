@@ -104,8 +104,20 @@
             
             {{#hasHotels}}
             <div class="row mt-5">
-                <div class="col-12 text-center">
-                    <button class="btn btn-outline-dark btn-xl">Cargar más hoteles</button>
+                <div class="col-12 d-flex justify-content-center gap-3">
+                    
+                    {{#hasPrev}}
+                    <a href="/hotels?page={{prevPage}}{{#keyword}}&keyword={{keyword}}{{/keyword}}" class="btn btn-outline-primary btn-xl rounded-pill">
+                        <i class="bi bi-arrow-left me-2"></i> Anterior
+                    </a>
+                    {{/hasPrev}}
+
+                    {{#hasNext}}
+                    <a href="/hotels?page={{nextPage}}{{#keyword}}&keyword={{keyword}}{{/keyword}}" class="btn btn-outline-primary btn-xl rounded-pill">
+                        Siguiente <i class="bi bi-arrow-right ms-2"></i>
+                    </a>
+                    {{/hasNext}}
+
                 </div>
             </div>
             {{/hasHotels}}

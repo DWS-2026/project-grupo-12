@@ -5,11 +5,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import es.codeurjc.web.model.Hotel;
 import es.codeurjc.web.model.Review;
@@ -37,21 +41,30 @@ public class HotelController {
     }
 
     @GetMapping("/hotels")
-    public String showHotels(@RequestParam(required = false) String keyword, Model model) {
-        List<Hotel> hotelsList;
+    public String showHotels(
+            @RequestParam(required = false) String keyword, 
+            @RequestParam(defaultValue = "0") int page, //By default we start on page 0
+            Model model) {
+        
+        // We created a pagination request: Current page, and 9 hotels per page
+        Pageable pageable = PageRequest.of(page, 9); 
+        Page<Hotel> hotelsPage;
 
         if (keyword != null && !keyword.trim().isEmpty()) {
-            // Si el usuario ha escrito algo en el buscador, usamos el método nuevo
-            hotelsList = hotelService.searchHotels(keyword); // (Crearemos este método en el servicio ahora)
-            model.addAttribute("keyword", keyword); // Pasamos la palabra de vuelta para mantenerla en la barra
+            hotelsPage = hotelService.searchHotels(keyword, pageable); 
+            model.addAttribute("keyword", keyword); 
         } else {
-            // Si no hay búsqueda, devolvemos todos como antes
-            hotelsList = hotelService.getAllHotels();
+            hotelsPage = hotelService.getAllHotels(pageable);
         }
 
-        model.addAttribute("hotels", hotelsList);
-
-        model.addAttribute("hasHotels", !hotelsList.isEmpty());
+        // hotelsPage.getContent() extracts only the list of hotels from that specific page
+        model.addAttribute("hotels", hotelsPage.getContent());
+        model.addAttribute("hasHotels", !hotelsPage.isEmpty());
+        
+        model.addAttribute("hasNext", hotelsPage.hasNext());
+        model.addAttribute("hasPrev", hotelsPage.hasPrevious());
+        model.addAttribute("nextPage", page + 1);
+        model.addAttribute("prevPage", page - 1);
         
         return "HotelList"; 
     }
