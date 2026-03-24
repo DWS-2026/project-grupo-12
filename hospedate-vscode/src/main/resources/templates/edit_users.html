@@ -1,10 +1,24 @@
 {{>header}}
 
 <body id="page-top">
-    <!--Title-->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3 navbar-shrink" id="mainNav">
+<!--Top Page-->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
         <div class="container px-4 px-lg-5">
-            <a class="navbar-brand fw-bold" href="/admin/users">Hospédate</a>
+        <a class="navbar-brand text-dark" href="#page-top">Hospédate</a>
+        
+        <div class="ms-auto d-flex align-items-center">
+            <a class="btn btn-outline-primary btn-sm me-2" href="/admin/hotels">
+                <i class="bi bi-buildings"></i> Lista de Hoteles
+            </a>
+            <a class="btn btn-primary btn-sm me-2" href="/">
+                Volver al inicio
+            </a>
+            <form action="/logout" method="POST" class="m-0">
+                <button type="submit" class="btn btn-outline-danger btn-sm">
+                    <i class="bi bi-box-arrow-right"></i> Salir
+                </button>
+            </form>
+        </div>
         </div>
     </nav>
 
@@ -14,29 +28,34 @@
                 <div class="col-lg-8">
                     <!--Title of the form-->
                     <h2 class="text-center mt-0">Editar Información del Usuario</h2>
-                    <hr class="divider" /> 
+                    <hr class="divider" />
                     <!--Creation of the form-->
+                    {{#user}}
                     <form action="/admin/users/save" method="POST" class="mt-4">
+
                         <input type="hidden" name="id" value="{{id}}">
 
                         <div class="mb-4">
                             <label for="name" class="form-label fw-bold">Nombre de Usuario</label>
-                            <input type="text" class="form-control form-control-lg" id="name" name="name" value="{{name}}" required>
+                            <input type="text" class="form-control form-control-lg" id="name" name="name"
+                                value="{{name}}" required>
                         </div>
 
                         <div class="mb-4">
                             <label for="email" class="form-label fw-bold">Email</label>
-                            <input type="email" class="form-control form-control-lg" id="email" name="email" value="{{email}}" required>
+                            <input type="email" class="form-control form-control-lg" id="email" name="email"
+                                value="{{email}}" required>
                         </div>
 
                         <div class="mb-4">
-                            <label for="password" class="form-label fw-bold">Contraseña</label>
-                            <input type="password" class="form-control form-control-lg" id="password" name="password" value="{{password}}" required>
+                            <label for="password" class="form-label fw-bold">Cambiar Contraseña</label>
+                            <input type="password" class="form-control form-control-lg" id="password" name="password" required>
                         </div>
 
                         <div class="mb-4">
                             <label for="role" class="form-label fw-bold">Rol</label>
-                            <input type="text" class="form-control form-control-lg" id="role" name="role" value="{{role}}" required>
+                            <input type="text" class="form-control form-control-lg" id="role" name="role"
+                                value="{{role}}" required>
                         </div>
 
                         <div class="d-flex justify-content-center gap-3">
@@ -48,9 +67,10 @@
                             </a>
                         </div>
                     </form>
-                    </div>
+                    {{/user}}
+                </div>
             </div>
         </div>
     </section>
 
-{{>footer}}
+    {{>footer}}
