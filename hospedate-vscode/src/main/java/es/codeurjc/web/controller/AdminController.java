@@ -70,10 +70,6 @@ public class AdminController {
             @RequestParam(required = false, defaultValue = "") String galeriaRaw,
             @RequestParam(required = false) Set<String> services,
             Model model) {
-<<<<<<< HEAD
-=======
-            
->>>>>>> ec805d9f51822ad6c0a5f0a8187efc6f9ee82f47
         // Image upload validation in hotel creation
         if (galeriaRaw == null || galeriaRaw.trim().isEmpty()) {
             
@@ -92,10 +88,6 @@ public class AdminController {
                 return "edit_hotel";
             }
         }
-<<<<<<< HEAD
-=======
-
->>>>>>> ec805d9f51822ad6c0a5f0a8187efc6f9ee82f47
         hotelService.saveOrUpdateHotel(id, name, tipo, city, location, price, description, rating, galeriaRaw, services);
         return "redirect:/admin/hotels";
     }
