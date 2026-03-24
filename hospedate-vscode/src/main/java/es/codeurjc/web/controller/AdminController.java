@@ -84,7 +84,7 @@ public class AdminController {
             if (id == null && (galeriaRaw == null || galeriaRaw.trim().isEmpty())) {
             
             model.addAttribute("errorMessage", "Error: Es obligatorio añadir al menos una imagen para crear un hotel nuevo.");
-            return "create_hotel"; // Devolvemos al formulario de creación
+            return "create_hotel"; 
         }
         }
         // If it is an edition (id != null) and it comes empty, the Service will ignore the field and keep the old photos.
