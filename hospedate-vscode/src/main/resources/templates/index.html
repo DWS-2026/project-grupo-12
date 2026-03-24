@@ -34,8 +34,15 @@
                     <li class="nav-item"><a class="nav-link" href="/login">Iniciar Sesión</a></li>
                     {{/logged}}
                     <!-- If you are logged in, "Mi Perfil" will appear-->
-                    {{#logged}}
-                    <li class="nav-item"><a class="nav-link" href="/profile">Mi Perfil</a></li>
+                     {{#logged}}
+                        {{^isAdmin}}
+                        <li class="nav-item"><a class="nav-link" href="/profile">Mi Perfil</a></li>
+                        {{/isAdmin}}
+                        
+                        {{#isAdmin}}
+                        <li class="nav-item"><a class="nav-link text-warning fw-bold" href="/admin/hotels">
+                            <i class="bi bi-gear-fill me-1"></i>Panel de Admin</a></li>
+                        {{/isAdmin}}
                     {{/logged}}
                 </ul>
             </div>

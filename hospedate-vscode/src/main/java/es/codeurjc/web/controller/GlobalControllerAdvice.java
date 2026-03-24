@@ -19,6 +19,7 @@ public class GlobalControllerAdvice {
         String currentRoute = request.getRequestURI(); 
 
         // Centralized session management
+        // We transferred the session to Mustache so that the Navbar works on all pages
         model.addAttribute("logged", userSession.isLogged());
         model.addAttribute("isAdmin", userSession.isAdmin());
 
@@ -71,7 +72,5 @@ public class GlobalControllerAdvice {
                     break;
             }
         }
-        // We transferred the session to Mustache so that the Navbar works on all pages
-        model.addAttribute("logged", userSession.isLogged());
     }
 }
