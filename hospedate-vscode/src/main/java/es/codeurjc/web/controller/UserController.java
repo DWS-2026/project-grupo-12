@@ -151,6 +151,7 @@ public class UserController {
     public String updateProfile(
             @RequestParam String username,
             @RequestParam String email,
+            @RequestParam String password,
             @RequestParam("photo") MultipartFile photo,
             Model model) throws Exception {
         
@@ -178,11 +179,8 @@ public class UserController {
             }
         }
         //modify the logged container with the new information
-        user.setName(username);
-        user.setEmail(email);
-        
+        userService.saveUser(userId, username, email, password, user.getRole()); //update the user in database with the new information
         userService.updateUser(user); //modify the user in database 
-        
         userSession.modifySessionInfo(user); //update session info with new username and profile picture
 
         return "redirect:/profile";

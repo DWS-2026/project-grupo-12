@@ -52,6 +52,14 @@ public class SecurityConfiguration {
         http
             .authorizeHttpRequests(authorize -> authorize
             //public routes
+
+            //private routes
+            .requestMatchers("/admin/**").hasRole("ADMIN")    
+            .requestMatchers("/profile/**").hasAnyRole("USER","ADMIN")
+            .requestMatchers("/reserve/**").hasAnyRole("USER")
+            .requestMatchers("/review/delete/**").hasAnyRole("USER")
+            .requestMatchers("/hotel/{id}/review/**").hasAnyRole("USER")
+            
             .requestMatchers("/").permitAll()
             .requestMatchers("/login").permitAll()
             .requestMatchers("/register").permitAll()
@@ -59,11 +67,7 @@ public class SecurityConfiguration {
             .requestMatchers("/hotel/**").permitAll() 
             .requestMatchers("/assets/**", "/css/**", "/js/**").permitAll()
             
-            //private routes
-            .requestMatchers("/admin/**").hasRole("ADMIN")    
-            .requestMatchers("/profile/**").hasAnyRole("USER","ADMIN")
-            .requestMatchers("/reserve/**").hasAnyRole("USER")
-            .requestMatchers("/review/delete/**").hasAnyRole("USER")
+            
 
             .anyRequest().authenticated()
         )
