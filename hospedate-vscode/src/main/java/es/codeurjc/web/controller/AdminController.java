@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
  
 import es.codeurjc.web.model.Hotel;
 import es.codeurjc.web.model.Reserve;
@@ -21,6 +25,10 @@ import es.codeurjc.web.service.UserSession;
 import java.util.Set;
 import java.util.List;
 import java.util.Optional;
+import java.io.IOException;
+import java.nio.file.*;
+import java.util.Map;
+import java.util.UUID;
  
 @Controller
 public class AdminController {
@@ -84,20 +92,12 @@ public class AdminController {
             @RequestParam(defaultValue = "false") boolean airConditioning,
             @RequestParam(defaultValue = "false") boolean family,
             Model model) {
-        // Image upload validation in hotel creation
-        if (galeriaRaw == null || galeriaRaw.trim().isEmpty()) {
-            
-            // We created the appropriate error message
-            model.addAttribute("errorMessage", "Error: Es obligatorio añadir al menos una imagen para crear el hotel.");
-            
-            // We return the correct view without saving anything to the database.
-            if (id == null && (galeriaRaw == null || galeriaRaw.trim().isEmpty())) {
-            
+        // Validación: al crear un hotel nuevo es obligatorio subir al menos una imagen
+        if (id == null && (galeriaRaw == null || galeriaRaw.trim().isEmpty())) {
             model.addAttribute("errorMessage", "Error: Es obligatorio añadir al menos una imagen para crear un hotel nuevo.");
-            return "create_hotel"; 
+            return "create_hotel";
         }
-        }
-        // If it is an edition (id != null) and it comes empty, the Service will ignore the field and keep the old photos.
+        // Si es edición y galeriaRaw viene vacío, el Service mantendrá las fotos existentes
         hotelService.saveOrUpdateHotel(id, name, tipo, city, location, price, description, rating, galeriaRaw, services, wifi, tv, airConditioning, family);
         return "redirect:/admin/hotels";
     }
@@ -184,6 +184,33 @@ public class AdminController {
             }
         }
         return "redirect:/admin/users";
+    }
+
+    @PostMapping(value = "/admin/upload", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("file") MultipartFile file) {
+        try {
+            // 1. Obtenemos la ruta absoluta para evitar errores de "Directorio no encontrado"
+            Path uploadDir = Paths.get("uploads").toAbsolutePath().normalize();
+            
+            // 2. Creamos las carpetas si no existen
+            Files.createDirectories(uploadDir);
+
+            // 3. Generamos un nombre único y la ruta de destino final
+            String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            Path destino = uploadDir.resolve(filename);
+
+            // 4. Copiamos el flujo de datos directamente (más fiable que transferTo)
+            Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
+
+            // 5. Devolvemos la URL que el frontend espera
+            String url = "/uploads/" + filename;
+            return ResponseEntity.ok(Map.of("url", url));
+
+        } catch (IOException e) {
+            e.printStackTrace(); // Revisa tu terminal de Java para ver el error exacto
+            return ResponseEntity.internalServerError().body(Map.of("error", e.getMessage()));
+        }
     }
 
 }

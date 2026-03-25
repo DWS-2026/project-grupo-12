@@ -85,11 +85,15 @@ public class HotelService {
         hotel.setAirConditioning(airConditioning);
         hotel.setFamily(family);
 
-        if (!galeriaRaw.isBlank()) {
-            List<String> galeria = Arrays.asList(galeriaRaw.split(","));
+        if (galeriaRaw != null && !galeriaRaw.trim().isEmpty()) {
+            List<String> galeria = new java.util.ArrayList<>(Arrays.asList(galeriaRaw.split(",")));
             galeria.replaceAll(String::trim);
             hotel.setGaleria(galeria);
+        } else if (id == null) {
+            // Solo vaciar la galería para hoteles nuevos sin imágenes
+            hotel.setGaleria(new java.util.ArrayList<>());
         }
+        // Si es edición y galeriaRaw está vacío, mantenemos la galería existente
 
         if (services != null) {
             hotel.setServices(services);

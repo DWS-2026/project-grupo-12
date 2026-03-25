@@ -17,7 +17,7 @@
                     <h2 class="text-center mt-0">Registrar Nuevo Hotel</h2>
                     <hr class="divider" /> 
                     <!--Creation of the form-->
-                    <form action="/admin/hotels/save" method="POST" class="mt-4">
+                    <form action="/admin/hotels/save" method="POST" class="mt-4" id="hotelForm">
                         {{#errorMessage}}
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 <i class="bi bi-exclamation-triangle-fill me-2"></i> <strong>¡Aviso!</strong> {{errorMessage}}
@@ -81,8 +81,22 @@
                         </div>
 
                         <div class="mb-5">
-                            <label for="galeriaRaw" class="form-label fw-bold">Imágenes de galería (URLs separadas por comas)</label>
-                            <textarea class="form-control" id="galeriaRaw" name="galeriaRaw" rows="2" placeholder="/assets/img/hotel1.jpg, /assets/img/hotel2.jpg" required></textarea>
+                            <label class="form-label fw-bold">Galería de imágenes</label>
+
+                            <input type="hidden" name="galeriaRaw" id="galeriaRaw">
+
+                            <!-- Contenedor drag & drop de tarjetas -->
+                            <div id="galeria-sortable" class="d-flex flex-wrap gap-3 mb-3 p-3 border rounded bg-light" style="min-height: 80px;">
+                            </div>
+
+                            <!-- Zona de drop para subir nuevas imágenes -->
+                            <div id="drop-zone" class="border border-2 border-dashed rounded p-4 text-center text-muted"
+                                style="cursor:pointer; border-color: #aaa !important; transition: background 0.2s;">
+                                <i class="bi bi-cloud-upload fs-3 d-block mb-2"></i>
+                                <span>Arrastra imágenes aquí o <u>haz clic para seleccionar</u></span>
+                                <input type="file" id="fileInput" accept="image/*" multiple style="display:none;">
+                            </div>
+                            <div id="upload-progress" class="mt-2"></div>
                         </div>
 
                         <div class="d-flex justify-content-center gap-3">
@@ -99,5 +113,100 @@
             </div>
         </div>
     </section>
-    
+
+    <!-- SortableJS desde CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const container = document.getElementById('galeria-sortable');
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('fileInput');
+        const progressDiv = document.getElementById('upload-progress');
+
+        // Drag & drop reordenable
+        Sortable.create(container, { animation: 150 });
+
+        // Click en la drop zone abre el selector de archivos
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        // Highlight al arrastrar sobre la zona
+        dropZone.addEventListener('dragover', e => {
+            e.preventDefault();
+            dropZone.style.background = '#e8f4ff';
+        });
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.style.background = '';
+        });
+
+        // Soltar archivos en la zona
+        dropZone.addEventListener('drop', e => {
+            e.preventDefault();
+            dropZone.style.background = '';
+            subirArchivos(e.dataTransfer.files);
+        });
+
+        // Selección por clic
+        fileInput.addEventListener('change', () => {
+            subirArchivos(fileInput.files);
+            fileInput.value = '';
+        });
+
+        // Subida al servidor
+        async function subirArchivos(files) {
+            for (const file of files) {
+                if (!file.type.startsWith('image/')) continue;
+
+                const badge = document.createElement('span');
+                badge.className = 'badge bg-secondary me-1';
+                badge.textContent = `Subiendo ${file.name}...`;
+                progressDiv.appendChild(badge);
+
+                try {
+                    const formData = new FormData();
+                    formData.append('file', file);
+
+                    const res = await fetch('/admin/upload', { method: 'POST', body: formData });
+                    const data = await res.json();
+
+                    if (data.url) {
+                        agregarTarjeta(data.url);
+                        badge.className = 'badge bg-success me-1';
+                        badge.textContent = `${file.name}`;
+                    } else {
+                        badge.className = 'badge bg-danger me-1';
+                        badge.textContent = `Error: ${file.name}`;
+                    }
+                } catch (err) {
+                    badge.className = 'badge bg-danger me-1';
+                    badge.textContent = `Falló: ${file.name}`;
+                }
+
+                setTimeout(() => badge.remove(), 3000);
+            }
+        }
+
+        // Crear tarjeta visual
+        function agregarTarjeta(url) {
+            const card = document.createElement('div');
+            card.className = 'galeria-card position-relative border rounded overflow-hidden';
+            card.dataset.url = url;
+            card.style.cssText = 'width:140px; height:110px; cursor:grab;';
+            card.innerHTML = `
+                <img src="${url}" style="width:100%;height:100%;object-fit:cover;"
+                    onerror="this.src='/assets/img/portfolio/hoteles/default.jpg'">
+                <button type="button" onclick="this.closest('.galeria-card').remove()"
+                    class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 p-0"
+                    style="width:22px;height:22px;font-size:12px;line-height:1;">x</button>
+            `;
+            container.appendChild(card);
+        }
+
+        // Serializar orden antes de enviar
+        document.getElementById('hotelForm').addEventListener('submit', function () {
+            const urls = [...container.querySelectorAll('.galeria-card')].map(c => c.dataset.url);
+            document.getElementById('galeriaRaw').value = urls.join(',');
+        });
+    });
+    </script>
+
 {{>footer}}
