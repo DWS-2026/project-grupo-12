@@ -1,75 +1,167 @@
 {{>header}}
 
 <body id="page-top">
-<!--Top Page-->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3 shadow-sm bg-white" id="mainNav">
         <div class="container px-4 px-lg-5">
-        <a class="navbar-brand text-dark" href="#page-top">Hospédate</a>
-        
-        <div class="ms-auto d-flex align-items-center">
-            <a class="btn btn-outline-primary btn-sm me-2" href="/admin/hotels">
-                <i class="bi bi-buildings"></i> Lista de Hoteles
-            </a>
-            <a class="btn btn-primary btn-sm me-2" href="/">
-                Volver al inicio
-            </a>
-            <form action="/logout" method="POST" class="m-0">
-                <button type="submit" class="btn btn-outline-danger btn-sm">
-                    <i class="bi bi-box-arrow-right"></i> Salir
-                </button>
-            </form>
-        </div>
+            <a class="navbar-brand text-dark fw-bold" href="#page-top">Hospédate</a>
+
+            <div class="ms-auto d-flex align-items-center">
+                <a class="btn btn-outline-primary btn-sm me-2" href="/admin/users">
+                    <i class="bi bi-people"></i> Lista de Usuarios
+                </a>
+                <a class="btn btn-primary btn-sm me-2" href="/">
+                    Volver al inicio
+                </a>
+                <form action="/logout" method="POST" class="m-0">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-box-arrow-right"></i> Salir
+                    </button>
+                </form>
+            </div>
         </div>
     </nav>
 
-    <section class="page-section mt-5">
+    <section class="page-section mt-5 pt-5">
         <div class="container px-4 px-lg-5">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <!--Title of the form-->
-                    <h2 class="text-center mt-0">Editar Información del Usuario</h2>
-                    <hr class="divider" />
-                    <!--Creation of the form-->
-                    {{#user}}
-                    <form action="/admin/users/save" method="POST" class="mt-4">
 
+                    <h2 class="text-center mt-0 fw-bold">Editar Información del Usuario</h2>
+                    <hr class="divider mb-4" />
+
+                    {{#user}}
+
+                    <form action="/admin/users/save" method="POST">
                         <input type="hidden" name="id" value="{{id}}">
 
-                        <div class="mb-4">
-                            <label for="name" class="form-label fw-bold">Nombre de Usuario</label>
-                            <input type="text" class="form-control form-control-lg" id="name" name="name"
-                                value="{{name}}" required>
+                        <div class="card shadow-sm border-0 rounded-lg mb-4">
+                            <div class="card-body p-4 p-md-5">
+                                <div class="mb-4">
+                                    <label for="name" class="form-label fw-bold">Nombre de Usuario</label>
+                                    <input type="text" class="form-control form-control-lg bg-light" id="name"
+                                        name="name" value="{{name}}" required>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="email" class="form-label fw-bold">Email</label>
+                                    <input type="email" class="form-control form-control-lg bg-light" id="email"
+                                        name="email" value="{{email}}" required>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="password" class="form-label fw-bold">Cambiar Contraseña</label>
+                                    <input type="password" class="form-control form-control-lg bg-light" id="password"
+                                        name="password" placeholder="Dejar en blanco para no cambiar">
+                                </div>
+
+                                <div class="mb-2">
+                                    <label for="role" class="form-label fw-bold">Rol</label>
+                                    <input type="text" class="form-control form-control-lg bg-light" id="role"
+                                        name="role" value="{{role}}" required>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-4">
-                            <label for="email" class="form-label fw-bold">Email</label>
-                            <input type="email" class="form-control form-control-lg" id="email" name="email"
-                                value="{{email}}" required>
+                        <div class="card shadow-sm border-0 rounded-lg mb-4">
+                            <div class="card-body p-4">
+                                <h3 class="font-weight-light text-dark mb-4 border-bottom pb-2">Reseñas del usuario</h3>
+                                <div id="reviews-container"
+                                    style="max-height: 400px; overflow-y: auto; padding-right: 10px;">
+                                    {{#reviews}}
+                                    <div class="review-item mb-3 border-bottom pb-3">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <h5 class="mb-1 fw-bold text-primary">
+                                                <a class="bi bi-building me-2 text-decoration-none"
+                                                    href="/hotel/{{hotel.id}}">{{hotel.name}}</a>
+                                            </h5>
+                                            <span class="text-warning fs-5">{{rating}} ★</span>
+                                        </div>
+                                        <small class="text-muted d-block mb-2">Publicado el {{formattedDate}}</small>
+                                        <h6 class="fw-bold text-dark mt-2">{{title}}</h6>
+                                        <p class="text-dark mb-3">"{{comment}}"</p>
+
+                                        <div class="text-end">
+                                            <div class="form-check d-inline-block text-start">
+                                                <input class="form-check-input" type="checkbox" name="deleteReviews"
+                                                    value="{{id}}" id="delRev{{id}}">
+                                                <label class="form-check-label text-danger fw-bold small ms-1"
+                                                    for="delRev{{id}}">
+                                                    <i class="bi"></i> Borrar Reseña
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{/reviews}}
+                                    {{^reviews}}
+                                    <p class="text-muted text-center small mt-3">No has publicado ninguna reseña
+                                        todavía.</p>
+                                    {{/reviews}}
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-4">
-                            <label for="password" class="form-label fw-bold">Cambiar Contraseña</label>
-                            <input type="password" class="form-control form-control-lg" id="password" name="password">
+                        <div class="card shadow-sm border-0 rounded-lg mb-5">
+                            <div class="card-body p-4">
+                                <h3 class="font-weight-light text-dark mb-4 border-bottom pb-2">Reservas del usuario
+                                </h3>
+                                <div id="reserve-container"
+                                    style="max-height: 400px; overflow-y: auto; padding-right: 10px;">
+                                    {{#reserves}}
+                                    <div class="reserve-item mb-3 border-bottom pb-3">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <h5 class="mb-1 fw-bold text-primary">
+                                                <a class="bi bi-calendar-check me-2 text-decoration-none"
+                                                    href="/hotel/{{hotel.id}}">{{hotel.name}}</a>
+                                            </h5>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-end mt-2">
+                                            <div>
+                                                <small class="text-muted d-block"><i
+                                                        class="bi bi-clock me-1"></i>Entrada: {{entryDate}}</small>
+                                                <small class="text-muted d-block"><i
+                                                        class="bi bi-clock-history me-1"></i>Salida:
+                                                    {{departureDate}}</small>
+                                                <small class="text-muted d-block mt-1"><i
+                                                        class="bi bi-info-circle me-1"></i>Estado: <span
+                                                        class="fw-bold">{{status}}</span></small>
+                                                <p class="text-dark small mt-2 mb-0"><i
+                                                        class="bi bi-people me-1"></i>{{guests}} personas</p>
+                                            </div>
+                                            <div class="text-end">
+                                                <div class="form-check d-inline-block text-start">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        name="deleteReserves" value="{{id}}" id="delRes{{id}}">
+                                                    <label class="form-check-label text-danger fw-bold small ms-1"
+                                                        for="delRes{{id}}">
+                                                        <i class="bi"></i> Cancelar
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{/reserves}}
+                                {{^reserves}}
+                                <p class="text-muted text-center small mt-3">No existen reservas activas</p>
+                                {{/reserves}}
+                            </div>
                         </div>
-
-                        <div class="mb-4">
-                            <label for="role" class="form-label fw-bold">Rol</label>
-                            <input type="text" class="form-control form-control-lg" id="role" name="role"
-                                value="{{role}}" required>
-                        </div>
-
-                        <div class="d-flex justify-content-center gap-3">
-                            <button type="submit" class="btn btn-primary btn-xl shadow">
-                                Actualizar cambios
-                            </button>
-                            <a href="/admin/users" class="btn btn-light btn-xl border">
-                                Cancelar
-                            </a>
-                        </div>
-                    </form>
-                    {{/user}}
                 </div>
+
+                <div class="d-flex justify-content-center gap-3 mt-4 mb-5">
+                    <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm">
+                        Actualizar cambios
+                    </button>
+                    <a href="/admin/users" class="btn btn-outline-secondary btn-lg px-5 shadow-sm">
+                        Cancelar
+                    </a>
+                </div>
+
+                </form>
+                {{/user}}
+
             </div>
+        </div>
         </div>
     </section>
 

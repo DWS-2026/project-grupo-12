@@ -9,8 +9,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
  
 import es.codeurjc.web.model.Hotel;
+import es.codeurjc.web.model.Reserve;
+import es.codeurjc.web.model.Review;
 import es.codeurjc.web.model.User;
 import es.codeurjc.web.service.HotelService;
+import es.codeurjc.web.service.ReserveService;
+import es.codeurjc.web.service.ReviewService;
 import es.codeurjc.web.service.UserService;
 import es.codeurjc.web.service.UserSession;
 
@@ -21,6 +25,12 @@ import java.util.Optional;
 @Controller
 public class AdminController {
  
+    @Autowired
+    private ReviewService reviewService;
+
+    @Autowired
+    private ReserveService reserveService;
+    
     @Autowired
     private HotelService hotelService;
 
@@ -112,24 +122,49 @@ public class AdminController {
     @GetMapping("/admin/users/edit/{id}")
     public String editUserForm(@PathVariable Long id, Model model) {
         Optional<User> user = userService.findById(id);
- 
+        
         if (user.isPresent()) {
             model.addAttribute("user", user.get());
+             List<Review> userReviews = reviewService.getReviewsByAuthorId(user.get().getId());
+        model.addAttribute("reviews", userReviews); 
+
+        //SELECT * FROM reserve WHERE customer_id = ?
+        List<Reserve> userReserves = reserveService.getReservesByCustomerId(user.get().getId());
+        model.addAttribute("reserves", userReserves);
             return "edit_users";
         }
         return "redirect:/admin/users";
     }
  
-    // Saves the changes of an edited user
+
+    // Saves the changes of an edited user and also processes the deletion of reviews and reserves if any were marked for deletion
     @PostMapping("/admin/users/save")
     public String saveUser(
             @RequestParam Long id,
             @RequestParam String name,
             @RequestParam String email,
             @RequestParam (required = false) String password,
-            @RequestParam String role) {
+            @RequestParam String role,
+            @RequestParam (required = false) List<Long> deleteReviews,
+            @RequestParam (required = false) List<Long> deleteReserves) {
  
+        // 1. Update the user information in the database
         userService.saveUser(id, name, email, password, role);
+
+        // 2. Check if there are any reviews marked for deletion and process them
+        if (deleteReviews != null && !deleteReviews.isEmpty()) {
+            for (Long reviewId : deleteReviews) {
+                reviewService.deleteReview(reviewId); //remove the review from the database
+            }
+        }
+
+        // 3. Check if there are any reserves marked for deletion and process them
+         if (deleteReserves != null && !deleteReserves.isEmpty()) {
+            for (Long reserveId : deleteReserves) {
+                reserveService.deleteReserve(reserveId);  //remove the reserve from the database
+            }
+        }
+ 
         return "redirect:/admin/users";
     }
  
