@@ -1,81 +1,77 @@
 {{>header}}
 
 <body id="page-top">
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
-        <div class="container px-4 px-lg-5">
-            <a class="navbar-brand text-dark" href="#page-top">Hospédate</a>
-            <div class="ms-auto d-flex align-items-center">
-                <a class="btn btn-outline-primary btn-sm me-2" href="/admin/users">
-                    <i class="bi bi-people"></i> Lista de Usuarios
-                </a>
-                <a class="btn btn-primary btn-sm me-2" href="/">
-                    Volver al inicio
-                </a>
-                <form action="/logout" method="POST" class="m-0">
-                    <button type="submit" class="btn btn-outline-danger btn-sm">
-                        <i class="bi bi-box-arrow-right"></i> Salir
-                    </button>
-                </form>
+    {{>admin_sidebar}}
+
+    <div class="p-4">
+        <h2 class="fw-bold mb-1">Gestion de Hoteles</h2>
+        <p class="text-muted mb-4">Lista de hoteles registrados</p>
+
+        <!-- Search + Add -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <form method="GET" action="/admin/hotels" class="input-group" style="max-width:400px;">
+                <input type="text" name="search" class="form-control" placeholder="Buscar por nombre o ciudad..." value="{{search}}">
+                <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
+                {{#search}}
+                <a href="/admin/hotels" class="btn btn-outline-secondary"><i class="bi bi-x-lg"></i></a>
+                {{/search}}
+            </form>
+            <a href="/admin/hotels/new" class="btn btn-primary shadow-sm">
+                <i class="bi bi-plus-lg me-1"></i>Anadir Hotel
+            </a>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Imagen</th>
+                            <th>Nombre</th>
+                            <th>Ciudad</th>
+                            <th>Precio</th>
+                            <th>Rating</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#hotels}}
+                        <tr>
+                            <td class="text-muted">{{id}}</td>
+                            <td style="width:60px;">
+                                <img src="{{mainImage}}" class="rounded" style="width:50px;height:50px;object-fit:cover;"
+                                    onerror="this.src='/assets/img/portfolio/hoteles/default.jpg'">
+                            </td>
+                            <td><strong>{{name}}</strong></td>
+                            <td>{{city}}</td>
+                            <td>{{price}} &euro;</td>
+                            <td>{{rating}} <i class="bi bi-star-fill text-warning"></i></td>
+                            <td class="text-center" style="width: 180px;">
+                                <div class="d-flex flex-column align-items-center">
+                                    <a href="/admin/hotels/edit/{{id}}" class="btn btn-outline-warning btn-sm mb-1 w-100">
+                                        <i class="bi bi-pencil-square"></i> Editar
+                                    </a>
+                                    <form action="/admin/hotels/delete/{{id}}" method="POST" class="w-100">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm w-100"
+                                            onclick="return confirm('Seguro que quieres eliminar este hotel?')">
+                                            <i class="bi bi-trash"></i> Eliminar
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {{/hotels}}
+                        {{^hotels}}
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-4">No hay hoteles registrados.</td>
+                        </tr>
+                        {{/hotels}}
+                    </tbody>
+                </table>
             </div>
         </div>
-    </nav>
-    <section class="page-section mt-5">
-        <div class="container px-4 px-lg-5">
-            <h2 class="text-center mt-0">Administración de Hoteles</h2>
-            <hr class="divider" />
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <p class="text-muted m-0">Lista de hoteles registrados</p>
-                <a href="/admin/hotels/new" class="btn btn-primary btn-xl shadow-sm">
-                    <i class="bi bi-plus-lg"></i> Añadir Hotel
-                </a>
-            </div>
+    </div>
 
-            <div class="card shadow-sm border-0">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="bg-light">
-                            <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Ciudad</th>
-                                <th>Precio</th>
-                                <th>Rating</th>
-                                <th class="text-center">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{#hotels}}
-                            <tr>
-                                <td class="text-muted">{{id}}</td>
-                                <td><strong>{{name}}</strong></td>
-                                <td>{{city}}</td>
-                                <td>{{price}}€</td>
-                                <td>{{rating}} ★</td>
-                                <td class="text-center" style="width: 180px;">
-                                    <div class="d-flex flex-column align-items-center">
-                                        <a href="/admin/hotels/edit/{{id}}" class="btn btn-outline-warning btn-sm mb-1 w-100">
-                                            <i class="bi bi-pencil-square"></i> Editar
-                                        </a>
-                                        <form action="/admin/hotels/delete/{{id}}" method="POST" class="w-100">
-                                            <button type="submit" class="btn btn-outline-danger btn-sm w-100"
-                                                onclick="return confirm('¿Seguro que quieres eliminar este hotel?')">
-                                                <i class="bi bi-trash"></i> Eliminar
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            {{/hotels}}
-                            {{^hotels}}
-                            <tr>
-                                <td colspan="6" class="text-center text-muted py-4">No hay hoteles registrados.</td>
-                            </tr>
-                            {{/hotels}}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </section>
-
+    {{>admin_sidebar_end}}
 {{>footer}}

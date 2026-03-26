@@ -30,6 +30,10 @@ public class ReserveService {
         return reserveRepository.findByCustomerId(userId);
     }
 
+    public List<Reserve> getAllReserves() {
+        return reserveRepository.findAll();
+    }
+
     public void saveReserve(Reserve reserve) {
         reserveRepository.save(reserve);
     }

@@ -1,139 +1,120 @@
 {{>header}}
 
 <body id="page-top">
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
-        <div class="container px-4 px-lg-5">
-            <a class="navbar-brand text-dark" href="#page-top">Hospédate</a>
-            <div class="ms-auto d-flex align-items-center">
-                <a class="btn btn-outline-primary btn-sm me-2" href="/admin/users">
-                    <i class="bi bi-people"></i> Lista de Usuarios
-                </a>
-                <a class="btn btn-primary btn-sm me-2" href="/">
-                    Volver al inicio
-                </a>
-                <form action="/logout" method="POST" class="m-0">
-                    <button type="submit" class="btn btn-outline-danger btn-sm">
-                        <i class="bi bi-box-arrow-right"></i> Salir
-                    </button>
+    {{>admin_sidebar}}
+
+    <div class="p-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="fw-bold mb-1">Editar Informacion del Hotel</h2>
+                <hr class="divider" />
+
+                {{#hotel}}
+                <form action="/admin/hotels/save" method="POST" class="mt-4" id="hotelForm">
+                    <input type="hidden" name="id" value="{{id}}">
+
+                    <div class="mb-4">
+                        <label for="name" class="form-label fw-bold">Nombre del hotel</label>
+                        <input type="text" class="form-control form-control-lg" id="name" name="name"
+                            value="{{name}}" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="tipo" class="form-label fw-bold">Tipo de Hotel</label>
+                        <input type="text" class="form-control form-control-lg" id="tipo" name="tipo"
+                            value="{{tipo}}" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="city" class="form-label fw-bold">Ciudad</label>
+                        <input type="text" class="form-control form-control-lg" id="city" name="city"
+                            value="{{city}}" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="location" class="form-label fw-bold">Ubicacion</label>
+                        <input type="text" class="form-control form-control-lg" id="location" name="location"
+                            value="{{location}}" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="price" class="form-label fw-bold">Precio por noche (&euro;)</label>
+                        <input type="number" class="form-control form-control-lg" id="price" name="price"
+                            step="0.01" value="{{price}}" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="rating" class="form-label fw-bold">Rating (0-5)</label>
+                        <input type="number" class="form-control form-control-lg" id="rating" name="rating"
+                            step="0.1" min="0" max="5" value="{{rating}}" required>
+                    </div>
+
+                    <div class="mb-5">
+                        <label for="description" class="form-label fw-bold">Descripcion</label>
+                        <textarea class="form-control" id="description" name="description" rows="4"
+                            required>{{description}}</textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Caracteristicas principales destacadas</label>
+                        <div class="d-flex flex-wrap gap-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="wifi" name="wifi" value="true" {{#wifi}}checked{{/wifi}}>
+                                <label class="form-check-label" for="wifi"><i class="bi bi-wifi text-primary"></i> Wifi Gratis</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="tv" name="tv" value="true" {{#tv}}checked{{/tv}}>
+                                <label class="form-check-label" for="tv"><i class="bi bi-tv text-primary"></i> Television</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="airConditioning" name="airConditioning" value="true" {{#airConditioning}}checked{{/airConditioning}}>
+                                <label class="form-check-label" for="airConditioning"><i class="bi bi-snow text-primary"></i> Aire Acondicionado</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="family" name="family" value="true" {{#family}}checked{{/family}}>
+                                <label class="form-check-label" for="family"><i class="bi bi-people text-primary"></i> Familiar</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-5">
+                        <label class="form-label fw-bold">Galeria de imagenes</label>
+
+                        <input type="hidden" name="galeriaRaw" id="galeriaRaw">
+
+                        {{#galeria}}
+                        <div class="d-none galeria-item-data" data-url="{{.}}"></div>
+                        {{/galeria}}
+
+                        <!-- Contenedor drag & drop de tarjetas existentes -->
+                        <div id="galeria-sortable" class="d-flex flex-wrap gap-3 mb-3 p-3 border rounded bg-light" style="min-height: 80px;">
+                        </div>
+
+                        <!-- Zona de drop para subir nuevas imagenes -->
+                        <div id="drop-zone" class="border border-2 border-dashed rounded p-4 text-center text-muted"
+                            style="cursor:pointer; border-color: #aaa !important; transition: background 0.2s;">
+                            <i class="bi bi-cloud-upload fs-3 d-block mb-2"></i>
+                            <span>Arrastra imagenes aqui o <u>haz clic para seleccionar</u></span>
+                            <input type="file" id="fileInput" accept="image/*" multiple style="display:none;">
+                        </div>
+                        <div id="upload-progress" class="mt-2"></div>
+                    </div>
+
+                    <div class="d-flex justify-content-center gap-3">
+                        <button type="submit" class="btn btn-primary btn-xl shadow">
+                            Actualizar cambios
+                        </button>
+                        <a href="/admin/hotels" class="btn btn-light btn-xl border">
+                            Cancelar
+                        </a>
+                    </div>
                 </form>
+                {{/hotel}}
             </div>
         </div>
-    </nav>
+    </div>
 
-    <section class="page-section mt-5">
-        <div class="container px-4 px-lg-5">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <!--Title of the form-->
-                    <h2 class="text-center mt-0">Editar Información del Hotel</h2>
-                    <hr class="divider" />
-                    <!--Creation of the form-->
-
-                    {{#hotel}}
-                    <form action="/admin/hotels/save" method="POST" class="mt-4" id="hotelForm">
-                        <input type="hidden" name="id" value="{{id}}">
-
-                        <div class="mb-4">
-                            <label for="name" class="form-label fw-bold">Nombre del hotel</label>
-                            <input type="text" class="form-control form-control-lg" id="name" name="name"
-                                value="{{name}}" required>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="tipo" class="form-label fw-bold">Tipo de Hotel</label>
-                            <input type="text" class="form-control form-control-lg" id="tipo" name="tipo"
-                                value="{{tipo}}" required>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="city" class="form-label fw-bold">Ciudad</label>
-                            <input type="text" class="form-control form-control-lg" id="city" name="city"
-                                value="{{city}}" required>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="location" class="form-label fw-bold">Ubicación</label>
-                            <input type="text" class="form-control form-control-lg" id="location" name="location"
-                                value="{{location}}" required>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="price" class="form-label fw-bold">Precio por noche (€)</label>
-                            <input type="number" class="form-control form-control-lg" id="price" name="price"
-                                step="0.01" value="{{price}}" required>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="rating" class="form-label fw-bold">Rating (0-5)</label>
-                            <input type="number" class="form-control form-control-lg" id="rating" name="rating"
-                                step="0.1" min="0" max="5" value="{{rating}}" required>
-                        </div>
-
-                        <div class="mb-5">
-                            <label for="description" class="form-label fw-bold">Descripción</label>
-                            <textarea class="form-control" id="description" name="description" rows="4"
-                                required>{{description}}</textarea>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Características principales destacadas</label>
-                            <div class="d-flex flex-wrap gap-4">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="wifi" name="wifi" value="true" {{#wifi}}checked{{/wifi}}>
-                                    <label class="form-check-label" for="wifi"><i class="bi bi-wifi text-primary"></i> Wifi Gratis</label>
-                                </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="tv" name="tv" value="true" {{#tv}}checked{{/tv}}>
-                                    <label class="form-check-label" for="tv"><i class="bi bi-tv text-primary"></i> Televisión</label>
-                                </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="airConditioning" name="airConditioning" value="true" {{#airConditioning}}checked{{/airConditioning}}>
-                                    <label class="form-check-label" for="airConditioning"><i class="bi bi-snow text-primary"></i> Aire Acondicionado</label>
-                                </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="family" name="family" value="true" {{#family}}checked{{/family}}>
-                                    <label class="form-check-label" for="family"><i class="bi bi-people text-primary"></i> Familiar</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mb-5">
-                            <label class="form-label fw-bold">Galería de imágenes</label>
-
-                            <input type="hidden" name="galeriaRaw" id="galeriaRaw">
-
-                            {{#galeria}}
-                            <div class="d-none galeria-item-data" data-url="{{.}}"></div>
-                            {{/galeria}}
-
-                            <!-- Contenedor drag & drop de tarjetas existentes -->
-                            <div id="galeria-sortable" class="d-flex flex-wrap gap-3 mb-3 p-3 border rounded bg-light" style="min-height: 80px;">
-                            </div>
-
-                            <!-- Zona de drop para subir nuevas imágenes -->
-                            <div id="drop-zone" class="border border-2 border-dashed rounded p-4 text-center text-muted"
-                                style="cursor:pointer; border-color: #aaa !important; transition: background 0.2s;">
-                                <i class="bi bi-cloud-upload fs-3 d-block mb-2"></i>
-                                <span>Arrastra imágenes aquí o <u>haz clic para seleccionar</u></span>
-                                <input type="file" id="fileInput" accept="image/*" multiple style="display:none;">
-                            </div>
-                            <div id="upload-progress" class="mt-2"></div>
-                        </div>
-
-                        <div class="d-flex justify-content-center gap-3">
-                            <button type="submit" class="btn btn-primary btn-xl shadow">
-                                Actualizar cambios
-                            </button>
-                            <a href="/admin/hotels" class="btn btn-light btn-xl border">
-                                Cancelar
-                            </a>
-                        </div>
-                    </form>
-                    {{/hotel}}
-                </div>
-            </div>
-        </div>
-    </section>
+    {{>admin_sidebar_end}}
 
     <!-- SortableJS desde CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
@@ -144,7 +125,7 @@
         const fileInput = document.getElementById('fileInput');
         const progressDiv = document.getElementById('upload-progress');
 
-        // Cargar imágenes existentes del hotel
+        // Cargar imagenes existentes del hotel
         document.querySelectorAll('.galeria-item-data').forEach(div => {
             agregarTarjeta(div.dataset.url);
         });
@@ -171,10 +152,10 @@
             subirArchivos(e.dataTransfer.files);
         });
 
-        // Selección por clic
+        // Seleccion por clic
         fileInput.addEventListener('change', () => {
             subirArchivos(fileInput.files);
-            fileInput.value = ''; // reset para permitir subir el mismo archivo otra vez
+            fileInput.value = '';
         });
 
         // Subida al servidor
@@ -197,17 +178,16 @@
                     if (data.url) {
                         agregarTarjeta(data.url);
                         badge.className = 'badge bg-success me-1';
-                        badge.textContent = `✓ ${file.name}`;
+                        badge.textContent = `${file.name}`;
                     } else {
                         badge.className = 'badge bg-danger me-1';
-                        badge.textContent = `✗ Error: ${file.name}`;
+                        badge.textContent = `Error: ${file.name}`;
                     }
                 } catch (err) {
                     badge.className = 'badge bg-danger me-1';
-                    badge.textContent = `✗ Falló: ${file.name}`;
+                    badge.textContent = `Fallo: ${file.name}`;
                 }
 
-                // Quitar el badge después de 3 segundos
                 setTimeout(() => badge.remove(), 3000);
             }
         }
@@ -223,7 +203,7 @@
                     onerror="this.src='/assets/img/portfolio/hoteles/default.jpg'">
                 <button type="button" onclick="this.closest('.galeria-card').remove()"
                     class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 p-0"
-                    style="width:22px;height:22px;font-size:12px;line-height:1;">✕</button>
+                    style="width:22px;height:22px;font-size:12px;line-height:1;">x</button>
             `;
             container.appendChild(card);
         }
@@ -237,4 +217,4 @@
     });
     </script>
 
-    {{>footer}}
+{{>footer}}

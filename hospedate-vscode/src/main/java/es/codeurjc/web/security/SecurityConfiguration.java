@@ -89,7 +89,7 @@ public class SecurityConfiguration {
                         .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
                 if (isAdmin) {
                     //if the user is an admin, we send him to the admin dashboard
-                    response.sendRedirect("/admin/hotels");
+                    response.sendRedirect("/admin/dashboard");
                 } else {
                     //if the user is a normal user, we send him to his profile page
                     response.sendRedirect("/profile");

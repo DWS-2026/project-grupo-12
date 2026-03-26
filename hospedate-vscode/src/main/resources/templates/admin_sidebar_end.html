@@ -1,0 +1,24 @@
+    </div>
+</div>
+<style>
+    #admin-sidebar .admin-nav-link:hover,
+    #admin-sidebar .admin-nav-link.active { background-color: rgba(255,255,255,0.15) !important; }
+    #admin-sidebar .nav-link:hover { color: #fff !important; }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var path = window.location.pathname;
+    document.querySelectorAll('#admin-sidebar .admin-nav-link').forEach(function(link) {
+        var page = link.dataset.page;
+        if ((page === 'hotels' && path.indexOf('/admin/hotels') !== -1) ||
+            (page === 'users' && path.indexOf('/admin/users') !== -1) ||
+            (page === 'reserves' && path.indexOf('/admin/reserves') !== -1) ||
+            (page === 'dashboard' && path === '/admin/dashboard')) {
+            link.classList.add('active');
+        }
+    });
+    document.querySelectorAll('.alert-dismissible').forEach(function(alert) {
+        setTimeout(function() { var btn = alert.querySelector('.btn-close'); if (btn) btn.click(); }, 4000);
+    });
+});
+</script>

@@ -93,4 +93,8 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public boolean isAdmin() {
+        return "ADMIN".equals(this.role);
+    }
 }

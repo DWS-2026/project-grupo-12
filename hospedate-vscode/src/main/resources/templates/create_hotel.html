@@ -1,118 +1,111 @@
 {{>header}}
 
-<!--Title-->
 <body id="page-top">
-    <!--Logo with button to go backwards-->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3 navbar-shrink" id="mainNav">
-        <div class="container px-4 px-lg-5">
-            <a class="navbar-brand fw-bold" href="/admin/hotels">Hospédate</a>
-        </div>
-    </nav>
+    {{>admin_sidebar}}
 
-    <section class="page-section mt-5">
-        <div class="container px-4 px-lg-5">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <!--Title of the form-->
-                    <h2 class="text-center mt-0">Registrar Nuevo Hotel</h2>
-                    <hr class="divider" /> 
-                    <!--Creation of the form-->
-                    <form action="/admin/hotels/save" method="POST" class="mt-4" id="hotelForm">
-                        {{#errorMessage}}
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <i class="bi bi-exclamation-triangle-fill me-2"></i> <strong>¡Aviso!</strong> {{errorMessage}}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="p-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="fw-bold mb-1">Registrar Nuevo Hotel</h2>
+                <hr class="divider" />
+
+                <form action="/admin/hotels/save" method="POST" class="mt-4" id="hotelForm">
+                    {{#errorMessage}}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i> <strong>Aviso:</strong> {{errorMessage}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {{/errorMessage}}
+                    <div class="mb-4">
+                        <label for="name" class="form-label fw-bold">Nombre del Hotel</label>
+                        <input type="text" class="form-control form-control-lg" id="name" name="name" placeholder="Ejemplo: Hotel Paraiso" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="tipo" class="form-label fw-bold">Tipo de Hotel</label>
+                        <input type="text" class="form-control form-control-lg" id="tipo" name="tipo" placeholder="Ejemplo: Resort, Boutique, Urbano..." required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="city" class="form-label fw-bold">Ciudad</label>
+                        <input type="text" class="form-control form-control-lg" id="city" name="city" placeholder="Ejemplo: Madrid" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="location" class="form-label fw-bold">Ubicacion (direccion)</label>
+                        <input type="text" class="form-control form-control-lg" id="location" name="location" placeholder="Ejemplo: Calle Gran Via 1, Madrid" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="price" class="form-label fw-bold">Precio por Noche (&euro;)</label>
+                        <input type="number" class="form-control form-control-lg" id="price" name="price" step="0.01" min="0" placeholder="0.00" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="rating" class="form-label fw-bold">Rating (0-5)</label>
+                        <input type="number" class="form-control form-control-lg" id="rating" name="rating" step="0.1" min="0" max="5" placeholder="0.0" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="description" class="form-label fw-bold">Descripcion</label>
+                        <textarea class="form-control" id="description" name="description" rows="4" placeholder="Escribe aqui los servicios o detalles del hotel..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Caracteristicas principales destacadas</label>
+                        <div class="d-flex flex-wrap gap-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="wifi" name="wifi" value="true">
+                                <label class="form-check-label" for="wifi"><i class="bi bi-wifi text-primary"></i> Wifi Gratis</label>
                             </div>
-                        {{/errorMessage}}
-                        <div class="mb-4">
-                            <label for="name" class="form-label fw-bold">Nombre del Hotel</label>
-                            <input type="text" class="form-control form-control-lg" id="name" name="name" placeholder="Ejemplo: Hotel Paraíso" required>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="tipo" class="form-label fw-bold">Tipo de Hotel</label>
-                            <input type="text" class="form-control form-control-lg" id="tipo" name="tipo" placeholder="Ejemplo: Resort, Boutique, Urbano..." required>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="city" class="form-label fw-bold">Ciudad</label>
-                            <input type="text" class="form-control form-control-lg" id="city" name="city" placeholder="Ejemplo: Madrid" required>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="location" class="form-label fw-bold">Ubicación (dirección)</label>
-                            <input type="text" class="form-control form-control-lg" id="location" name="location" placeholder="Ejemplo: Calle Gran Vía 1, Madrid" required>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="price" class="form-label fw-bold">Precio por Noche (€)</label>
-                            <input type="number" class="form-control form-control-lg" id="price" name="price" step="0.01" min="0" placeholder="0.00" required>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="rating" class="form-label fw-bold">Rating (0-5)</label>
-                            <input type="number" class="form-control form-control-lg" id="rating" name="rating" step="0.1" min="0" max="5" placeholder="0.0" required>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="description" class="form-label fw-bold">Descripción</label>
-                            <textarea class="form-control" id="description" name="description" rows="4" placeholder="Escribe aquí los servicios o detalles del hotel..."></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Características principales destacadas</label>
-                            <div class="d-flex flex-wrap gap-4">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="wifi" name="wifi" value="true" {{#hotel.wifi}}checked{{/hotel.wifi}}>
-                                    <label class="form-check-label" for="wifi"><i class="bi bi-wifi text-primary"></i> Wifi Gratis</label>
-                                </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="tv" name="tv" value="true" {{#hotel.tv}}checked{{/hotel.tv}}>
-                                    <label class="form-check-label" for="tv"><i class="bi bi-tv text-primary"></i> Televisión</label>
-                                </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="airConditioning" name="airConditioning" value="true" {{#hotel.airConditioning}}checked{{/hotel.airConditioning}}>
-                                    <label class="form-check-label" for="airConditioning"><i class="bi bi-snow text-primary"></i> Aire Acondicionado</label>
-                                </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="family" name="family" value="true" {{#hotel.family}}checked{{/hotel.family}}>
-                                    <label class="form-check-label" for="family"><i class="bi bi-people text-primary"></i> Familiar</label>
-                                </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="tv" name="tv" value="true">
+                                <label class="form-check-label" for="tv"><i class="bi bi-tv text-primary"></i> Television</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="airConditioning" name="airConditioning" value="true">
+                                <label class="form-check-label" for="airConditioning"><i class="bi bi-snow text-primary"></i> Aire Acondicionado</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="family" name="family" value="true">
+                                <label class="form-check-label" for="family"><i class="bi bi-people text-primary"></i> Familiar</label>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="mb-5">
-                            <label class="form-label fw-bold">Galería de imágenes</label>
+                    <div class="mb-5">
+                        <label class="form-label fw-bold">Galeria de imagenes</label>
 
-                            <input type="hidden" name="galeriaRaw" id="galeriaRaw">
+                        <input type="hidden" name="galeriaRaw" id="galeriaRaw">
 
-                            <!-- Contenedor drag & drop de tarjetas -->
-                            <div id="galeria-sortable" class="d-flex flex-wrap gap-3 mb-3 p-3 border rounded bg-light" style="min-height: 80px;">
-                            </div>
-
-                            <!-- Zona de drop para subir nuevas imágenes -->
-                            <div id="drop-zone" class="border border-2 border-dashed rounded p-4 text-center text-muted"
-                                style="cursor:pointer; border-color: #aaa !important; transition: background 0.2s;">
-                                <i class="bi bi-cloud-upload fs-3 d-block mb-2"></i>
-                                <span>Arrastra imágenes aquí o <u>haz clic para seleccionar</u></span>
-                                <input type="file" id="fileInput" accept="image/*" multiple style="display:none;">
-                            </div>
-                            <div id="upload-progress" class="mt-2"></div>
+                        <!-- Contenedor drag & drop de tarjetas -->
+                        <div id="galeria-sortable" class="d-flex flex-wrap gap-3 mb-3 p-3 border rounded bg-light" style="min-height: 80px;">
                         </div>
 
-                        <div class="d-flex justify-content-center gap-3">
-                            <button type="submit" class="btn btn-primary btn-xl shadow">
-                                Guardar Hotel
-                            </button>
-                            <a href="/admin/hotels" class="btn btn-light btn-xl border">
-                                Cancelar
-                            </a>
+                        <!-- Zona de drop para subir nuevas imagenes -->
+                        <div id="drop-zone" class="border border-2 border-dashed rounded p-4 text-center text-muted"
+                            style="cursor:pointer; border-color: #aaa !important; transition: background 0.2s;">
+                            <i class="bi bi-cloud-upload fs-3 d-block mb-2"></i>
+                            <span>Arrastra imagenes aqui o <u>haz clic para seleccionar</u></span>
+                            <input type="file" id="fileInput" accept="image/*" multiple style="display:none;">
                         </div>
+                        <div id="upload-progress" class="mt-2"></div>
+                    </div>
 
-                    </form>
-                </div>
+                    <div class="d-flex justify-content-center gap-3">
+                        <button type="submit" class="btn btn-primary btn-xl shadow">
+                            Guardar Hotel
+                        </button>
+                        <a href="/admin/hotels" class="btn btn-light btn-xl border">
+                            Cancelar
+                        </a>
+                    </div>
+
+                </form>
             </div>
         </div>
-    </section>
+    </div>
+
+    {{>admin_sidebar_end}}
 
     <!-- SortableJS desde CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
@@ -145,7 +138,7 @@
             subirArchivos(e.dataTransfer.files);
         });
 
-        // Selección por clic
+        // Seleccion por clic
         fileInput.addEventListener('change', () => {
             subirArchivos(fileInput.files);
             fileInput.value = '';
@@ -178,7 +171,7 @@
                     }
                 } catch (err) {
                     badge.className = 'badge bg-danger me-1';
-                    badge.textContent = `Falló: ${file.name}`;
+                    badge.textContent = `Fallo: ${file.name}`;
                 }
 
                 setTimeout(() => badge.remove(), 3000);

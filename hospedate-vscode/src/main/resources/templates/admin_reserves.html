@@ -1,0 +1,81 @@
+{{>header}}
+
+<body id="page-top">
+    {{>admin_sidebar}}
+
+    <div class="p-4">
+        <h2 class="fw-bold mb-1">Gestion de Reservas</h2>
+        <p class="text-muted mb-4">Listado de todas las reservas en la plataforma</p>
+
+        <!-- Search -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <form method="GET" action="/admin/reserves" class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Buscar por hotel o cliente..." value="{{search}}">
+                    <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
+                    {{#search}}
+                    <a href="/admin/reserves" class="btn btn-outline-secondary"><i class="bi bi-x-lg"></i></a>
+                    {{/search}}
+                </form>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Hotel</th>
+                            <th>Cliente</th>
+                            <th>Entrada</th>
+                            <th>Salida</th>
+                            <th>Noches</th>
+                            <th>Huespedes</th>
+                            <th>Estado</th>
+                            <th class="text-end">Precio</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#reserves}}
+                        <tr>
+                            <td class="text-muted">{{id}}</td>
+                            <td><strong>{{hotel.name}}</strong></td>
+                            <td>{{customer.name}}<br><small class="text-muted">{{customer.email}}</small></td>
+                            <td>{{entryDate}}</td>
+                            <td>{{departureDate}}</td>
+                            <td>{{nights}}</td>
+                            <td>{{guests}}</td>
+                            <td>
+                                {{#isPending}}
+                                <span class="badge bg-warning text-dark">{{status}}</span>
+                                {{/isPending}}
+                                {{^isPending}}
+                                <span class="badge bg-success">{{status}}</span>
+                                {{/isPending}}
+                            </td>
+                            <td class="text-end fw-bold">{{price}} &euro;</td>
+                            <td class="text-center" style="width:100px;">
+                                <form action="/admin/reserves/delete/{{id}}" method="POST">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm"
+                                        onclick="return confirm('Seguro que quieres eliminar esta reserva?')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {{/reserves}}
+                        {{^reserves}}
+                        <tr>
+                            <td colspan="10" class="text-center text-muted py-4">No hay reservas registradas.</td>
+                        </tr>
+                        {{/reserves}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    {{>admin_sidebar_end}}
+{{>footer}}
