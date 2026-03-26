@@ -153,6 +153,14 @@ public class Hotel{
     }
 
     public double getRating() {
+        if (reviews != null && !reviews.isEmpty()) {
+            double avg = reviews.stream().mapToInt(Review::getRating).average().orElse(0.0);
+            return Math.round(avg * 10.0) / 10.0;
+        }
+        return rating;
+    }
+
+    public double getManualRating() {
         return rating;
     }
 
