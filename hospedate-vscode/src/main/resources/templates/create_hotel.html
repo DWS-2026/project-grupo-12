@@ -10,6 +10,7 @@
                 <hr class="divider" />
 
                 <form action="/admin/hotels/save" method="POST" class="mt-4" id="hotelForm">
+                    <input type="hidden" name="_csrf" value="{{token}}">
                     {{#errorMessage}}
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             <i class="bi bi-exclamation-triangle-fill me-2"></i> <strong>Aviso:</strong> {{errorMessage}}
@@ -158,7 +159,8 @@
                     const formData = new FormData();
                     formData.append('file', file);
 
-                    const res = await fetch('/admin/upload', { method: 'POST', body: formData });
+                    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+                    const res = await fetch('/admin/upload', { method: 'POST', body: formData, headers: { 'X-CSRF-TOKEN': csrfToken } });
                     const data = await res.json();
 
                     if (data.url) {

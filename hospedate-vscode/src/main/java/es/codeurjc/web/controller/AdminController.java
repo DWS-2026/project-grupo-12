@@ -207,6 +207,11 @@ public class AdminController {
             @RequestParam(required = false) List<Long> deleteReserves,
             RedirectAttributes redirectAttributes) {
 
+        if (userService.isEmailTakenByAnother(id, email)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "El email '" + email + "' ya está en uso por otro usuario.");
+            return "redirect:/admin/users/edit/" + id;
+        }
+
         userService.saveUser(id, name, email, password, role);
 
         if (deleteReviews != null && !deleteReviews.isEmpty()) {
@@ -278,8 +283,22 @@ public class AdminController {
             Path uploadDir = Paths.get("uploads").toAbsolutePath().normalize();
             Files.createDirectories(uploadDir);
 
-            String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
-            Path destino = uploadDir.resolve(filename);
+            // Sanitize filename: keep only the file extension, use UUID as name
+            String originalName = file.getOriginalFilename();
+            String extension = "";
+            if (originalName != null && originalName.contains(".")) {
+                extension = originalName.substring(originalName.lastIndexOf(".")).toLowerCase();
+            }
+            if (!extension.matches("\\.(jpg|jpeg|png|gif|webp)")) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Tipo de archivo no permitido."));
+            }
+            String filename = UUID.randomUUID() + extension;
+            Path destino = uploadDir.resolve(filename).normalize();
+
+            // Prevent path traversal
+            if (!destino.startsWith(uploadDir)) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Nombre de archivo no valido."));
+            }
 
             Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
 

@@ -53,6 +53,7 @@
                                         <i class="bi bi-pencil-square"></i> Editar
                                     </a>
                                     <form action="/admin/hotels/delete/{{id}}" method="POST" class="w-100">
+                                        <input type="hidden" name="_csrf" value="{{token}}">
                                         <button type="submit" class="btn btn-outline-danger btn-sm w-100"
                                             onclick="return confirm('Seguro que quieres eliminar este hotel?')">
                                             <i class="bi bi-trash"></i> Eliminar

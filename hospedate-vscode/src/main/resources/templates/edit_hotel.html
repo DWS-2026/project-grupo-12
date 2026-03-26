@@ -11,6 +11,7 @@
 
                 {{#hotel}}
                 <form action="/admin/hotels/save" method="POST" class="mt-4" id="hotelForm">
+                    <input type="hidden" name="_csrf" value="{{token}}">
                     <input type="hidden" name="id" value="{{id}}">
 
                     <div class="mb-4">
@@ -172,7 +173,8 @@
                     const formData = new FormData();
                     formData.append('file', file);
 
-                    const res = await fetch('/admin/upload', { method: 'POST', body: formData });
+                    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+                    const res = await fetch('/admin/upload', { method: 'POST', body: formData, headers: { 'X-CSRF-TOKEN': csrfToken } });
                     const data = await res.json();
 
                     if (data.url) {

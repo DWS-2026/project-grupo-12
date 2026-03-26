@@ -58,6 +58,7 @@
                             <td class="text-end fw-bold">{{price}} &euro;</td>
                             <td class="text-center" style="width:100px;">
                                 <form action="/admin/reserves/delete/{{id}}" method="POST">
+                                    <input type="hidden" name="_csrf" value="{{token}}">
                                     <button type="submit" class="btn btn-outline-danger btn-sm"
                                         onclick="return confirm('Seguro que quieres eliminar esta reserva?')">
                                         <i class="bi bi-trash"></i>

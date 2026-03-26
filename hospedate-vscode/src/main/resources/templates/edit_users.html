@@ -13,6 +13,7 @@
                 {{#user}}
 
                 <form action="/admin/users/save" method="POST">
+                    <input type="hidden" name="_csrf" value="{{token}}">
                     <input type="hidden" name="id" value="{{id}}">
 
                     <div class="card shadow-sm border-0 rounded-lg mb-4">

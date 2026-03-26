@@ -28,7 +28,7 @@
                     <hr class="mb-4">
 
                     <form action="/reserve/process" method="POST">
-                        
+                        <input type="hidden" name="_csrf" value="{{token}}">
                         <input type="hidden" name="reserveId" value="{{reserveId}}">
 
                         <div class="row gy-3">

@@ -39,6 +39,11 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public boolean isEmailTakenByAnother(Long userId, String email) {
+        Optional<User> byEmail = userRepository.findByEmail(email);
+        return byEmail.isPresent() && !byEmail.get().getId().equals(userId);
+    }
+
     public void saveUser(Long id, String name, String email, String password, String role) {
         Optional<User> existing = userRepository.findById(id);
 
@@ -46,8 +51,8 @@ public class UserService {
             User user = existing.get();
             user.setName(name);
             user.setEmail(email);
-            if (password != null && !password.trim().isEmpty()) { //if the passsword field is not empty, update the password
-            user.setPassword(passwordEncoder.encode(password)); // encrypt the new password before saving it
+            if (password != null && !password.trim().isEmpty()) {
+                user.setPassword(passwordEncoder.encode(password));
             }
             user.setRole(role);
             userRepository.save(user);

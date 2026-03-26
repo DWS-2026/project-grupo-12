@@ -203,6 +203,7 @@
                                 </div>
                                 <hr>
                                 <form method="POST" action="/reserve">
+                                    <input type="hidden" name="_csrf" value="{{token}}">
                                     <input type="hidden" name="hotelId" value="{{hotel.id}}">
                                     <div class="mb-3">
                                         <label class="form-label small">Fecha de entrada</label>
@@ -288,6 +289,7 @@
                         <div class="card-body p-0">
                             <h4 class="h5 mb-3">Deja tu reseña</h4>
                             <form id="reviewForm" action="/hotel/{{hotel.id}}/review" method="POST">
+                                <input type="hidden" name="_csrf" value="{{token}}">
                                 <div class="mb-3">
                                 <div class="d-flex align-items-center">
 

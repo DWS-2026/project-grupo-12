@@ -103,7 +103,6 @@ public class SecurityConfiguration {
             .permitAll()
     );
     
-        http.csrf(csrf -> csrf.disable());
         return http.build(); 
     }
 }
