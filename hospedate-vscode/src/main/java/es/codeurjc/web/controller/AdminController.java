@@ -32,6 +32,8 @@ import java.nio.file.*;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.transaction.annotation.Transactional;
+
 @Controller
 public class AdminController {
 
@@ -49,6 +51,28 @@ public class AdminController {
 
     @Autowired
     private UserSession userSession;
+
+    private static final int PAGE_SIZE = 10;
+
+    private <T> List<T> paginate(List<T> list, int page, Model model) {
+        int totalItems = list.size();
+        int totalPages = (int) Math.ceil((double) totalItems / PAGE_SIZE);
+        if (page < 0) page = 0;
+        if (page >= totalPages && totalPages > 0) page = totalPages - 1;
+
+        int from = page * PAGE_SIZE;
+        int to = Math.min(from + PAGE_SIZE, totalItems);
+        List<T> pageItems = (from < totalItems) ? list.subList(from, to) : List.of();
+
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("hasPrev", page > 0);
+        model.addAttribute("hasNext", page < totalPages - 1);
+        model.addAttribute("prevPage", page - 1);
+        model.addAttribute("nextPage", page + 1);
+
+        return pageItems;
+    }
 
     // ==================== DASHBOARD ====================
 
@@ -82,7 +106,9 @@ public class AdminController {
     // ==================== HOTELS ====================
 
     @GetMapping("/admin/hotels")
-    public String adminHotels(@RequestParam(required = false) String search, Model model) {
+    public String adminHotels(@RequestParam(required = false) String search,
+                              @RequestParam(defaultValue = "0") int page,
+                              Model model) {
         List<Hotel> hotels;
         if (search != null && !search.trim().isEmpty()) {
             hotels = hotelService.getAllHotels().stream()
@@ -93,7 +119,7 @@ public class AdminController {
             hotels = hotelService.getAllHotels();
         }
         model.addAttribute("search", search != null ? search : "");
-        model.addAttribute("hotels", hotels);
+        model.addAttribute("hotels", paginate(hotels, page, model));
         return "admin_hotels";
     }
 
@@ -147,6 +173,7 @@ public class AdminController {
         return "redirect:/admin/hotels";
     }
 
+    @Transactional
     @PostMapping("/admin/hotels/delete/{id}")
     public String deleteHotel(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Optional<Hotel> hotel = hotelService.getHotelById(id);
@@ -160,7 +187,9 @@ public class AdminController {
     // ==================== USERS ====================
 
     @GetMapping("/admin/users")
-    public String adminUsers(@RequestParam(required = false) String search, Model model) {
+    public String adminUsers(@RequestParam(required = false) String search,
+                             @RequestParam(defaultValue = "0") int page,
+                             Model model) {
         List<User> users = userService.getAllUsers();
         users.removeIf(user -> "ADMIN".equals(user.getRole()));
 
@@ -172,7 +201,7 @@ public class AdminController {
         }
 
         model.addAttribute("search", search != null ? search : "");
-        model.addAttribute("users", users);
+        model.addAttribute("users", paginate(users, page, model));
         return "admin_users";
     }
 
@@ -196,6 +225,7 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
+    @Transactional
     @PostMapping("/admin/users/save")
     public String saveUser(
             @RequestParam Long id,
@@ -230,6 +260,7 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
+    @Transactional
     @PostMapping("/admin/users/delete/{id}")
     public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Optional<User> userToDelete = userService.findById(id);
@@ -248,7 +279,9 @@ public class AdminController {
     // ==================== RESERVES ====================
 
     @GetMapping("/admin/reserves")
-    public String adminReserves(@RequestParam(required = false) String search, Model model) {
+    public String adminReserves(@RequestParam(required = false) String search,
+                                @RequestParam(defaultValue = "0") int page,
+                                Model model) {
         List<Reserve> reserves;
         if (search != null && !search.trim().isEmpty()) {
             reserves = reserveService.getAllReserves().stream()
@@ -260,10 +293,11 @@ public class AdminController {
             reserves = reserveService.getAllReserves();
         }
         model.addAttribute("search", search != null ? search : "");
-        model.addAttribute("reserves", reserves);
+        model.addAttribute("reserves", paginate(reserves, page, model));
         return "admin_reserves";
     }
 
+    @Transactional
     @PostMapping("/admin/reserves/delete/{id}")
     public String deleteReserve(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Optional<Reserve> reserve = reserveService.getReserveById(id);
