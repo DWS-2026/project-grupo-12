@@ -20,10 +20,12 @@
                     {{/logged}}
                     <!-- If you are logged in, "Mi Perfil" will appear-->
                     {{#logged}}
+                        <!-- If you are not an admin, it will appear a button to see your profile-->
                         {{^isAdmin}}
                         <li class="nav-item"><a class="nav-link" href="/profile">Mi Perfil</a></li>
                         {{/isAdmin}}
                         
+                        <!--If you are an admin, show the admin panel-->
                         {{#isAdmin}}
                         <li class="nav-item"><a class="nav-link text-warning fw-bold" style="color: #ffc107 !important;" href="/admin/hotels">
                             <i class="bi bi-gear-fill me-1"></i>Panel de Admin</a></li>
@@ -54,10 +56,12 @@
                         <i class="bi bi-star-fill"></i>
                         {{/stars}}
                     </div>
+                    <!--A button that if clicked will redirect to the reserve part of the page-->
                     <a href="#reserve" class="btn btn-primary btn-xl">Reservar Ahora</a>
                 </div>
             </div>
-
+            
+            <!-- Creation of the gallery container, with the bigger and the smallest photos-->
             <div class="container gallery-container mb-5">
                 
                 <div class="row g-2 mb-2">
@@ -102,6 +106,7 @@
                             <div id="carruselHotel" class="carousel slide" data-bs-ride="carousel">
                                 <div class="carousel-inner rounded">
                                     
+                                    <!-- It creates each diapositive that shows the images -->
                                     {{#carouselImages}}
                                     <div class="carousel-item {{#active}}active{{/active}}">
                                         <img src="{{url}}" class="d-block w-100" style="height: 80vh; object-fit: contain; background-color: rgba(0,0,0,0.8);" alt="Foto de la galería">
@@ -109,6 +114,7 @@
                                     {{/carouselImages}}
 
                                 </div>
+                                <!-- Bottons to navigate through the images -->
                                 <button class="carousel-control-prev" type="button" data-bs-target="#carruselHotel" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Anterior</span>

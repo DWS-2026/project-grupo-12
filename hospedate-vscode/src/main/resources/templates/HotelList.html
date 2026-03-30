@@ -11,11 +11,13 @@
                 data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
                 aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 
+            <!-- The search box in order to look fot the hotel wanted-->
             <div class="mx-auto my-3 my-lg-0 navbar-search-container">
                 <form action="/hotels" method="GET" class="input-group">
                     <span class="input-group-text bg-white border-end-0 search-icon-box">
                         <i class="bi bi-search text-muted"></i>
                     </span>
+                    <!-- Search input-->
                     <input type="text" name="keyword" class="form-control border-start-0 ps-0 search-input"
                         placeholder="¿A dónde vas?" value="{{#keyword}}{{keyword}}{{/keyword}}">
                     <button class="btn btn-primary px-4" type="submit">Buscar</button>
@@ -61,6 +63,7 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="card hotel-card h-100">
                         <a href="/hotel/{{id}}">
+                            <!-- Show the photo, name, rating and part of the description of each available hotel -->
                             <div class="hotel-img-container list-img-container">
                                 {{#galeria}}
                                 <img src="{{.}}" alt="Foto de {{name}}">
@@ -91,6 +94,7 @@
                     </div>
                 </div>
                 {{/hotels}}
+                <!-- If no hotels are found, show a message -->
                 {{^hotels}}
                 <div class="col-12 text-center py-5">
                     <i class="bi bi-search fs-1 text-muted mb-3 d-block"></i>
@@ -102,6 +106,7 @@
 
             </div>
             
+            <!-- Pagination, if there are no hotels it is no even shown-->
             {{#hasHotels}}
             <div class="row mt-5">
                 <div class="col-12 d-flex justify-content-center gap-3">

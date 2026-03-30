@@ -2,6 +2,7 @@
 
 <body id="page-top" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh;">
 
+    <!-- No menu and no hrefs to avoid distractions in the payment page-->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3 navbar-always-dark" id="solidNav" style="background-color: white !important;">
         <div class="container px-4 px-lg-5">
             <a class="navbar-brand" href="/">Hospédate</a>
@@ -27,10 +28,12 @@
                     </div>
                     <hr class="mb-4">
 
+                    <!-- Payment form, it confirms the reservation-->
                     <form action="/reserve/process" method="POST">
                         <input type="hidden" name="_csrf" value="{{token}}">
                         <input type="hidden" name="reserveId" value="{{reserveId}}">
 
+                        <!-- part to introduce the name related to the credit card-->
                         <div class="row gy-3">
                             <div class="col-md-12">
                                 <label for="cc-name" class="form-label fw-bold">Nombre en la tarjeta</label>
@@ -38,6 +41,7 @@
                                 <small class="text-muted">Como aparece impreso en la tarjeta</small>
                             </div>
 
+                            <!-- Input to introduce the number, valid date and CSV of the credit card-->
                             <div class="col-md-12">
                                 <label for="cc-number" class="form-label fw-bold">Número de la tarjeta</label>
                                 <input type="text" class="form-control form-control-lg" id="cc-number" name="cc-number" 

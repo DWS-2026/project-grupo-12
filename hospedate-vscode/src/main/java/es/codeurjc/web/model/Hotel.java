@@ -14,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
+// To create the hotel entity, which will be stored in the database. Each varible turns into a column
 @Entity
 public class Hotel{
 
@@ -30,6 +31,8 @@ public class Hotel{
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    // Create secundary tables to store the galery and services, and when an hotel is requested
+    // they are automatically loaded thanks to the EAGER fetch type.
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> galeria;
 

@@ -90,10 +90,10 @@ public class HotelService {
             galeria.replaceAll(String::trim);
             hotel.setGaleria(galeria);
         } else if (id == null) {
-            // Solo vaciar la galería para hoteles nuevos sin imágenes
+            // Only empty the gallery for new hotels without images
             hotel.setGaleria(new java.util.ArrayList<>());
         }
-        // Si es edición y galeriaRaw está vacío, mantenemos la galería existente
+        // If it's an edit and galeriaRaw is empty, we keep the existing gallery
 
         if (services != null) {
             hotel.setServices(services);

@@ -38,6 +38,9 @@ public class DatabaseInitializer implements CommandLineRunner {
             String adminPasswordHash = passwordEncoder.encode("admin");
             User user1 = new User("admin", "admin@admin", adminPasswordHash, "ADMIN");
             userRepository.save(user1);
+            String userPasswordHash = passwordEncoder.encode("user");
+            User user2 = new User("user", "user@user", userPasswordHash, "USER");
+            userRepository.save(user2);
         } else {
             System.out.println("The users already exist in MySQL. Skipping initialization.");
         }
