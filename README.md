@@ -226,16 +226,16 @@ Solo si han cambiado.
 2. **AQUÍ INDICAR LO SIGUIENTES PASOS**
 
 #### **Credenciales de prueba**
-- **Usuario Admin**: usuario: `admin`, contraseña: `admin`
-- **Usuario Registrado**: usuario: `user`, contraseña: `user`
+- **Usuario Admin**: usuario: `admin@admin`, contraseña: `admin`
+- **Usuario Registrado**: usuario: `user@user`, contraseña: `user`
 
 ### **Diagrama de Entidades de Base de Datos**
 
 Diagrama mostrando las entidades, sus campos y relaciones:
 
-![Diagrama Entidad-Relación](images/database-diagram.png)
+![Diagrama Entidad-Relación](images/esquema_bd.png)
 
-> [Descripción opcional: Ej: "El diagrama muestra las 4 entidades principales: Usuario, Producto, Pedido y Categoría, con sus respectivos atributos y relaciones 1:N y N:M."]
+> El diagrama muestra las 4 entidades principales: Uusario, Hotel, Reserva y Reseña, con sus respectivos atributos y relaciones 1:N (un usuario puede tener múltiples reservas y reseñas), apoyadas por tablas auxiliares generadas por JPA para manejar colecciones de datos como galerías de imagenes y servicios."]
 
 ### **Diagrama de Clases y Templates**
 
