@@ -235,15 +235,15 @@ Diagrama mostrando las entidades, sus campos y relaciones:
 
 ![Diagrama Entidad-Relación](images/esquema_bd.png)
 
-> El diagrama muestra las 4 entidades principales: Uusario, Hotel, Reserva y Reseña, con sus respectivos atributos y relaciones 1:N (un usuario puede tener múltiples reservas y reseñas), apoyadas por tablas auxiliares generadas por JPA para manejar colecciones de datos como galerías de imagenes y servicios."]
+> El diagrama muestra las 4 entidades principales: Uusario, Hotel, Reserva y Reseña, con sus respectivos atributos y relaciones 1:N (un usuario puede tener múltiples reservas y reseñas), apoyadas por tablas auxiliares generadas por JPA para manejar colecciones de datos como galerías de imagenes y servicios.
 
 ### **Diagrama de Clases y Templates**
 
 Diagrama de clases de la aplicación con diferenciación por colores o secciones:
 
-![Diagrama de Clases](images/classes-diagram.png)
+![Diagrama de Clases](images/EsquemaClases.drawio.png)
 
-> [Descripción opcional del diagrama y relaciones principales]
+> El diagrama ilustra la arquitectura multicapa (MVC) de la aplicación en Spring Boot, dividida en vistas, Controladores, Servicios, Repositorios y Entidades. Las flechas muestran el flujo de dependencias desde la interfaz de usuario hasta el acceso de datos. Además, en la capa de dominio se representan las 4 entidades principales (Usuario, Hotel, Reserva y Reseña) y sus relaciones UML de composición y agregación, destacando cómo Usuario y Hotel actúan como entidades contenedoras que agrupan y gestionan sus múltiples Reservas y Reseñas. 
 
 ### **Participación de Miembros en la Práctica 2**
 
