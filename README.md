@@ -205,7 +205,20 @@ Solo si ha cambiado.
 
 #### **Capturas de Pantalla Actualizadas**
 
-Solo si han cambiado.
+#### **1. Página de pago**
+![Página de pago](images/PantallaPago.png)
+
+> [Página que muestra una pasarela de pago ficticia. Se realiza una validación en el lado del cliente en la que se revisa que los formatos sigan la tipificación de las tarjetas de crédito (Numero de la tarjeta de 16 dígitos, fecha de caducidad con el formato válido y mes existentes y un número de seguridad de 3 digitos).]
+
+#### **2. Dashboard admin**
+![Dashboard admin](images/AdminDashboard.png)
+
+> [Página principal del administrador o administradores de la web, desde ella puede ver el número de hoteles creados, de usuarios registrados, de reservas realizadas y de reseñas puestas. Es la página a la que te redirecciona directamente al iniciar sesión como administrador y desde ella se puede acceder a las demás páginas de administración.]
+
+#### **3. Página de gestión de hoteles**
+![Página de hotel](images/GestionHoteles.png)
+
+> []
 
 ### **Instrucciones de Ejecución**
 
