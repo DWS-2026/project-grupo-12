@@ -1,6 +1,7 @@
 package es.codeurjc.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import es.codeurjc.web.model.Hotel;
 import es.codeurjc.web.model.Reserve;
@@ -52,28 +56,6 @@ public class AdminController {
     @Autowired
     private UserSession userSession;
 
-    private static final int PAGE_SIZE = 10;
-
-    private <T> List<T> paginate(List<T> list, int page, Model model) {
-        int totalItems = list.size();
-        int totalPages = (int) Math.ceil((double) totalItems / PAGE_SIZE);
-        if (page < 0) page = 0;
-        if (page >= totalPages && totalPages > 0) page = totalPages - 1;
-
-        int from = page * PAGE_SIZE;
-        int to = Math.min(from + PAGE_SIZE, totalItems);
-        List<T> pageItems = (from < totalItems) ? list.subList(from, to) : List.of();
-
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("hasPrev", page > 0);
-        model.addAttribute("hasNext", page < totalPages - 1);
-        model.addAttribute("prevPage", page - 1);
-        model.addAttribute("nextPage", page + 1);
-
-        return pageItems;
-    }
-
     // ==================== DASHBOARD ====================
 
     @GetMapping("/admin/dashboard")
@@ -106,22 +88,34 @@ public class AdminController {
     // ==================== HOTELS ====================
 
     @GetMapping("/admin/hotels")
-    public String adminHotels(@RequestParam(required = false) String search,
-                              @RequestParam(defaultValue = "0") int page,
-                              Model model) {
-        List<Hotel> hotels;
+    public String adminHotels(
+                @RequestParam(required = false) String search, 
+                @RequestParam(defaultValue = "0") int page, 
+                Model model) {
+    
+        int pageSize = 10; // 10 hotels per page 
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<Hotel> hotelPage;
+
         if (search != null && !search.trim().isEmpty()) {
-            hotels = hotelService.getAllHotels().stream()
-                .filter(h -> h.getName().toLowerCase().contains(search.toLowerCase())
-                    || h.getCity().toLowerCase().contains(search.toLowerCase()))
-                .collect(Collectors.toList());
+            // We use a method that we created in the HotelService
+            hotelPage = hotelService.searchHotels(search, pageable);
         } else {
-            hotels = hotelService.getAllHotels();
+            hotelPage = hotelService.getAllHotels(pageable);
         }
+
         model.addAttribute("search", search != null ? search : "");
-        model.addAttribute("hotels", paginate(hotels, page, model));
+        model.addAttribute("hotels", hotelPage.getContent());
+        
+        model.addAttribute("currentPage", hotelPage.getNumber() + 1);
+        model.addAttribute("totalPages", hotelPage.getTotalPages());
+        model.addAttribute("hasNext", hotelPage.hasNext());
+        model.addAttribute("hasPrev", hotelPage.hasPrevious());
+        model.addAttribute("nextPage", hotelPage.getNumber() + 1);
+        model.addAttribute("prevPage", hotelPage.getNumber() - 1);
+
         return "admin_hotels";
-    }
+}
 
     @GetMapping("/admin/hotels/new")
     public String newHotelForm(Model model) {
@@ -188,22 +182,32 @@ public class AdminController {
 
     @GetMapping("/admin/users")
     public String adminUsers(@RequestParam(required = false) String search,
-                             @RequestParam(defaultValue = "0") int page,
-                             Model model) {
-        List<User> users = userService.getAllUsers();
-        users.removeIf(user -> "ADMIN".equals(user.getRole()));
+                            @RequestParam(defaultValue = "0") int page,
+                            Model model) {
+        
+        int pageSize = 10;
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<User> userPage;
 
         if (search != null && !search.trim().isEmpty()) {
-            users = users.stream()
-                .filter(u -> u.getName().toLowerCase().contains(search.toLowerCase())
-                    || u.getEmail().toLowerCase().contains(search.toLowerCase()))
-                .collect(Collectors.toList());
+            userPage = userService.searchUsersExcludingAdmins(search, pageable);
+        } else {
+            userPage = userService.getAllUsersExcludingAdmins(pageable);
         }
 
         model.addAttribute("search", search != null ? search : "");
-        model.addAttribute("users", paginate(users, page, model));
+        model.addAttribute("users", userPage.getContent());
+        
+        // Variables de paginación para Mustache
+        model.addAttribute("currentPage", userPage.getNumber() + 1);
+        model.addAttribute("totalPages", userPage.getTotalPages());
+        model.addAttribute("hasNext", userPage.hasNext());
+        model.addAttribute("hasPrev", userPage.hasPrevious());
+        model.addAttribute("nextPage", userPage.getNumber() + 1);
+        model.addAttribute("prevPage", userPage.getNumber() - 1);
+
         return "admin_users";
-    }
+}
 
     @GetMapping("/admin/users/edit/{id}")
     public String editUserForm(@PathVariable Long id, Model model) {
@@ -282,20 +286,30 @@ public class AdminController {
     public String adminReserves(@RequestParam(required = false) String search,
                                 @RequestParam(defaultValue = "0") int page,
                                 Model model) {
-        List<Reserve> reserves;
+        
+        int pageSize = 10;
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<Reserve> reservePage;
+
         if (search != null && !search.trim().isEmpty()) {
-            reserves = reserveService.getAllReserves().stream()
-                .filter(r -> r.getHotel().getName().toLowerCase().contains(search.toLowerCase())
-                    || r.getCustomer().getName().toLowerCase().contains(search.toLowerCase())
-                    || r.getCustomer().getEmail().toLowerCase().contains(search.toLowerCase()))
-                .collect(Collectors.toList());
+            reservePage = reserveService.searchReserves(search, pageable);
         } else {
-            reserves = reserveService.getAllReserves();
+            reservePage = reserveService.getAllReserves(pageable);
         }
+
         model.addAttribute("search", search != null ? search : "");
-        model.addAttribute("reserves", paginate(reserves, page, model));
+        model.addAttribute("reserves", reservePage.getContent());
+        
+        // Variables de paginación para Mustache
+        model.addAttribute("currentPage", reservePage.getNumber() + 1);
+        model.addAttribute("totalPages", reservePage.getTotalPages());
+        model.addAttribute("hasNext", reservePage.hasNext());
+        model.addAttribute("hasPrev", reservePage.hasPrevious());
+        model.addAttribute("nextPage", reservePage.getNumber() + 1);
+        model.addAttribute("prevPage", reservePage.getNumber() - 1);
+
         return "admin_reserves";
-    }
+}
 
     @Transactional
     @PostMapping("/admin/reserves/delete/{id}")

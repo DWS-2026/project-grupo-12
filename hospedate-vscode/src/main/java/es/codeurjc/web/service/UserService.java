@@ -3,6 +3,8 @@ package es.codeurjc.web.service;
 import java.util.Optional;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder; // Importación obligatoria
 import org.springframework.stereotype.Service;
@@ -57,6 +59,15 @@ public class UserService {
             user.setRole(role);
             userRepository.save(user);
         }
+    }
+
+    public Page<User> getAllUsersExcludingAdmins(Pageable pageable) {
+        return userRepository.findByRoleNot("ADMIN", pageable);
+    }
+
+    public Page<User> searchUsersExcludingAdmins(String keyword, Pageable pageable) {
+        return userRepository.findByRoleNotAndNameContainingIgnoreCaseOrRoleNotAndEmailContainingIgnoreCase(
+            "ADMIN", keyword, "ADMIN", keyword, pageable);
     }
 
     public void deleteUser(Long id) {

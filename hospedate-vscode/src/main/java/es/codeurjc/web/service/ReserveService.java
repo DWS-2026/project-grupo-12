@@ -5,6 +5,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +43,15 @@ public class ReserveService {
     public void saveConfirmedReserve(Reserve reserve) {
         reserve.setStatus("CONFIRMADA");
         reserveRepository.save(reserve);
+    }
+
+    public Page<Reserve> getAllReserves(Pageable pageable) {
+        return reserveRepository.findAll(pageable);
+    }
+    
+    public Page<Reserve> searchReserves(String keyword, Pageable pageable) {
+        return reserveRepository.findByHotelNameContainingIgnoreCaseOrCustomerNameContainingIgnoreCaseOrCustomerEmailContainingIgnoreCase(
+            keyword, keyword, keyword, pageable);
     }
 
     // Creation of pending reservation
