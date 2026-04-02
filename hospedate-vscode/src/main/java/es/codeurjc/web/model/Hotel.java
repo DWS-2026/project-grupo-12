@@ -144,7 +144,10 @@ public class Hotel{
     }
 
     public void setGaleria(List<Image> galeria) {
-        this.galeria = galeria;
+        this.galeria.clear();
+        if (galeria != null) {
+            this.galeria.addAll(galeria);
+        }
     }
 
     public Set<String> getServices() {

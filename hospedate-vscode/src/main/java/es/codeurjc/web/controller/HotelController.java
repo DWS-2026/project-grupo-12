@@ -115,12 +115,12 @@ public class HotelController {
                 
                 // We take the next 3 photos for the side images
                 if (galeria.size() > 1) {
-                    model.addAttribute("sideImages", galeria.subList(1, Math.min(galeria.size(), 4)));
+                    model.addAttribute("sideImages", galeria.subList(1, Math.min(galeria.size(), 3)));
                 }
                 
                 // The rest of the photos to the bottom page
                 if (galeria.size() > 4) {
-                    model.addAttribute("bottomImages", galeria.subList(4,  Math.min(galeria.size(), 7)));
+                    model.addAttribute("bottomImages", galeria.subList(3,  Math.min(galeria.size(), 6)));
                 }
                 
                 //We prepare all the photos and tell mustache which one is the first

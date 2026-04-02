@@ -11,6 +11,7 @@ public class Image {
     private long id;
 
     @Lob
+    @Column(columnDefinition = "LONGBLOB")
     private Blob imageFile; 
 
     public Image() {}
