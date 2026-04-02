@@ -3,8 +3,6 @@ package es.codeurjc.web.service;
 import es.codeurjc.web.model.Hotel;
 import es.codeurjc.web.repository.HotelRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,8 +17,11 @@ public class HotelService {
     
     private final HotelRepository hotelRepository;
 
-    public HotelService(HotelRepository hotelRepository) {
+    private final ImageService imageService;
+
+    public HotelService(HotelRepository hotelRepository, ImageService imageService) {
         this.hotelRepository = hotelRepository;
+        this.imageService = imageService;
     }
     // Original method for the Admin panel
     public List<Hotel> getAllHotels() {
@@ -86,12 +87,19 @@ public class HotelService {
         hotel.setFamily(family);
 
         if (galeriaRaw != null && !galeriaRaw.trim().isEmpty()) {
-            List<String> galeria = new java.util.ArrayList<>(Arrays.asList(galeriaRaw.split(",")));
-            galeria.replaceAll(String::trim);
-            hotel.setGaleria(galeria);
-        } else if (id == null) {
-            // Only empty the gallery for new hotels without images
-            hotel.setGaleria(new java.util.ArrayList<>());
+            List<String> urls = Arrays.asList(galeriaRaw.split(","));
+            List<es.codeurjc.web.model.Image> newGallery = new java.util.ArrayList<>();
+            
+            for (String url : urls) {
+                url = url.trim();
+                if (url.contains("/hotel/image/")) {
+                    try {
+                        Long imgId = Long.parseLong(url.substring(url.lastIndexOf("/") + 1));
+                        imageService.getImageById(imgId).ifPresent(newGallery::add);
+                    } catch (NumberFormatException e) { }
+                }
+            }
+            hotel.setGaleria(newGallery);
         }
         // If it's an edit and galeriaRaw is empty, we keep the existing gallery
 

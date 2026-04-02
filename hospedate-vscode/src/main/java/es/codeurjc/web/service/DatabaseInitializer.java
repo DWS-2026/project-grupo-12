@@ -2,6 +2,7 @@ package es.codeurjc.web.service;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -32,6 +33,21 @@ public class DatabaseInitializer implements CommandLineRunner {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private List<es.codeurjc.web.model.Image> loadImagesFromResources(String... paths) {
+    List<es.codeurjc.web.model.Image> images = new java.util.ArrayList<>();
+    for (String path : paths) {
+        try {
+            org.springframework.core.io.Resource res = new org.springframework.core.io.ClassPathResource("static" + path);
+            if (res.exists()) {
+                es.codeurjc.web.model.Image img = new es.codeurjc.web.model.Image();
+                img.setImageFile(new javax.sql.rowset.serial.SerialBlob(res.getInputStream().readAllBytes()));
+                images.add(img);
+            }
+        } catch (Exception e) { }
+    }
+    return images;
+}
+
     @Override
     public void run(String... args) throws Exception {
         if (userRepository.count() == 0) {
@@ -54,7 +70,7 @@ public class DatabaseInitializer implements CommandLineRunner {
                 "Calle de la Paz 11, Centro de Madrid, 28012 Madrid, España",
                 742.0,
                 "El UMusic Hotel Madrid en Madrid ofrece una experiencia de 5 estrellas con una piscina de agua salada, centro de fitness, terraza solarium, restaurante, bar y WiFi gratis. El check-in y check-out privados, la recepcion 24 horas y el servicio de consejeria garantizan una estancia comoda.",
-                Arrays.asList(
+                loadImagesFromResources(
                     "/assets/img/portfolio/hoteles/UMusic1.jpg",
                     "/assets/img/portfolio/hoteles/UMusic2.jpg",
                     "/assets/img/portfolio/hoteles/UMusic3.jpg",
@@ -82,7 +98,7 @@ public class DatabaseInitializer implements CommandLineRunner {
                 "Gran Vía, 84, Madrid",
                 426.0,
                 "Establecimiento muy bien situado en el centro de Madrid y ofrece aire acondicionado en sus habitaciones, un restaurante, WiFi gratuita y un bar. Este hotel cuenta con servicio de habitaciones, servicio de consejería, psicina climatizada al aire libre, centro de fitness, discoteca y recepción 24 horas.",
-                Arrays.asList(
+                loadImagesFromResources(
                     "/assets/img/portfolio/hoteles/Edificio_España_2025.jpg",
                     "/assets/img/portfolio/hoteles/Riu2.jpg",
                     "/assets/img/portfolio/hoteles/Riu3.jpg",
@@ -115,7 +131,7 @@ public class DatabaseInitializer implements CommandLineRunner {
                 "Av. de la Mojarra, 0, 21409, Huelva",
                 411.0,
                 "El Playacanela es un resort de 4 estrellas muy peculiar visualmente, ya que esta diseñado con un estilo mozárabe. Con sus cúpulas y arcos parece un palacio oriental. Es un hotel masiov y animado, con le objetivo de ser el destino definitivo de las familias. Además cuenta con una localización en primera linea de playa la cual es famosa por su inmensidad. Importante mencionar su cercanía a Portugal estando próximo a la desembocadura del Guadiana y la frontera con el Algarve portugués.",
-                Arrays.asList(
+                loadImagesFromResources(
                     "/assets/img/portfolio/hoteles/Playacanela1.jpg",
                     "/assets/img/portfolio/hoteles/Playacanela2.jpg",
                     "/assets/img/portfolio/hoteles/Playacanela3.jpg",

@@ -22,6 +22,7 @@ import es.codeurjc.web.model.Reserve;
 import es.codeurjc.web.model.Review;
 import es.codeurjc.web.model.User;
 import es.codeurjc.web.service.HotelService;
+import es.codeurjc.web.service.ImageService;
 import es.codeurjc.web.service.ReserveService;
 import es.codeurjc.web.service.ReviewService;
 import es.codeurjc.web.service.UserService;
@@ -52,6 +53,9 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ImageService imageService;
 
     @Autowired
     private UserSession userSession;
@@ -328,33 +332,24 @@ public class AdminController {
     @ResponseBody
     public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("file") MultipartFile file) {
         try {
-            Path uploadDir = Paths.get("uploads").toAbsolutePath().normalize();
-            Files.createDirectories(uploadDir);
-
-            // Sanitize filename: keep only the file extension, use UUID as name
             String originalName = file.getOriginalFilename();
             String extension = "";
             if (originalName != null && originalName.contains(".")) {
                 extension = originalName.substring(originalName.lastIndexOf(".")).toLowerCase();
             }
+            
             if (!extension.matches("\\.(jpg|jpeg|png|gif|webp)")) {
-                return ResponseEntity.badRequest().body(Map.of("error", "Tipo de archivo no permitido."));
-            }
-            String filename = UUID.randomUUID() + extension;
-            Path destino = uploadDir.resolve(filename).normalize();
-
-            // Prevent path traversal
-            if (!destino.startsWith(uploadDir)) {
-                return ResponseEntity.badRequest().body(Map.of("error", "Nombre de archivo no valido."));
+                return ResponseEntity.badRequest().body(Map.of("error", "Tipo no permitido."));
             }
 
-            Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
+            // Guardamos en BBDD y obtenemos la entidad con su ID
+            es.codeurjc.web.model.Image savedImage = imageService.createImage(file);
 
-            String url = "/uploads/" + filename;
+            // Devolvemos la URL que apunta al nuevo controlador de imágenes
+            String url = "/hotel/image/" + savedImage.getId();
             return ResponseEntity.ok(Map.of("url", url));
 
         } catch (IOException e) {
-            e.printStackTrace();
             return ResponseEntity.internalServerError().body(Map.of("error", e.getMessage()));
         }
     }

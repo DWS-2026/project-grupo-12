@@ -33,8 +33,8 @@ public class Hotel{
 
     // Create secundary tables to store the galery and services, and when an hotel is requested
     // they are automatically loaded thanks to the EAGER fetch type.
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> galeria;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Image> galeria = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> services;
@@ -55,7 +55,7 @@ public class Hotel{
     public Hotel() {}
 
     public Hotel(String name, String tipo, String city, String location, 
-                 double price, String description, List<String> galeria, 
+                 double price, String description, List<Image> galeria, 
                  Set<String> services, double rating, boolean wifi, boolean tv,
                  boolean airConditioning, boolean family) {
         this.name = name;
@@ -139,11 +139,11 @@ public class Hotel{
         this.description = description;
     }
 
-    public List<String> getGaleria() {
+    public List<Image> getGaleria() {
         return galeria;
     }
 
-    public void setGaleria(List<String> galeria) {
+    public void setGaleria(List<Image> galeria) {
         this.galeria = galeria;
     }
 
@@ -205,10 +205,9 @@ public class Hotel{
 
     // Method to return the first photo in the gallery list
     public String getMainImage() {
-        if (this.galeria != null && !this.galeria.isEmpty()) {
-            return this.galeria.get(0); // Return the first photo on the list
-        }
-        // It returns a default image in case a hotel doesn't have photos.
-        return "/assets/img/portfolio/hoteles/default.jpg"; 
+    if (galeria != null && !galeria.isEmpty()) {
+        return "/hotel/image/" + galeria.get(0).getId();
     }
+    return "/assets/img/portfolio/hoteles/default.jpg";
+}
 }

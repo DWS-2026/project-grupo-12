@@ -8,6 +8,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Optional;
+
 import es.codeurjc.web.model.Image;
 import es.codeurjc.web.repository.ImageRepository;
 
@@ -16,6 +18,10 @@ public class ImageService {
 
     @Autowired
     private ImageRepository imageRepository;
+
+    public Optional<Image> getImageById(Long id) {
+        return imageRepository.findById(id);
+    }
 
     //to save the image file in the database 
     public Image createImage(MultipartFile imageFile) throws IOException {

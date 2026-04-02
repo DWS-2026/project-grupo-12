@@ -14,11 +14,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import es.codeurjc.web.model.Hotel;
 import es.codeurjc.web.model.Review;
 import es.codeurjc.web.service.HotelService;
+import es.codeurjc.web.service.ImageService;
 import es.codeurjc.web.service.UserSession;
+import es.codeurjc.web.model.Image;
 
 @Controller
 public class HotelController {
@@ -28,6 +32,9 @@ public class HotelController {
 
     @Autowired
     private UserSession userSession;
+
+    @Autowired
+    private ImageService imageService;
 
 
     @GetMapping("/")
@@ -94,19 +101,26 @@ public class HotelController {
             }
             model.addAttribute("stars", stars);
             
-            List<String> galeria = h.getGaleria();
-            if (galeria != null && !galeria.isEmpty()) {
-                // Wer take the first photo for the main image
+            List<Image> galeriaObj = h.getGaleria();
+            if (galeriaObj != null && !galeriaObj.isEmpty()) {
+                
+                // 1. Traducimos los objetos Image a URLs de texto
+                List<String> galeria = new ArrayList<>();
+                for (Image img : galeriaObj) {
+                    galeria.add("/hotel/image/" + img.getId());
+                }
+
+                // We take the first photo for the main image
                 model.addAttribute("mainImage", galeria.get(0));
                 
-                // Wer take the next 3 photos for the side images, if there are enough photos
+                // We take the next 3 photos for the side images
                 if (galeria.size() > 1) {
-                    model.addAttribute("sideImages", galeria.subList(1, Math.min(galeria.size(), 3)));
+                    model.addAttribute("sideImages", galeria.subList(1, Math.min(galeria.size(), 4)));
                 }
                 
                 // The rest of the photos to the bottom page
-                if (galeria.size() > 3) {
-                    model.addAttribute("bottomImages", galeria.subList(3,  Math.min(galeria.size(), 6)));
+                if (galeria.size() > 4) {
+                    model.addAttribute("bottomImages", galeria.subList(4,  Math.min(galeria.size(), 7)));
                 }
                 
                 //We prepare all the photos and tell mustache which one is the first
@@ -123,5 +137,17 @@ public class HotelController {
             return "hotel";
         }
         return "redirect:/hotels";
+    }
+
+    @GetMapping("/hotel/image/{id}")
+    public ResponseEntity<Object> getHotelImage(@PathVariable Long id) {
+        try {
+            org.springframework.core.io.Resource imageFile = imageService.getImageFile(id); 
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(imageFile);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
