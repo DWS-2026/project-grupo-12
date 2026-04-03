@@ -262,7 +262,7 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 
 #### **Alumno 1 - Oliver Infante Jarana**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Encargado de la lógica de reservas y reviews, aportando también ayuda a otras partes del proyecto.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
