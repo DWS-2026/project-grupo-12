@@ -117,32 +117,22 @@ public class UserController {
     @PostMapping("/register")
     public String processRegister(@RequestParam String email, 
                                 @RequestParam String username, 
-                                @RequestParam String password) {
+                                @RequestParam String password, Model model) {
         
+        if (userService.isEmailTakenByAnother(null, email)) { //if the email is already taken by another user, we return an error message in the register page
+            model.addAttribute("attemptError", "El correo electrónico ya está siendo utilizado.");
+            return "register"; 
+        }
+        
+        if (userService.isUsernameTakenByAnother(null, username)) { //if the username is already taken by another user, we return an error message in the register page
+            model.addAttribute("attemptError", "El nombre de usuario ya está siendo utilizado.");
+            return "register"; 
+        }
         userService.registerUser(username, email, password);
         
         
     return "redirect:/"; 
     }
-
-    /* 
-    //service uses the repository to check the database
-    @PostMapping("/login")
-    public String processLogin(@RequestParam String email, @RequestParam String password, Model model) {
-        Optional<User> checkUser = userService.authenticateUser(email, password); 
-        model.addAttribute("attemptError", false);
-
-        if (checkUser.isPresent()) { //is present means exists and the password is correct 
-            User user = checkUser.get();
-            userSession.modifySessionInfo(user);
-            return "redirect:/profile";
-        } else {
-            model.addAttribute("attemptError", "Credenciales inválidas"); //if else in mustache
-            return "login";
-        }
-    }
-*/
-
 
    
 

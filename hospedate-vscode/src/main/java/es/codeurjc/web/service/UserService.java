@@ -46,6 +46,11 @@ public class UserService {
         return byEmail.isPresent() && !byEmail.get().getId().equals(userId);
     }
 
+    public boolean isUsernameTakenByAnother(Long userId, String username) {
+        Optional<User> byUsername = userRepository.findByName(username);
+        return byUsername.isPresent() && !byUsername.get().getId().equals(userId);
+    }
+
     public void saveUser(Long id, String name, String email, String password, String role) {
         Optional<User> existing = userRepository.findById(id);
 
@@ -73,4 +78,5 @@ public class UserService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
+
 }
