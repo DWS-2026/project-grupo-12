@@ -78,11 +78,11 @@
 
                         <input type="hidden" name="galeriaRaw" id="galeriaRaw">
 
-                        <!-- Contenedor drag & drop de tarjetas -->
+                        <!-- Drag & drop sortable container for image cards -->
                         <div id="galeria-sortable" class="d-flex flex-wrap gap-3 mb-3 p-3 border rounded bg-light" style="min-height: 80px;">
                         </div>
 
-                        <!-- Zona de drop para subir nuevas imagenes -->
+                        <!-- Drop zone for uploading new images -->
                         <div id="drop-zone" class="border border-2 border-dashed rounded p-4 text-center text-muted"
                             style="cursor:pointer; border-color: #aaa !important; transition: background 0.2s;">
                             <i class="bi bi-cloud-upload fs-3 d-block mb-2"></i>
@@ -108,7 +108,7 @@
 
     {{>admin_sidebar_end}}
 
-    <!-- SortableJS desde CDN -->
+    <!-- SortableJS from CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -117,13 +117,13 @@
         const fileInput = document.getElementById('fileInput');
         const progressDiv = document.getElementById('upload-progress');
 
-        // Drag & drop reordenable
+        // Enable sortable drag & drop for reordering images
         Sortable.create(container, { animation: 150 });
 
-        // Click en la drop zone abre el selector de archivos
+        // Click on drop zone opens the file selector dialog
         dropZone.addEventListener('click', () => fileInput.click());
 
-        // Highlight al arrastrar sobre la zona
+        // Highlight the drop zone when dragging files over it
         dropZone.addEventListener('dragover', e => {
             e.preventDefault();
             dropZone.style.background = '#e8f4ff';
@@ -132,20 +132,20 @@
             dropZone.style.background = '';
         });
 
-        // Soltar archivos en la zona
+        // Handle files dropped into the drop zone
         dropZone.addEventListener('drop', e => {
             e.preventDefault();
             dropZone.style.background = '';
             subirArchivos(e.dataTransfer.files);
         });
 
-        // Seleccion por clic
+        // Handle file selection via click
         fileInput.addEventListener('change', () => {
             subirArchivos(fileInput.files);
             fileInput.value = '';
         });
 
-        // Subida al servidor
+        // Upload files to the server via AJAX
         async function subirArchivos(files) {
             for (const file of files) {
                 if (!file.type.startsWith('image/')) continue;
@@ -180,7 +180,7 @@
             }
         }
 
-        // Crear tarjeta visual
+        // Create a visual card element for the uploaded image in the gallery
         function agregarTarjeta(url) {
             const card = document.createElement('div');
             card.className = 'galeria-card position-relative border rounded overflow-hidden';
@@ -196,7 +196,7 @@
             container.appendChild(card);
         }
 
-        // Serializar orden antes de enviar
+        // Serialize image order into hidden field before form submission
         document.getElementById('hotelForm').addEventListener('submit', function () {
             const urls = [...container.querySelectorAll('.galeria-card')].map(c => c.dataset.url);
             document.getElementById('galeriaRaw').value = urls.join(',');

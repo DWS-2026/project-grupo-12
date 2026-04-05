@@ -39,6 +39,7 @@ import java.util.UUID;
 
 import org.springframework.transaction.annotation.Transactional;
 
+// Controller that handles all admin panel operations: dashboard, hotel/user/reserve management and image uploads
 @Controller
 public class AdminController {
 
@@ -62,13 +63,16 @@ public class AdminController {
 
     // ==================== DASHBOARD ====================
 
+    // Displays the admin dashboard with summary statistics and recent activity
     @GetMapping("/admin/dashboard")
     public String adminDashboard(Model model) {
+        // Fetch all entities to compute totals
         List<Hotel> allHotels = hotelService.getAllHotels();
         List<User> allUsers = userService.getAllUsers();
         List<Reserve> allReserves = reserveService.getAllReserves();
         long totalReviews = reviewService.countReviews();
 
+        // Add total counts to the model for the stats cards
         model.addAttribute("totalHotels", allHotels.size());
         model.addAttribute("totalUsers", allUsers.size());
         model.addAttribute("totalReserves", allReserves.size());
@@ -91,18 +95,19 @@ public class AdminController {
 
     // ==================== HOTELS ====================
 
+    // Lists all hotels with pagination and optional search by name or city
     @GetMapping("/admin/hotels")
     public String adminHotels(
-                @RequestParam(required = false) String search, 
-                @RequestParam(defaultValue = "0") int page, 
+                @RequestParam(required = false) String search,
+                @RequestParam(defaultValue = "0") int page,
                 Model model) {
-    
-        int pageSize = 10; // 10 hotels per page 
+
+        int pageSize = 10; // 10 hotels per page
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<Hotel> hotelPage;
 
+        // If a search term is provided, filter hotels; otherwise return all
         if (search != null && !search.trim().isEmpty()) {
-            // We use a method that we created in the HotelService
             hotelPage = hotelService.searchHotels(search, pageable);
         } else {
             hotelPage = hotelService.getAllHotels(pageable);
@@ -110,7 +115,8 @@ public class AdminController {
 
         model.addAttribute("search", search != null ? search : "");
         model.addAttribute("hotels", hotelPage.getContent());
-        
+
+        // Pagination variables for Mustache template
         model.addAttribute("currentPage", hotelPage.getNumber() + 1);
         model.addAttribute("totalPages", hotelPage.getTotalPages());
         model.addAttribute("hasNext", hotelPage.hasNext());
@@ -121,11 +127,13 @@ public class AdminController {
         return "admin_hotels";
 }
 
+    // Renders the form to create a new hotel
     @GetMapping("/admin/hotels/new")
     public String newHotelForm(Model model) {
         return "create_hotel";
     }
 
+    // Renders the form to edit an existing hotel, or redirects if hotel not found
     @GetMapping("/admin/hotels/edit/{id}")
     public String editHotelForm(@PathVariable Long id, Model model) {
         Optional<Hotel> hotel = hotelService.getHotelById(id);
@@ -138,6 +146,7 @@ public class AdminController {
         return "redirect:/admin/hotels";
     }
 
+    // Saves a new hotel or updates an existing one with all its attributes and gallery images
     @PostMapping("/admin/hotels/save")
     public String saveHotel(
             @RequestParam(required = false) Long id,
@@ -156,7 +165,7 @@ public class AdminController {
             @RequestParam(defaultValue = "false") boolean family,
             Model model,
             RedirectAttributes redirectAttributes) {
-        // Validacion: al crear un hotel nuevo es obligatorio subir al menos una imagen
+        // Validation: at least one image is required when creating a new hotel
         if (id == null && (galeriaRaw == null || galeriaRaw.trim().isEmpty())) {
             model.addAttribute("errorMessage", "Error: Es obligatorio anadir al menos una imagen para crear un hotel nuevo.");
             return "create_hotel";
@@ -171,6 +180,7 @@ public class AdminController {
         return "redirect:/admin/hotels";
     }
 
+    // Deletes a hotel by its ID and redirects back to the hotel list
     @Transactional
     @PostMapping("/admin/hotels/delete/{id}")
     public String deleteHotel(@PathVariable Long id, RedirectAttributes redirectAttributes) {
@@ -184,15 +194,17 @@ public class AdminController {
 
     // ==================== USERS ====================
 
+    // Lists all non-admin users with pagination and optional search by name or email
     @GetMapping("/admin/users")
     public String adminUsers(@RequestParam(required = false) String search,
                             @RequestParam(defaultValue = "0") int page,
                             Model model) {
-        
+
         int pageSize = 10;
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<User> userPage;
 
+        // If a search term is provided, filter users; otherwise return all (excluding admins)
         if (search != null && !search.trim().isEmpty()) {
             userPage = userService.searchUsersExcludingAdmins(search, pageable);
         } else {
@@ -201,8 +213,8 @@ public class AdminController {
 
         model.addAttribute("search", search != null ? search : "");
         model.addAttribute("users", userPage.getContent());
-        
-        // Variables de paginación para Mustache
+
+        // Pagination variables for Mustache template
         model.addAttribute("currentPage", userPage.getNumber() + 1);
         model.addAttribute("totalPages", userPage.getTotalPages());
         model.addAttribute("hasNext", userPage.hasNext());
@@ -213,6 +225,7 @@ public class AdminController {
         return "admin_users";
 }
 
+    // Renders the user edit form with the user's data, reviews and reserves
     @GetMapping("/admin/users/edit/{id}")
     public String editUserForm(@PathVariable Long id, Model model) {
         Optional<User> user = userService.findById(id);
@@ -223,9 +236,11 @@ public class AdminController {
             model.addAttribute("isAdmin", "ADMIN".equals(u.getRole()));
             model.addAttribute("isUser", "USER".equals(u.getRole()));
 
+            // Load the user's reviews to display in the edit form
             List<Review> userReviews = reviewService.getReviewsByAuthorId(u.getId());
             model.addAttribute("reviews", userReviews);
 
+            // Load the user's reserves to display in the edit form
             List<Reserve> userReserves = reserveService.getReservesByCustomerId(u.getId());
             model.addAttribute("reserves", userReserves);
             return "edit_users";
@@ -233,6 +248,7 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
+    // Updates user information and optionally deletes selected reviews and reserves
     @Transactional
     @PostMapping("/admin/users/save")
     public String saveUser(
@@ -245,6 +261,7 @@ public class AdminController {
             @RequestParam(required = false) List<Long> deleteReserves,
             RedirectAttributes redirectAttributes) {
 
+        // Check if the email is already used by another user
         if (userService.isEmailTakenByAnother(id, email)) {
             redirectAttributes.addFlashAttribute("errorMessage", "El email '" + email + "' ya está en uso por otro usuario.");
             return "redirect:/admin/users/edit/" + id;
@@ -252,12 +269,14 @@ public class AdminController {
 
         userService.saveUser(id, name, email, password, role);
 
+        // Delete reviews selected by the admin via checkboxes
         if (deleteReviews != null && !deleteReviews.isEmpty()) {
             for (Long reviewId : deleteReviews) {
                 reviewService.deleteReview(reviewId);
             }
         }
 
+        // Delete reserves selected by the admin via checkboxes
         if (deleteReserves != null && !deleteReserves.isEmpty()) {
             for (Long reserveId : deleteReserves) {
                 reserveService.deleteReserve(reserveId);
@@ -268,12 +287,14 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
+    // Deletes a user by ID; admin users cannot be deleted for security reasons
     @Transactional
     @PostMapping("/admin/users/delete/{id}")
     public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Optional<User> userToDelete = userService.findById(id);
 
         if (userToDelete.isPresent()) {
+            // Prevent deletion of admin accounts
             if (!"ADMIN".equals(userToDelete.get().getRole())) {
                 userService.deleteUser(id);
                 redirectAttributes.addFlashAttribute("successMessage", "Usuario '" + userToDelete.get().getName() + "' eliminado correctamente.");
@@ -286,15 +307,17 @@ public class AdminController {
 
     // ==================== RESERVES ====================
 
+    // Lists all reserves with pagination and optional search by hotel or customer name
     @GetMapping("/admin/reserves")
     public String adminReserves(@RequestParam(required = false) String search,
                                 @RequestParam(defaultValue = "0") int page,
                                 Model model) {
-        
+
         int pageSize = 10;
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<Reserve> reservePage;
 
+        // If a search term is provided, filter reserves; otherwise return all
         if (search != null && !search.trim().isEmpty()) {
             reservePage = reserveService.searchReserves(search, pageable);
         } else {
@@ -303,8 +326,8 @@ public class AdminController {
 
         model.addAttribute("search", search != null ? search : "");
         model.addAttribute("reserves", reservePage.getContent());
-        
-        // Variables de paginación para Mustache
+
+        // Pagination variables for Mustache template
         model.addAttribute("currentPage", reservePage.getNumber() + 1);
         model.addAttribute("totalPages", reservePage.getTotalPages());
         model.addAttribute("hasNext", reservePage.hasNext());
@@ -315,6 +338,7 @@ public class AdminController {
         return "admin_reserves";
 }
 
+    // Deletes a reserve by its ID and redirects back to the reserve list
     @Transactional
     @PostMapping("/admin/reserves/delete/{id}")
     public String deleteReserve(@PathVariable Long id, RedirectAttributes redirectAttributes) {
@@ -328,24 +352,27 @@ public class AdminController {
 
     // ==================== UPLOAD ====================
 
+    // Handles image upload via AJAX, validates file type and stores image in the database
     @PostMapping(value = "/admin/upload", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("file") MultipartFile file) {
         try {
+            // Extract the file extension from the original filename
             String originalName = file.getOriginalFilename();
             String extension = "";
             if (originalName != null && originalName.contains(".")) {
                 extension = originalName.substring(originalName.lastIndexOf(".")).toLowerCase();
             }
-            
+
+            // Only allow common image formats
             if (!extension.matches("\\.(jpg|jpeg|png|gif|webp)")) {
                 return ResponseEntity.badRequest().body(Map.of("error", "Tipo no permitido."));
             }
 
-            // Guardamos en BBDD y obtenemos la entidad con su ID
+            // Save the image in the database and get the entity with its generated ID
             es.codeurjc.web.model.Image savedImage = imageService.createImage(file);
 
-            // Devolvemos la URL que apunta al nuevo controlador de imágenes
+            // Return the URL pointing to the image controller endpoint
             String url = "/hotel/image/" + savedImage.getId();
             return ResponseEntity.ok(Map.of("url", url));
 
