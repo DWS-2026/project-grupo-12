@@ -313,7 +313,7 @@ Desarrollador principal de la logica de la gestion de usuarios y seguridad de lo
 
 ---
 
-#### **Alumno 3 - [Nombre Completo]**
+#### **Alumno 3 - Hugo Vara Carbajo**
 
 Desarrollador principal de todo lo relacionado con los hoteles ademas de añadir nuevas carcateristicas a la página.
 
