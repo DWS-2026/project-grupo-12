@@ -45,6 +45,12 @@ public class Hotel{
     private boolean airConditioning;
     private boolean family;
 
+    // A hotel has MANY reserves.
+    // mappedBy = "hotel" means that the Reserve class will contain a variable called "hotel".
+    // cascade = CascadeType.ALL means that if you delete the hotel, its reserves will be automatically deleted.
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reserve> reserves = new ArrayList<>();
+
     // A hotel has MANY reviews.
     // mappedBy = "hotel" means that the Review class will contain a variable called "hotel".
     // cascade = CascadeType.ALL means that if you delete the hotel, its reviews will be automatically deleted.
