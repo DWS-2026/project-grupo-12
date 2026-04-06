@@ -201,7 +201,7 @@ Encargado de hacer la parte del administrador del hotel
 
 #### **Diagrama de Navegación**
 
-Solo si ha cambiado.
+![Diagrama de Navegación](images/navigation-diagram_P2.png)
 
 #### **Capturas de Pantalla Actualizadas**
 
