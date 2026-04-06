@@ -216,10 +216,34 @@ Encargado de hacer la parte del administrador del hotel
 > [Página principal del administrador o administradores de la web, desde ella puede ver el número de hoteles creados, de usuarios registrados, de reservas realizadas y de reseñas puestas. Es la página a la que te redirecciona directamente al iniciar sesión como administrador y desde ella se puede acceder a las demás páginas de administración.]
 
 #### **3. Página de gestión de hoteles**
-![Página de hotel](images/GestionHoteles.png)
+![Página de gestión de hoteles](images/GestionHoteles.png)
 
 > []
 
+#### **4. Página de creación de hoteles**
+![Página de creación de hoteles](images/NuevoHotel.png)
+
+> []
+
+#### **5. Página de edición de hoteles**
+![Página de edición de hoteles](images/Edit_hotel_admin.png)
+
+> []
+
+#### **6. Página de gestión de usuarios**
+![Página de gestión de usuarios](images/GestionUsuarios.png)
+
+> []
+
+#### **7. Página de edición de usuarios**
+![Página de edición de usuarios](images/Edit_user_admin.png)
+
+> []
+
+#### **8. Página de gestión de reservas**
+![Página de gestión de reservas](images/GestionReservas.png)
+
+> []
 ### **Instrucciones de Ejecución**
 
 #### **Requisitos Previos**
