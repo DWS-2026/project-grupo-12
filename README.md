@@ -194,7 +194,7 @@ Encargado de hacer la parte del administrador del hotel
 ## 🛠 **Práctica 2: Web con HTML generado en servidor**
 
 ### **Vídeo de Demostración**
-📹 **[Enlace al vídeo en YouTube](https://www.youtube.com/watch?v=x91MPoITQ3I)**
+📹 **[Enlace al vídeo en YouTube](https://youtu.be/s8MD2pinY2w)**
 > Vídeo mostrando las principales funcionalidades de la aplicación web.
 
 ### **Navegación y Capturas de Pantalla**
@@ -327,17 +327,18 @@ Desarrollador principal de la logica de la gestion de usuarios y seguridad de lo
 
 ---
 
-#### **Alumno 4 - [Nombre Completo]**
+  #### **Alumno 4 - José Carlos Hernampérez Moreno**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+  Desarrollador principal del panel de administración completo, incluyendo dashboard, gestión de hoteles, usuarios y reservas, sistema de subida de imágenes con drag & drop, mejoras de seguridad (CSRF, sanitización) y
+  paginación.
 
-| Nº    | Commits      | Files      |
-|:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+  | Nº    | Commits      | Files      |
+  |:------------: |:------------:| :------------:|
+  |1| [Separación de la lógica de negocio del controlador a las capas de servicio de HotelService y UserService siguiendo la arquitectura MVC](https://github.com/DWS-2026/project-grupo-12/commit/202d615)  |  [AdminController.java](https://github.com/DWS-2026/project-grupo-12/commit/202d615) <br>[HotelService.java](https://github.com/DWS-2026/project-grupo-12/commit/202d615)<br>[UserService.java](https://github.com/DWS-2026/project-grupo-12/commit/202d615)   |
+  |2| [Implementación del sistema de subida de imágenes con drag & drop, eliminación y reordenamiento para la gestión de hoteles](https://github.com/DWS-2026/project-grupo-12/commit/9664be6)  | [AdminController.java](https://github.com/DWS-2026/project-grupo-12/commit/9664be6) <br>[HotelService.java](https://github.com/DWS-2026/project-grupo-12/commit/9664be6)<br>[create_hotel.html](https://github.com/DWS-2026/project-grupo-12/commit/9664be6) <br>[edit_hotel.html](https://github.com/DWS-2026/project-grupo-12/commit/9664be6)   |
+  |3| [Creación del dashboard de administración, barra lateral de navegación, vista de reservas y mejoras de UX en todo el panel de admin](https://github.com/DWS-2026/project-grupo-12/commit/86b5b6e)  |  [AdminController.java](https://github.com/DWS-2026/project-grupo-12/commit/86b5b6e) <br>[admin_dashboard.html](https://github.com/DWS-2026/project-grupo-12/commit/86b5b6e)<br>[admin_sidebar.html](https://github.com/DWS-2026/project-grupo-12/commit/86b5b6e) <br>[admin_reserves.html](https://github.com/DWS-2026/project-grupo-12/commit/86b5b6e)   |
+  |4| [Mejoras de seguridad: tokens CSRF en todos los formularios, validación de emails duplicados y sanitización de uploads](https://github.com/DWS-2026/project-grupo-12/commit/809ee8d)  |  [AdminController.java](https://github.com/DWS-2026/project-grupo-12/commit/809ee8d) <br>[CsrfControllerAdvice.java](https://github.com/DWS-2026/project-grupo-12/commit/809ee8d)<br>[UserService.java](https://github.com/DWS-2026/project-grupo-12/commit/809ee8d)   |
+  |5| [Implementación de paginación en el panel de administración, cálculo automático de rating desde las reviews y seguridad transaccional](https://github.com/DWS-2026/project-grupo-12/commit/5d1cb40)  |  [AdminController.java](https://github.com/DWS-2026/project-grupo-12/commit/5d1cb40) <br>[Hotel.java](https://github.com/DWS-2026/project-grupo-12/commit/5d1cb40)<br>[admin_pagination.html](https://github.com/DWS-2026/project-grupo-12/commit/5d1cb40)   |
 
 ---
 
