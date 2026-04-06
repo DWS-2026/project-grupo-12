@@ -90,7 +90,7 @@ public class HotelController {
             // We get the list of the reviews for this exact hotel
             List<Review> reviewList = h.getReviews(); 
             
-            // We add the list of reviews to the model so that we can display them in the hotel page
+            // We add the list of reviews to the model so that we can display them in the hotel page (Mustache will look for it using the getReviews() method)
             model.addAttribute("reviews", reviewList);
 
             // Create a star list based on the rating
@@ -104,7 +104,7 @@ public class HotelController {
             List<Image> galeriaObj = h.getGaleria();
             if (galeriaObj != null && !galeriaObj.isEmpty()) {
                 
-                // 1. Traducimos los objetos Image a URLs de texto
+                // We convert the list of Image objects to a list of URLs for the template
                 List<String> galeria = new ArrayList<>();
                 for (Image img : galeriaObj) {
                     galeria.add("/hotel/image/" + img.getId());

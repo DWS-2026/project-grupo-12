@@ -10,6 +10,8 @@ import jakarta.persistence.PrePersist;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 @Entity
 public class Review {
     @Id
@@ -110,6 +112,15 @@ public class Review {
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return this.publishDate.format(formatter);
+    }
+
+    //For getting each users rating as stars in the hotel page
+    public List<Integer> getStars() {
+    List<Integer> stars = new ArrayList<>();
+    for (int i = 0; i < this.rating; i++) {
+        stars.add(1);
+    }
+    return stars;
     }
 
 

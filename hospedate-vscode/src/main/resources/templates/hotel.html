@@ -262,12 +262,11 @@
                                 <div class="ms-3">
                                     <h5 class="mb-0">{{author.name}}</h5> 
                                     
+                                    <!--Mustache looks for the stars using the getStars() method-->
                                     <div class="text-warning small">
+                                        {{#stars}}
                                         <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
+                                        {{/stars}}
                                     </div>
                                 </div>
                                 
