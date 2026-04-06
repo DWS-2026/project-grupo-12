@@ -5,19 +5,31 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users") // "user" is a reserved word in SQL, so we use "users" as the table name
 public class User {
-    //1 to 1 relation with image 
+    //1 to 1 relation with image
     @OneToOne(cascade=CascadeType.ALL)
-    private Image image;    
-    
+    private Image image;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    // A user can have many reviews; cascade delete so removing a user removes their reviews
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
+
+    // A user can have many reserves; cascade delete so removing a user removes their reserves
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reserve> reserves = new ArrayList<>();
 
 
     private String name;

@@ -99,6 +99,9 @@ public class HotelService {
                     } catch (NumberFormatException e) { }
                 }
             }
+            for (int i = 0; i < newGallery.size(); i++) {
+                newGallery.get(i).setPosition(i);
+            }
             hotel.setGaleria(newGallery);
         }
         // If it's an edit and galeriaRaw is empty, we keep the existing gallery

@@ -12,18 +12,23 @@ public class Image {
 
     @Lob
     @Column(columnDefinition = "LONGBLOB")
-    private Blob imageFile; 
+    private Blob imageFile;
+
+    private int position;
 
     public Image() {}
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
 
-    public Blob getImageFile() { 
-        return imageFile; 
+    public Blob getImageFile() {
+        return imageFile;
     }
-    
-    public void setImageFile(Blob imageFile) { 
-        this.imageFile = imageFile; 
+
+    public void setImageFile(Blob imageFile) {
+        this.imageFile = imageFile;
     }
+
+    public int getPosition() { return position; }
+    public void setPosition(int position) { this.position = position; }
 }

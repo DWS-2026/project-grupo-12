@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 
 // To create the hotel entity, which will be stored in the database. Each varible turns into a column
 @Entity
@@ -34,6 +35,7 @@ public class Hotel{
     // Create secundary tables to store the galery and services, and when an hotel is requested
     // they are automatically loaded thanks to the EAGER fetch type.
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OrderBy("position ASC")
     private List<Image> galeria = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
