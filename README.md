@@ -231,12 +231,13 @@ Solo si ha cambiado.
 #### **Pasos para ejecutar la aplicación**
 
 1. **Clonar el repositorio**
+   
    ```bash
-   git clone https://github.com/[usuario]/[nombre-repositorio].git
-   cd [nombre-repositorio]
+   git clone https://github.com/DWS-2026/project-grupo-12.git
    ```
+2. Abrimos el proyecto con un editor de código, idealmente Visual Studio Code con las extensiones de Extension Pack for Java y Spring Boot Extension Pack instaladas. 
 
-2. **AQUÍ INDICAR LO SIGUIENTES PASOS**
+3. Iniciamos la aplicación y en el navegador buscamos https://localhost:8443
 
 #### **Credenciales de prueba**
 - **Usuario Admin**: usuario: `admin@admin`, contraseña: `admin`
