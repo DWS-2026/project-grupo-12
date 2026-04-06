@@ -218,32 +218,32 @@ Encargado de hacer la parte del administrador del hotel
 #### **3. Página de gestión de hoteles**
 ![Página de gestión de hoteles](images/GestionHoteles.png)
 
-> []
+> [Página de gestión de hoteles a la que únicamente tiene acceso el administrador y desde la que puede visualizar todos los hoteles que hay registrados, buscarlos, añadir nuevos o modificar los ya creados.]
 
 #### **4. Página de creación de hoteles**
 ![Página de creación de hoteles](images/NuevoHotel.png)
 
-> []
+> [Página de creación de hoteles a la que solo tiene acceso el administrador y desde la que se puede crear un hotel especificando cada campo con su debida información.]
 
 #### **5. Página de edición de hoteles**
 ![Página de edición de hoteles](images/Edit_hotel_admin.png)
 
-> []
+> [Página de edición de hoteles a la que solo tiene acceso el administrador y desde la que se puede editar toda la información de un hotel.]
 
 #### **6. Página de gestión de usuarios**
 ![Página de gestión de usuarios](images/GestionUsuarios.png)
 
-> []
+> [Página de gestión de usuarios a la que únicamente tiene acceso el administrador y desde la que se puede buscar los usuarios registrados, eliminarlos o editarlos.]
 
 #### **7. Página de edición de usuarios**
 ![Página de edición de usuarios](images/Edit_user_admin.png)
 
-> []
+> [Página de edición de usuarios que solo es accesible por el administrador. Desde esta página se puede cambiar la información del usuario así como ver sus reseñas, reservas y eliminarlas.]
 
 #### **8. Página de gestión de reservas**
-![Página de gestión de reservas](images/GestionReservas.png)
+![Página de gestión de reservas](images/GestionReserva.png)
 
-> []
+> [Página de gestión de reservas que solo tiene acceso el administrador y en la que se pueden visualizar las reservas con su respectiva información y estado, además de la opción de eliminarlas.]
 ### **Instrucciones de Ejecución**
 
 #### **Requisitos Previos**
