@@ -25,7 +25,6 @@ public class Reserve {
     private LocalDate entryDate;
     private LocalDate departureDate;
     private long nights;
-    //private String location; -> FUTURO CAMBIO: PARA AÑADIR LA LOCALIZACION DEL HOTEL EN LA RESERVA YA QUE SE MUESTRA EN EL HTML
 
     //We have a status to save reservation data in the database
     //such as "Pending_confirmation" or "CONFIRMED" so that no one can modify the data.
