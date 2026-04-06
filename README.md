@@ -279,7 +279,7 @@ Diagrama mostrando las entidades, sus campos y relaciones:
 
 Diagrama de clases de la aplicación con diferenciación por colores o secciones:
 
-![Diagrama de Clases](images/EsquemaClases.drawio.png)
+![Diagrama de Clases](images/EsquemaClases2.drawio.png)
 
 > El diagrama ilustra la arquitectura multicapa (MVC) de la aplicación en Spring Boot, dividida en vistas, Controladores, Servicios, Repositorios y Entidades. Las flechas muestran el flujo de dependencias desde la interfaz de usuario hasta el acceso de datos. Además, en la capa de dominio se representan las 4 entidades principales (Usuario, Hotel, Reserva y Reseña) y sus relaciones UML de composición y agregación, destacando cómo Usuario y Hotel actúan como entidades contenedoras que agrupan y gestionan sus múltiples Reservas y Reseñas. 
 
