@@ -36,7 +36,7 @@ import java.sql.SQLException;
 
 
 @Controller
-public class UserController {
+public class UserWebController {
 
     @Autowired
     private ReviewService reviewService; 

@@ -26,7 +26,7 @@ import es.codeurjc.web.service.UserSession;
 import es.codeurjc.web.model.Image;
 
 @Controller
-public class HotelController {
+public class HotelWebController {
 
     @Autowired
     private HotelService hotelService;
