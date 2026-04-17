@@ -1,4 +1,5 @@
-package es.codeurjc.web.controller;
+package es.codeurjc.web.controller.web;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;

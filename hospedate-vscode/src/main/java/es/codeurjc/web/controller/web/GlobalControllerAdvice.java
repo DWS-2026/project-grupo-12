@@ -1,4 +1,4 @@
-package es.codeurjc.web.controller;
+package es.codeurjc.web.controller.web;
 
 import es.codeurjc.web.service.UserSession;
 import jakarta.servlet.http.HttpServletRequest;

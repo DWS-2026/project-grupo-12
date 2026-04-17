@@ -1,4 +1,5 @@
-package es.codeurjc.web.controller;
+package es.codeurjc.web.controller.web;
+
 
 import java.util.ArrayList;
 import java.util.List;

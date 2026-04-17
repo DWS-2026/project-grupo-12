@@ -1,4 +1,5 @@
-package es.codeurjc.web.controller;
+package es.codeurjc.web.controller.web;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
