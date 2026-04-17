@@ -26,7 +26,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 
 @Controller
-public class ReserveController {
+public class ReserveWebController {
 
         @Autowired
     private ReserveService reserveService;

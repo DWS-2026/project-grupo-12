@@ -19,7 +19,7 @@ import es.codeurjc.web.service.UserService;
 import es.codeurjc.web.service.UserSession;
 
 @Controller
-public class ReviewController {
+public class ReviewWebController {
 
     @Autowired
     private ReviewService reviewService;
