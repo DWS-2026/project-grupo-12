@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 //import the necessary classes to manage the user session and access the user data in the database
 import es.codeurjc.web.model.User;
@@ -48,12 +50,18 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         
         http.authenticationProvider(authenticationProvider());
-        
+
+        // Disable CSRF for REST API, keep it active for web
+        http.csrf(csrf -> csrf
+            .ignoringRequestMatchers(new AntPathRequestMatcher("/api/**"))
+        );
+
         http
             .authorizeHttpRequests(authorize -> authorize
             //public routes
 
             //private routes
+            .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
             .requestMatchers("/admin/**").hasRole("ADMIN")    
             .requestMatchers("/profile/**").hasAnyRole("USER","ADMIN")
             .requestMatchers("/reserve/delete/**").hasAnyRole("USER","ADMIN")
