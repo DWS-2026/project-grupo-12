@@ -21,10 +21,10 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public User registerUser(String name, String email, String password) {
+    public User registerUser(String name, String email, String password, String role) {
         String hashPassword = passwordEncoder.encode(password);
         
-        User newUser = new User(name, email, hashPassword);
+        User newUser = new User(name, email, hashPassword, role);
         
         return userRepository.save(newUser);
     }

@@ -128,7 +128,7 @@ public class UserWebController {
             model.addAttribute("attemptError", "El nombre de usuario ya está siendo utilizado.");
             return "register"; 
         }
-        userService.registerUser(username, email, password);
+        userService.registerUser(username, email, password, "USER");
         
         
     return "redirect:/"; 

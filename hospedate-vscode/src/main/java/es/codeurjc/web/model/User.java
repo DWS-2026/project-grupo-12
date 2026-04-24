@@ -40,14 +40,7 @@ public class User {
     
     
 
-    public User(String name, String email, String password) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.role = "USER";//always create a user with role User if not specified, only admin can create another admin
-    }
 
-    //Constructor for ADMIN ONLY
     public User(String name, String email, String password, String role) {
         this.name = name;
         this.email = email;

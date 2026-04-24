@@ -49,7 +49,7 @@ public class UserRestController {
         if (userService.isEmailTakenByAnother(null, newUser.getEmail())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El correo ya existe");
         }
-        userService.registerUser(newUser.getUsername(), newUser.getEmail(), newUser.getPassword());
+        userService.registerUser(newUser.getUsername(), newUser.getEmail(), newUser.getPassword(), "USER"   );
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
