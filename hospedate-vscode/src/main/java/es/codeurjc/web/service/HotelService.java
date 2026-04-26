@@ -1,5 +1,6 @@
 package es.codeurjc.web.service;
 
+import es.codeurjc.web.dto.HotelDTO;
 import es.codeurjc.web.model.Hotel;
 import es.codeurjc.web.repository.HotelRepository;
 import org.springframework.stereotype.Service;
@@ -114,5 +115,33 @@ public class HotelService {
         }
 
         hotelRepository.save(hotel);
+    }
+
+    public Hotel createHotelFromDto(HotelDTO dto) {
+        Hotel hotel = new Hotel();
+        mapDtoToEntity(dto, hotel);
+        return hotelRepository.save(hotel);
+    }
+
+    public Optional<Hotel> updateHotelFromDto(Long id, HotelDTO dto) {
+        return hotelRepository.findById(id).map(hotel -> {
+            mapDtoToEntity(dto, hotel);
+            return hotelRepository.save(hotel);
+        });
+    }
+
+// El método de mapeo ahora es una herramienta interna del servicio
+    private void mapDtoToEntity(HotelDTO dto, Hotel hotel) {
+        hotel.setName(dto.getName());
+        hotel.setTipo(dto.getTipo());
+        hotel.setCity(dto.getCity());
+        hotel.setLocation(dto.getLocation());
+        hotel.setPrice(dto.getPrice());
+        hotel.setDescription(dto.getDescription());
+        hotel.setWifi(dto.isWifi());
+        hotel.setTv(dto.isTv());
+        hotel.setAirConditioning(dto.isAirConditioning());
+        hotel.setFamily(dto.isFamily());
+        hotel.setServices(dto.getServices());
     }
 }
