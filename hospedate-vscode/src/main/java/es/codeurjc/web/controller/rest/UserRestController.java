@@ -28,7 +28,7 @@ import java.sql.SQLException;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/v1/users")
 public class UserRestController {
 
     @Autowired
