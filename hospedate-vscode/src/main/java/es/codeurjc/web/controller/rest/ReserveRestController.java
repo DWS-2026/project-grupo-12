@@ -14,7 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Optional;
 
 @RestController
@@ -62,8 +64,14 @@ public class ReserveRestController {
         Reserve newReserve =reserveService.createPendingReserve(
             hotelOpt.get(), user, dto.getEntryDate(), dto.getDepartureDate(), dto.getGuests()
             );
-        
-        return new ResponseEntity<>(new ReserveDTO(newReserve), HttpStatus.CREATED);
+            
+        //Generate the header location
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(newReserve.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(new ReserveDTO(newReserve));
     }
     
 

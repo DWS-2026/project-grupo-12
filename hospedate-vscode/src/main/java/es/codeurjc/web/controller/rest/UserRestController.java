@@ -10,22 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 
 import es.codeurjc.web.dto.UserDTO;
-import es.codeurjc.web.dto.UserRegisterDTO;
 import es.codeurjc.web.model.Image;
 import es.codeurjc.web.model.User;
 import es.codeurjc.web.service.ImageService;
 import es.codeurjc.web.service.UserService;
 
-// TUS IMPORTS DEL JWT
-import es.codeurjc.web.security.jwt.LoginRequest;
-import es.codeurjc.web.security.jwt.AuthResponse;
-import es.codeurjc.web.security.jwt.UserLoginService;
-
 import java.security.Principal;
 import java.sql.SQLException;
 
-//for cookies
-import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -36,40 +28,6 @@ public class UserRestController {
     
     @Autowired
     private ImageService imageService;  
-    
-    //JWT
-    @Autowired
-    private UserLoginService userLoginService;
-
-
-    
-    //REGISTER
-    @PostMapping("/")
-    public ResponseEntity<?> registerUser(@RequestBody UserRegisterDTO newUser) { 
-        if (userService.isEmailTakenByAnother(null, newUser.getEmail())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El correo ya existe");
-        }
-        userService.registerUser(newUser.getUsername(), newUser.getEmail(), newUser.getPassword(), "USER"   );
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    //LOGIN 
-    @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(
-            @RequestBody LoginRequest loginRequest, 
-            HttpServletResponse response) { 
-        
-        //return reponse for the login service, which will handle the JWT creation and cookie setting
-        //userLoginServie copied from Repo-0
-        return userLoginService.login(response, loginRequest);
-    }
-
-    //LOGOUT 
-    @PostMapping("/logout")
-    public ResponseEntity<AuthResponse> logout(HttpServletResponse response) {
-        String msg = userLoginService.logout(response);
-        return ResponseEntity.ok(new AuthResponse(AuthResponse.Status.SUCCESS, msg));
-    }
 
     // PROFILE
     @GetMapping("/me")
@@ -113,7 +71,7 @@ public class UserRestController {
             }
         }
 
-        //update th user information with the new information, if the password is empty, we don't change it (same as in the web controller)
+        //update the user information with the new information, if the password is empty, we don't change it (same as in the web controller)
         userService.saveUser(user.getId(), username, email, password, user.getRole()); 
         userService.updateUser(user); 
 

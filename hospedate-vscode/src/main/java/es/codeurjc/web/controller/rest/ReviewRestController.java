@@ -12,10 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Optional;
 
-@RestController@RequestMapping("/api/reviews")
+@RestController@RequestMapping("/api/v1/reviews")
 public class ReviewRestController {
     
     @Autowired
@@ -55,8 +57,14 @@ public class ReviewRestController {
             author,
             hotelOpt.get()
         );
+        
+        //Generate the header location
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(review.getId())
+                .toUri();
 
-        return new ResponseEntity<>(new ReviewDTO(review), HttpStatus.CREATED); //201 Created
+        return ResponseEntity.created(location).body(new ReviewDTO(review)); //201 Created
     }
 
     //Delete review
