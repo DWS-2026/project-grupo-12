@@ -125,6 +125,11 @@ public class SecurityConfiguration {
             .requestMatchers("/hotel/**").permitAll() 
             .requestMatchers("/assets/**", "/css/**", "/js/**", "/uploads/**").permitAll()
             
+            // Swagger (API documentation)
+            .requestMatchers("/v3/api-docs/**").permitAll()
+            .requestMatchers("/swagger-ui.html").permitAll()
+            .requestMatchers("/swagger-ui/**").permitAll()
+
             // Private Web Routes
             .requestMatchers("/admin/**").hasRole("ADMIN")    
             .requestMatchers("/profile/**").hasAnyRole("USER","ADMIN")
