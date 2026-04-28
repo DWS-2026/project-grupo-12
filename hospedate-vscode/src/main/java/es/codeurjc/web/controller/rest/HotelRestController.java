@@ -42,17 +42,23 @@ public class HotelRestController {
 
         //Create hotel
         @PostMapping("/")
-        public ResponseEntity<HotelDTO> createHotel(@RequestBody HotelDTO hotelDto){
-            Hotel newHotel = hotelService.createHotelFromDto(hotelDto);
-
-            //Generate the header location
-            URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(newHotel.getId())
-                .toUri();
-
-            return ResponseEntity.created(location).body(new HotelDTO(newHotel));
+        public ResponseEntity<?> createHotel(@RequestBody HotelDTO hotelDto){
+            try {
+                
+                Hotel newHotel = hotelService.createHotelFromDto(hotelDto);
+                //Generate the header location
+                URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                        .path("/{id}")
+                        .buildAndExpand(newHotel.getId())
+                        .toUri();
+                        
+                return ResponseEntity.created(location).body(new HotelDTO(newHotel));
+            } catch (IllegalArgumentException e) {
+                // if the price is negative, it returns 400 Bad Request with the error message
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
         }
+        
 
         //Update hotel
         @PutMapping("/{id}")

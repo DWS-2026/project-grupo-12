@@ -63,6 +63,9 @@ public class HotelService {
                                 String description, double rating, String galeriaRaw,  
                                 Set<String> services, boolean wifi, boolean tv, 
                                 boolean airConditioning, boolean family) {
+        if (price < 0) {
+            throw new IllegalArgumentException("El precio del hotel no puede ser negativo");
+        }
         Hotel hotel;
         if (id == null) {
             hotel = new Hotel();
@@ -132,6 +135,9 @@ public class HotelService {
 
 // El método de mapeo ahora es una herramienta interna del servicio
     private void mapDtoToEntity(HotelDTO dto, Hotel hotel) {
+        if (dto.getPrice() < 0) {
+            throw new IllegalArgumentException("El precio del hotel no puede ser negativo");
+        }
         hotel.setName(dto.getName());
         hotel.setTipo(dto.getTipo());
         hotel.setCity(dto.getCity());
