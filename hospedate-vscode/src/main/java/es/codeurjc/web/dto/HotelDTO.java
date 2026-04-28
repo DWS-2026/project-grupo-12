@@ -3,15 +3,38 @@ package es.codeurjc.web.dto;
 import es.codeurjc.web.model.Hotel;
 import java.util.Set;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Size;
+
 public class HotelDTO {
 
     private Long id;
+    
+    @NotBlank(message = "El nombre del hotel es obligatorio")
+    @Size(max = 100, message = "El nombre no puede superar los 100 caracteres")
     private String name;
+
+    @NotBlank(message = "El tipo de alojamiento es obligatorio")
     private String tipo;
+
+    @NotBlank(message = "La ciudad es obligatoria")
     private String city;    
+
+    @NotBlank(message = "La ubicación es obligatoria")
     private String location;
+
+    @Min(value = 0, message = "El precio por noche no puede ser negativo")
     private double price;
+
+    @NotBlank(message = "La descripción no puede estar vacía")
+    @Size(max = 2000, message = "La descripción es demasiado larga (máx 2000 caracteres)")
     private String description;
+
+    @Min(value = 0, message = "La puntuación mínima es 0")
+    @Max(value = 5, message = "La puntuación máxima es 5")
     private double rating;
     
     // Características básicas
