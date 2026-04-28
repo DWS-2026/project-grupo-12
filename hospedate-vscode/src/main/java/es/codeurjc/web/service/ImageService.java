@@ -1,12 +1,19 @@
 package es.codeurjc.web.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.util.Optional;
 
@@ -18,6 +25,10 @@ public class ImageService {
 
     @Autowired
     private ImageRepository imageRepository;
+
+    //route for saving the image avatar in the disk
+    @Value("${image.upload.dir:uploads/images}")
+    private String uploadDir;
 
     public Optional<Image> getImageById(Long id) {
         return imageRepository.findById(id);
@@ -35,6 +46,28 @@ public class ImageService {
         imageRepository.save(image); 
         return image; 
     }
+
+    // save avatar image in the disk and save the filename in the database
+    public Image createAvatarImage(MultipartFile file) throws IOException {
+        Path path = Paths.get(uploadDir); //path for uploading images
+        
+        if (!Files.exists(path)) {
+            Files.createDirectories(path);
+        }
+
+        // Generate a unique filename to avoid conflicts
+        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+        Path destination = path.resolve(fileName);
+        
+        //Save bytes of the uploaded file in the destination path
+        Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
+
+        //save only filename in the database, the file is saved in the disk
+        Image image = new Image();
+        image.setFileName(fileName); 
+        return imageRepository.save(image);
+    }
+    
 
     //for extrating the image file to serve it 
     public Resource getImageFile(long id) throws SQLException {

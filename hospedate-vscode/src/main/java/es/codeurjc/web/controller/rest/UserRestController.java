@@ -64,7 +64,7 @@ public class UserRestController {
         //same checks as in the web controller, but adapted to the API (we return ResponseEntity with error messages instead of redirecting to the profile page)
         if (photo != null && !photo.isEmpty()) { 
             if ((photo.getContentType().equals("image/jpeg") || photo.getContentType().equals("image/png"))) {
-                Image newImage = imageService.createImage(photo);
+                Image newImage = imageService.createAvatarImage(photo); //save the image in the disk and the filename in the database
                 user.setProfileImage(newImage);
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Solo formato JPG o PNG");

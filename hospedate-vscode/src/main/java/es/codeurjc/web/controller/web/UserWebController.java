@@ -161,7 +161,7 @@ public class UserWebController {
         //if the user is uploading a photo and its format is correct, we create a new image
         if (!photo.isEmpty()) { //if the user is uploading a photo, we change it
             if ((photo.getContentType().equals("image/jpeg") || photo.getContentType().equals("image/png"))) {
-                Image newImage = imageService.createImage(photo);
+                Image newImage = imageService.createAvatarImage(photo); //save the image in the disk and the filename in the database
                 user.setProfileImage(newImage);
             } else {
                 model.addAttribute("errorMessage", "Solo se permiten imágenes en formato JPG o PNG");

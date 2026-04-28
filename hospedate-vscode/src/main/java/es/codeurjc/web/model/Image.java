@@ -16,6 +16,8 @@ public class Image {
 
     private int position;
 
+    private String name;
+
     public Image() {}
 
     public long getId() { return id; }
@@ -29,6 +31,21 @@ public class Image {
         this.imageFile = imageFile;
     }
 
-    public int getPosition() { return position; }
-    public void setPosition(int position) { this.position = position; }
+    public int getPosition() { 
+        return position; 
+    }
+
+
+    public void setPosition(int position) { 
+        this.position = position; 
+    }
+
+    public String getFileName() { 
+        return name; 
+    }
+
+    public void setFileName(String fileName) { 
+        this.name = fileName; 
+    }
+
 }
