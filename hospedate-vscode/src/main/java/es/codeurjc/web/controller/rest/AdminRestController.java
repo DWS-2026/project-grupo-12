@@ -15,6 +15,7 @@ import es.codeurjc.web.model.Reserve;
 import es.codeurjc.web.model.User;
 import es.codeurjc.web.service.ReserveService;
 import es.codeurjc.web.service.UserService;
+import es.codeurjc.web.service.UserService.UserUpdateResult;
 
 @RestController
 @RequestMapping("/api/v1/admin")
@@ -48,38 +49,15 @@ public class AdminRestController {
 
     @PutMapping("/users/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-        Optional<User> existing = userService.findById(id);
-        if (existing.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
+        UserService.UserUpdateResult result = userService.adminUpdateUser(
+                id, userDTO.getName(), userDTO.getEmail(), userDTO.getRole());
 
-        User user = existing.get();
-
-        if (user.isAdmin()) {
-            return ResponseEntity.status(403)
-                    .body(Map.of("error", "Cannot modify an admin account"));
-        }
-
-        if (userDTO.getEmail() != null
-                && !userDTO.getEmail().equals(user.getEmail())
-                && userService.isEmailTakenByAnother(id, userDTO.getEmail())) {
-            return ResponseEntity.status(409)
-                    .body(Map.of("error", "Email already in use"));
-        }
-
-        if (userDTO.getName() != null
-                && !userDTO.getName().equals(user.getName())
-                && userService.isUsernameTakenByAnother(id, userDTO.getName())) {
-            return ResponseEntity.status(409)
-                    .body(Map.of("error", "Name already in use"));
-        }
-
-        if (userDTO.getName() != null) user.setName(userDTO.getName());
-        if (userDTO.getEmail() != null) user.setEmail(userDTO.getEmail());
-        if (userDTO.getRole() != null) user.setRole(userDTO.getRole());
-
-        userService.updateUser(user);
-        return ResponseEntity.ok(new UserDTO(user));
+        return switch (result.status) {
+            case NOT_FOUND  -> ResponseEntity.notFound().build();
+            case FORBIDDEN  -> ResponseEntity.status(403).body(Map.of("error", result.errorMessage));
+            case CONFLICT   -> ResponseEntity.status(409).body(Map.of("error", result.errorMessage));
+            case OK         -> ResponseEntity.ok(new UserDTO(result.user));
+        };
     }
 
     @DeleteMapping("/users/{id}")
@@ -118,30 +96,13 @@ public class AdminRestController {
 
     @PutMapping("/reserves/{id}")
     public ResponseEntity<?> updateReserve(@PathVariable Long id, @RequestBody ReserveDTO reserveDTO) {
-        Optional<Reserve> existing = reserveService.getReserveById(id);
-        if (existing.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
+        Optional<Reserve> updated = reserveService.adminUpdateReserve(
+                id, reserveDTO.getEntryDate(), reserveDTO.getDepartureDate(),
+                reserveDTO.getGuests(), reserveDTO.getStatus());
 
-        Reserve reserve = existing.get();
-
-        if (reserveDTO.getEntryDate() != null) reserve.setEntryDate(reserveDTO.getEntryDate());
-        if (reserveDTO.getDepartureDate() != null) reserve.setDepartureDate(reserveDTO.getDepartureDate());
-        if (reserveDTO.getGuests() > 0) reserve.setGuests(reserveDTO.getGuests());
-        if (reserveDTO.getStatus() != null) reserve.setStatus(reserveDTO.getStatus());
-
-        if (reserve.getEntryDate() != null && reserve.getDepartureDate() != null) {
-            long nights = java.time.temporal.ChronoUnit.DAYS.between(
-                    reserve.getEntryDate(), reserve.getDepartureDate());
-            if (nights <= 0) nights = 1;
-            reserve.setNights(nights);
-            if (reserve.getHotel() != null) {
-                reserve.setPrice(nights * reserve.getHotel().getPrice());
-            }
-        }
-
-        reserveService.saveReserve(reserve);
-        return ResponseEntity.ok(new ReserveDTO(reserve));
+        return updated.isEmpty()
+                ? ResponseEntity.notFound().build()
+                : ResponseEntity.ok(new ReserveDTO(updated.get()));
     }
 
     @DeleteMapping("/reserves/{id}")

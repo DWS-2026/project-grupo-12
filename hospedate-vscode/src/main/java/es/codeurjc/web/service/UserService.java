@@ -83,4 +83,43 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    public Optional<UserUpdateResult> adminUpdateUser(Long id, String name, String email, String role) {
+        Optional<User> existing = userRepository.findById(id);
+        if (existing.isEmpty()) return Optional.of(UserUpdateResult.notFound());
+
+        User user = existing.get();
+        if (user.isAdmin()) return Optional.of(UserUpdateResult.forbidden("Cannot modify an admin account"));
+
+        if (email != null && !email.equals(user.getEmail()) && isEmailTakenByAnother(id, email))
+            return Optional.of(UserUpdateResult.conflict("Email already in use"));
+
+        if (name != null && !name.equals(user.getName()) && isUsernameTakenByAnother(id, name))
+            return Optional.of(UserUpdateResult.conflict("Name already in use"));
+
+        if (name != null) user.setName(name);
+        if (email != null) user.setEmail(email);
+        if (role != null) user.setRole(role);
+
+        userRepository.save(user);
+        return Optional.of(UserUpdateResult.ok(user));
+    }
+
+    public enum UserUpdateStatus { OK, NOT_FOUND, FORBIDDEN, CONFLICT }
+
+    public static class UserUpdateResult {
+        public final UserUpdateStatus status;
+        public final User user;
+        public final String errorMessage;
+
+        private UserUpdateResult(UserUpdateStatus status, User user, String errorMessage) {
+            this.status = status;
+            this.user = user;
+            this.errorMessage = errorMessage;
+        }
+
+        public static UserUpdateResult ok(User user) { return new UserUpdateResult(UserUpdateStatus.OK, user, null); }
+        public static UserUpdateResult notFound() { return new UserUpdateResult(UserUpdateStatus.NOT_FOUND, null, "User not found"); }
+        public static UserUpdateResult forbidden(String msg) { return new UserUpdateResult(UserUpdateStatus.FORBIDDEN, null, msg); }
+        public static UserUpdateResult conflict(String msg) { return new UserUpdateResult(UserUpdateStatus.CONFLICT, null, msg); }
+    }
 }

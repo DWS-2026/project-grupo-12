@@ -54,6 +54,31 @@ public class ReserveService {
             keyword, keyword, keyword, pageable);
     }
 
+    public Optional<Reserve> adminUpdateReserve(Long id, java.time.LocalDate entryDate,
+            java.time.LocalDate departureDate, int guests, String status) {
+        Optional<Reserve> existing = reserveRepository.findById(id);
+        if (existing.isEmpty()) return Optional.empty();
+
+        Reserve reserve = existing.get();
+        if (entryDate != null) reserve.setEntryDate(entryDate);
+        if (departureDate != null) reserve.setDepartureDate(departureDate);
+        if (guests > 0) reserve.setGuests(guests);
+        if (status != null) reserve.setStatus(status);
+
+        if (reserve.getEntryDate() != null && reserve.getDepartureDate() != null) {
+            long nights = java.time.temporal.ChronoUnit.DAYS.between(
+                    reserve.getEntryDate(), reserve.getDepartureDate());
+            if (nights <= 0) nights = 1;
+            reserve.setNights(nights);
+            if (reserve.getHotel() != null) {
+                reserve.setPrice(nights * reserve.getHotel().getPrice());
+            }
+        }
+
+        reserveRepository.save(reserve);
+        return Optional.of(reserve);
+    }
+
     // Creation of pending reservation
     public Reserve createPendingReserve(Hotel hotel, User customer, LocalDate entryDate, LocalDate departureDate, int guests) {
         //We use ChronoUnit to calculate the nights between dates and calculate the price
