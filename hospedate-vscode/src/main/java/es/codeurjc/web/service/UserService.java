@@ -83,25 +83,25 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public Optional<UserUpdateResult> adminUpdateUser(Long id, String name, String email, String role) {
+    public UserUpdateResult adminUpdateUser(Long id, String name, String email, String role) {
         Optional<User> existing = userRepository.findById(id);
-        if (existing.isEmpty()) return Optional.of(UserUpdateResult.notFound());
+        if (existing.isEmpty()) return UserUpdateResult.notFound();
 
         User user = existing.get();
-        if (user.isAdmin()) return Optional.of(UserUpdateResult.forbidden("Cannot modify an admin account"));
+        if (user.isAdmin()) return UserUpdateResult.forbidden("Cannot modify an admin account");
 
         if (email != null && !email.equals(user.getEmail()) && isEmailTakenByAnother(id, email))
-            return Optional.of(UserUpdateResult.conflict("Email already in use"));
+            return UserUpdateResult.conflict("Email already in use");
 
         if (name != null && !name.equals(user.getName()) && isUsernameTakenByAnother(id, name))
-            return Optional.of(UserUpdateResult.conflict("Name already in use"));
+            return UserUpdateResult.conflict("Name already in use");
 
         if (name != null) user.setName(name);
         if (email != null) user.setEmail(email);
         if (role != null) user.setRole(role);
 
         userRepository.save(user);
-        return Optional.of(UserUpdateResult.ok(user));
+        return UserUpdateResult.ok(user);
     }
 
     public enum UserUpdateStatus { OK, NOT_FOUND, FORBIDDEN, CONFLICT }
