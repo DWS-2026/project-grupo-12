@@ -1,0 +1,342 @@
+{
+  "info": {
+    "_postman_id": "f7e8d9c0-1234-5678-9abc-def012345678",
+    "name": "Hospedate API",
+    "description": "Colección Postman de la API REST de Hospedate (Práctica 3 - DWS Grupo 12). Todas las URLs usan la variable {{baseUrl}} definida en el environment 'Hospedate Local'.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login (admin)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{adminUser}}\",\n  \"password\": \"{{adminPass}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "v1", "auth", "login"] }
+          }
+        },
+        {
+          "name": "Login (user)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{user}}\",\n  \"password\": \"{{userPass}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "v1", "auth", "login"] }
+          }
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"newuser\",\n  \"email\": \"newuser@test.com\",\n  \"password\": \"newpass123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/auth/register", "host": ["{{baseUrl}}"], "path": ["api", "v1", "auth", "register"] }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/auth/logout", "host": ["{{baseUrl}}"], "path": ["api", "v1", "auth", "logout"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get my profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/users/me", "host": ["{{baseUrl}}"], "path": ["api", "v1", "users", "me"] }
+          }
+        },
+        {
+          "name": "Get my avatar",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/users/me/avatar", "host": ["{{baseUrl}}"], "path": ["api", "v1", "users", "me", "avatar"] }
+          }
+        },
+        {
+          "name": "Update my profile",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Nombre Actualizado\",\n  \"email\": \"updated@test.com\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/users/me", "host": ["{{baseUrl}}"], "path": ["api", "v1", "users", "me"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hotels",
+      "item": [
+        {
+          "name": "List hotels (paged)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/hotels/?page=0&size=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "hotels", ""],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get hotel by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/hotels/{{hotelId}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "hotels", "{{hotelId}}"] }
+          }
+        },
+        {
+          "name": "Create hotel (admin)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hotel Postman\",\n  \"tipo\": \"4 estrellas\",\n  \"city\": \"Madrid\",\n  \"location\": \"Calle Mayor 1\",\n  \"price\": 90.0,\n  \"description\": \"Hotel de prueba creado desde Postman\",\n  \"rating\": 4.5,\n  \"wifi\": true,\n  \"tv\": true,\n  \"airConditioning\": true,\n  \"family\": false,\n  \"services\": [\"Piscina\", \"Gimnasio\"]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/hotels/", "host": ["{{baseUrl}}"], "path": ["api", "v1", "hotels", ""] }
+          }
+        },
+        {
+          "name": "Update hotel (admin)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hotel Postman Editado\",\n  \"tipo\": \"5 estrellas\",\n  \"city\": \"Madrid\",\n  \"location\": \"Gran Vía 10\",\n  \"price\": 150.0,\n  \"description\": \"Descripción actualizada\",\n  \"rating\": 4.8,\n  \"wifi\": true,\n  \"tv\": true,\n  \"airConditioning\": true,\n  \"family\": true,\n  \"services\": [\"Piscina\", \"Spa\"]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/hotels/{{hotelId}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "hotels", "{{hotelId}}"] }
+          }
+        },
+        {
+          "name": "Delete hotel (admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/hotels/{{hotelId}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "hotels", "{{hotelId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reserves",
+      "item": [
+        {
+          "name": "List reserves (paged)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/reserves/?page=0&size=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "reserves", ""],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create reserve",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entryDate\": \"2026-06-01\",\n  \"departureDate\": \"2026-06-05\",\n  \"guests\": 2,\n  \"hotelId\": {{hotelId}}\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/reserves/", "host": ["{{baseUrl}}"], "path": ["api", "v1", "reserves", ""] }
+          }
+        },
+        {
+          "name": "Confirm reserve",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/reserves/{{reserveId}}/confirm", "host": ["{{baseUrl}}"], "path": ["api", "v1", "reserves", "{{reserveId}}", "confirm"] }
+          }
+        },
+        {
+          "name": "Delete reserve",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/reserves/{{reserveId}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "reserves", "{{reserveId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reviews",
+      "item": [
+        {
+          "name": "Get review by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/reviews/{{reviewId}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "reviews", "{{reviewId}}"] }
+          }
+        },
+        {
+          "name": "Create review",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Muy buena estancia\",\n  \"comment\": \"Habitaciones limpias y trato excelente\",\n  \"rating\": 5,\n  \"hotelId\": {{hotelId}}\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/reviews/", "host": ["{{baseUrl}}"], "path": ["api", "v1", "reviews", ""] }
+          }
+        },
+        {
+          "name": "Delete review",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/reviews/{{reviewId}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "reviews", "{{reviewId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Images",
+      "item": [
+        {
+          "name": "Download image",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/images/{{imageId}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "images", "{{imageId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "description": "Endpoints de administración protegidos por rol ADMIN. Devuelven 401/403 para usuarios sin permisos.",
+      "item": [
+        {
+          "name": "List users (paged)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/users?page=0&size=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "users"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get user by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/admin/users/{{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "admin", "users", "{{userId}}"] }
+          }
+        },
+        {
+          "name": "Update user",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuario Editado\",\n  \"email\": \"editado@test.com\",\n  \"role\": \"USER\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/admin/users/{{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "admin", "users", "{{userId}}"] }
+          }
+        },
+        {
+          "name": "Delete user",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/admin/users/{{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "admin", "users", "{{userId}}"] }
+          }
+        },
+        {
+          "name": "List reserves (paged)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/reserves?page=0&size=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admin", "reserves"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get reserve by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/admin/reserves/{{reserveId}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "admin", "reserves", "{{reserveId}}"] }
+          }
+        },
+        {
+          "name": "Update reserve",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entryDate\": \"2026-06-10\",\n  \"departureDate\": \"2026-06-15\",\n  \"guests\": 3,\n  \"status\": \"CONFIRMED\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/admin/reserves/{{reserveId}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "admin", "reserves", "{{reserveId}}"] }
+          }
+        },
+        {
+          "name": "Delete reserve",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/admin/reserves/{{reserveId}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "admin", "reserves", "{{reserveId}}"] }
+          }
+        }
+      ]
+    }
+  ]
+}
