@@ -69,13 +69,27 @@ public class ImageService {
     }
     
 
-    //for extrating the image file to serve it 
-    public Resource getImageFile(long id) throws SQLException {
+    //get the image file from the disk using the filename stored in the database, if it doesn't exist we return 404
+    public Resource getImageFile(long id) throws SQLException, IOException {
         Image image = imageRepository.findById(id).orElseThrow();
         
-        if (image.getImageFile() != null) {
+        //if the image has a filename, we read it from the disk, if it doesn't exist we return 404
+        if (image.getFileName() != null) {
+            java.nio.file.Path filePath = java.nio.file.Paths.get(uploadDir).resolve(image.getFileName()).normalize();
+            Resource resource = new org.springframework.core.io.UrlResource(filePath.toUri());
+            
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            } else {
+                throw new RuntimeException("El archivo de la imagen no se encuentra en el disco duro");
+            }
+        } 
+        //if the image has a BLOB, we read it from the database
+        else if (image.getImageFile() != null) {
             return new InputStreamResource(image.getImageFile().getBinaryStream()); 
-        } else {
+        } 
+        //if the image is empty completely
+        else {
             throw new RuntimeException("Image file not found"); 
         }
     }

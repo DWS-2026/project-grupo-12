@@ -178,11 +178,11 @@ public class UserWebController {
 
 
     //adapted from Repo-0, makes a GET request to the server to get the profile picture of the user, and returns it as a Resource to be displayed in the profile page
-    @GetMapping("/profile/avatar")
-    public ResponseEntity<Object> getProfileAvatar() throws SQLException {
+   @GetMapping("/profile/avatar")
+    public ResponseEntity<Object> getProfileAvatar() { 
         
         if (!userSession.isLogged()){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); //if the user is not logged, we return 401 Unauthorized (ReponseEntity)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); 
         }  
 
         Long userId = userSession.getIdUser();
@@ -194,9 +194,24 @@ public class UserWebController {
 
         User user = userOp.get();
         if (user.getProfileImage() != null) {
-            Resource imageFile = imageService.getImageFile(user.getProfileImage().getId()); 
-            MediaType mediaType = MediaTypeFactory.getMediaType(imageFile).orElse(MediaType.IMAGE_JPEG); 
-            return ResponseEntity.ok().contentType(mediaType).body(imageFile); 
+            try {
+                //read the image file from the disk using the filename stored in the database, if it doesn't exist we return 404
+                Resource imageFile = imageService.getImageFile(user.getProfileImage().getId()); 
+                
+                //if exists and is readable
+                if (imageFile.exists() && imageFile.isReadable()) {
+                    MediaType mediaType = MediaTypeFactory.getMediaType(imageFile).orElse(MediaType.IMAGE_JPEG); 
+                    return ResponseEntity.ok().contentType(mediaType).body(imageFile); 
+                } else {
+                    //if its in the database but not in the disk, we return 404 and log the error
+                    return ResponseEntity.notFound().build();
+                }
+
+            } catch (Exception e) {
+                // Si la base de datos o el disco fallan, capturamos el error para no dar un 500
+                System.err.println("Error al cargar el avatar: " + e.getMessage());
+                return ResponseEntity.notFound().build();
+            }
         }
 
         return ResponseEntity.notFound().build();

@@ -38,13 +38,21 @@ public class UserRestController {
 
     // PROFILE PICTURE
     @GetMapping("/me/avatar")
-    public ResponseEntity<Object> getProfileAvatar(Principal principal) throws SQLException {
+    public ResponseEntity<Object> getProfileAvatar(Principal principal) {
         User user = userService.findByEmail(principal.getName()).orElseThrow();
         
         if (user.getProfileImage() != null) {
-            Resource imageFile = imageService.getImageFile(user.getProfileImage().getId()); 
-            MediaType mediaType = MediaTypeFactory.getMediaType(imageFile).orElse(MediaType.IMAGE_JPEG); 
-            return ResponseEntity.ok().contentType(mediaType).body(imageFile); 
+            try {
+                //read the image file from the disk using the filename stored in the database, if it doesn't exist we return 404
+                Resource imageFile = imageService.getImageFile(user.getProfileImage().getId()); 
+                MediaType mediaType = MediaTypeFactory.getMediaType(imageFile).orElse(MediaType.IMAGE_JPEG); 
+                return ResponseEntity.ok().contentType(mediaType).body(imageFile); 
+                
+            } catch (Exception e) {
+                //If there's any error (like the image is not found in the disk) we return 404 and log the error
+                System.err.println("Failed to load avatar: " + e.getMessage());
+                return ResponseEntity.notFound().build();
+            }
         }
         return ResponseEntity.notFound().build();
     }
