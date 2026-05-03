@@ -3,17 +3,31 @@ package es.codeurjc.web.dto;
 import es.codeurjc.web.model.Reserve;
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+
 public class ReserveDTO {
 
     private Long id;
+
+    @NotNull(message = "Entry date is required")
+    @FutureOrPresent(message = "Entry date cannot be in the past")
     private LocalDate entryDate;
+
+    @NotNull(message = "Departure date is required")
+    @FutureOrPresent(message = "Departure date cannot be in the past")
     private LocalDate departureDate;
+
+    @Min(value = 1, message = "There must be at least 1 guest")
     private int guests;
+
     private long nights;
     private double price;
     private String status;
 
-    // Información simplificada de las relaciones para evitar bucles
+    // Simplified relation info to avoid serialization loops
+    @NotNull(message = "Hotel is required")
     private Long hotelId;
     private String hotelName;
     private Long customerId;

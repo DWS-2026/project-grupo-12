@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import jakarta.validation.Valid;
+
 import java.net.URI;
 import java.util.Optional;
 
@@ -44,7 +46,7 @@ public class ReserveRestController {
 
     //Create reserve
     @PostMapping("/")
-    public ResponseEntity<ReserveDTO> createReserve(@RequestBody ReserveDTO dto){
+    public ResponseEntity<ReserveDTO> createReserve(@Valid @RequestBody ReserveDTO dto){
 
         //Verufy the user is logged in
         if(!userSession.isLogged()){

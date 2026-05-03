@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import jakarta.validation.Valid;
+
 import java.net.URI;
 import java.util.Optional;
 
@@ -34,7 +36,7 @@ public class ReviewRestController {
 
     //Create review
     @PostMapping("/")
-    public ResponseEntity<ReviewDTO> createReview(@RequestBody ReviewDTO dto){
+    public ResponseEntity<ReviewDTO> createReview(@Valid @RequestBody ReviewDTO dto){
         //Verify the user is logged in
         if(!userSession.isLogged()){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); //401

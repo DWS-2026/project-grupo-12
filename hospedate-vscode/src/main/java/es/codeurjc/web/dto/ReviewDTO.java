@@ -3,15 +3,33 @@ package es.codeurjc.web.dto;
 import java.time.LocalDate;
 import es.codeurjc.web.model.Review;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 public class ReviewDTO {
     private Long id;
+
+    @NotBlank(message = "Review title is required")
+    @Size(max = 100, message = "Title cannot exceed 100 characters")
     private String title;
+
+    @NotBlank(message = "Comment cannot be empty")
+    @Size(max = 2000, message = "Comment is too long (max 2000 characters)")
     private String comment;
+
+    @Min(value = 1, message = "Minimum rating is 1")
+    @Max(value = 5, message = "Maximum rating is 5")
     private int rating;
+
     private LocalDate publishDate;
-    
-    //En lugar de objetos, usamos textos/números
+
+    // Use plain strings/numbers instead of nested objects
     private String authorName;
+
+    @NotNull(message = "Hotel is required")
     private Long hotelId;
 
     // Constructor vacío (Obligatorio para Spring/Jackson)

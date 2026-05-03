@@ -7,6 +7,7 @@ import es.codeurjc.web.security.jwt.UserLoginService;
 import es.codeurjc.web.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class AuthRestController {
     //LOGIN: Generate the JWT token and store it in a cookie.
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(
-            @RequestBody LoginRequest loginRequest, 
+            @Valid @RequestBody LoginRequest loginRequest,
             HttpServletResponse response) {
         
         return userLoginService.login(response, loginRequest);
@@ -37,7 +38,7 @@ public class AuthRestController {
 
     //REGISTER: Creates the user and returns the Location header
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody UserRegisterDTO registerDTO) {
+    public ResponseEntity<?> register(@Valid @RequestBody UserRegisterDTO registerDTO) {
         
         // We check if the email already exists
         if (userService.findByEmail(registerDTO.getEmail()).isPresent()) {

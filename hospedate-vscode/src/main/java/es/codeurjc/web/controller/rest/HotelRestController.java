@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import jakarta.validation.Valid;
+
 import java.util.Optional;
 
 @RestController
@@ -42,7 +44,7 @@ public class HotelRestController {
 
         //Create hotel
         @PostMapping("/")
-        public ResponseEntity<?> createHotel(@RequestBody HotelDTO hotelDto){
+        public ResponseEntity<?> createHotel(@Valid @RequestBody HotelDTO hotelDto){
             try {
                 
                 Hotel newHotel = hotelService.createHotelFromDto(hotelDto);
@@ -62,7 +64,7 @@ public class HotelRestController {
 
         //Update hotel
         @PutMapping("/{id}")
-        public ResponseEntity<HotelDTO> updateHotel(@PathVariable Long id, @RequestBody HotelDTO hotelDto){
+        public ResponseEntity<HotelDTO> updateHotel(@PathVariable Long id, @Valid @RequestBody HotelDTO hotelDto){
             return hotelService.updateHotelFromDto(id, hotelDto)
             .map(h -> ResponseEntity.ok(new HotelDTO(h)))
             .orElse(ResponseEntity.notFound().build());

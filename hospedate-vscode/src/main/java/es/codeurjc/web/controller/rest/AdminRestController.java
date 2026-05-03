@@ -17,6 +17,8 @@ import es.codeurjc.web.service.ReserveService;
 import es.codeurjc.web.service.UserService;
 import es.codeurjc.web.service.UserService.UserUpdateResult;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1/admin")
 public class AdminRestController {
@@ -48,7 +50,7 @@ public class AdminRestController {
     }
 
     @PutMapping("/users/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
         UserService.UserUpdateResult result = userService.adminUpdateUser(
                 id, userDTO.getName(), userDTO.getEmail(), userDTO.getRole());
 
@@ -95,7 +97,7 @@ public class AdminRestController {
     }
 
     @PutMapping("/reserves/{id}")
-    public ResponseEntity<?> updateReserve(@PathVariable Long id, @RequestBody ReserveDTO reserveDTO) {
+    public ResponseEntity<?> updateReserve(@PathVariable Long id, @Valid @RequestBody ReserveDTO reserveDTO) {
         Optional<Reserve> updated = reserveService.adminUpdateReserve(
                 id, reserveDTO.getEntryDate(), reserveDTO.getDepartureDate(),
                 reserveDTO.getGuests(), reserveDTO.getStatus());
