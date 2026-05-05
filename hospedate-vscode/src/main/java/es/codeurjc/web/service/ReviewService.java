@@ -3,6 +3,8 @@ package es.codeurjc.web.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,11 @@ public class ReviewService {
     }
 
     public Review createReview(int rating, String title, String comment, User author, Hotel hotel) {
-        Review review = new Review(rating, title, comment, author, hotel);
+        // ANTI-XSS SANITIZATION
+        // Safelist.relaxed() allows h1, h2, b, i, u, lists, etc., but blocks scripts and iframes
+        String safeComment = Jsoup.clean(comment, Safelist.relaxed());
+
+        Review review = new Review(rating, title, safeComment, author, hotel);
         reviewRepository.save(review);
         return review;
     }
