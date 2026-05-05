@@ -25,19 +25,15 @@ public class Review {
     @Column(columnDefinition = "TEXT")
     private String comment; //User review text
 
-    //Variable to indicate if the title should be bold
-    private boolean boldTitle;
-
     private LocalDate publishDate;
 
     //Empty constructor for JPA
     public Review(){}
 
-    public Review(int rating,String title, String comment, boolean boldTitle, User author, Hotel hotel){
+    public Review(int rating,String title, String comment, User author, Hotel hotel){
         this.rating = rating;
         this.title = title;
         this.comment = comment;
-        this.boldTitle = boldTitle;
         this.author = author;
         this.hotel = hotel;
     }
@@ -127,12 +123,5 @@ public class Review {
     return stars;
     }
 
-    public boolean isBoldTitle() { 
-        return boldTitle; 
-    }
-    
-    public void setBoldTitle(boolean boldTitle) { 
-        this.boldTitle = boldTitle; 
-    }
 
 }
