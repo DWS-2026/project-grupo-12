@@ -37,7 +37,8 @@ public class ReviewWebController {
     public String showHotel(@PathVariable long id,
                             @RequestParam int rating, 
                             @RequestParam String title,
-                            @RequestParam String comment, 
+                            @RequestParam String comment,
+                            @RequestParam(defaultValue = "false") boolean boldTitle,
                             Model model) {
         
         // If the user is not logged in, redirect to the login page
@@ -49,7 +50,7 @@ public class ReviewWebController {
         User author = userService.findById(userSession.getIdUser()).orElseThrow();
 
         //We created and saved the review in the database
-        reviewService.createReview(rating, title, comment, author, hotel);
+        reviewService.createReview(rating, title, comment, boldTitle, author, hotel);
         
     return "redirect:/hotel/" + id; // We reloaded the hotel page
     }

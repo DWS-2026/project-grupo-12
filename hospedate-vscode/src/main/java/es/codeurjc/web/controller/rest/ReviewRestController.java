@@ -56,6 +56,7 @@ public class ReviewRestController {
             dto.getRating(),
             dto.getTitle(),
             dto.getComment(),
+            dto.isBoldTitle(),
             author,
             hotelOpt.get()
         );

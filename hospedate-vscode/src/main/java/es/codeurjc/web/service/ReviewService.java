@@ -22,8 +22,8 @@ public class ReviewService {
         return reviewRepository.findByAuthorId(userId);
     }
 
-    public Review createReview(int rating, String title, String comment, User author, Hotel hotel) {
-        Review review = new Review(rating, title, comment, author, hotel);
+    public Review createReview(int rating, String title, String comment, boolean boldTitle, User author, Hotel hotel) {
+        Review review = new Review(rating, title, comment, boldTitle, author, hotel);
         reviewRepository.save(review);
         return review;
     }

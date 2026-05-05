@@ -24,6 +24,8 @@ public class ReviewDTO {
     @Max(value = 5, message = "Maximum rating is 5")
     private int rating;
 
+    private boolean boldTitle;
+    
     private LocalDate publishDate;
 
     // Use plain strings/numbers instead of nested objects
@@ -32,16 +34,17 @@ public class ReviewDTO {
     @NotNull(message = "Hotel is required")
     private Long hotelId;
 
-    // Constructor vacío (Obligatorio para Spring/Jackson)
+    // Empty Constructor (Mandatory for Spring)
     public ReviewDTO() {}
 
-    // Constructor traductor (Entidad -> DTO)
+    // Constructor translator (Entity -> DTO)
     public ReviewDTO(Review review) {
         this.id = review.getId();
         this.title = review.getTitle();
         this.comment = review.getComment();
         this.rating = review.getRating();
         this.publishDate = review.getPublishDate();
+        this.boldTitle = review.isBoldTitle();
         
         // Extraemos solo el nombre del autor de forma segura
         if (review.getAuthor() != null) {
@@ -108,5 +111,13 @@ public class ReviewDTO {
 
     public void setHotelId(Long hotelId) {
         this.hotelId = hotelId;
+    }
+
+    public boolean isBoldTitle() { 
+        return boldTitle; 
+    }
+    
+    public void setBoldTitle(boolean boldTitle) { 
+        this.boldTitle = boldTitle; 
     }
 }

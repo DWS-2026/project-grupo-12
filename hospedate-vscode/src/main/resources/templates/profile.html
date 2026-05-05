@@ -29,7 +29,14 @@
                                     </div>
                                     <small class="text-muted d-block mb-2">Publicado el {{formattedDate}}</small>
 
-                                    <h6 class="fw-bold text-dark mt-2">{{title}}</h6>
+                                    <!-- Mustache paints one class or another depending on the boolean-->
+                                    {{#boldTitle}}
+                                    <h6 class="fw-bold text-dark mt-2 fs-5">{{title}}</h6>
+                                    {{/boldTitle}}
+                                    
+                                    {{^boldTitle}}
+                                    <h6 class="fw-normal text-dark mt-2">{{title}}</h6>
+                                    {{/boldTitle}}
                                     
                                     <p class="text-dark small mb-0">"{{comment}}"</p>
                                     <div class="mt-2 text-end">
