@@ -161,6 +161,15 @@ public class UserWebController {
         //if the user is uploading a photo and its format is correct, we create a new image
         if (!photo.isEmpty()) { //if the user is uploading a photo, we change it
             if ((photo.getContentType().equals("image/jpeg") || photo.getContentType().equals("image/png"))) {
+                if (user.getProfileImage() != null) {
+                    //delete the old image file from the disk, if it exists, we ignore any error that may occur during deletion
+                    try {
+                        Resource oldImageFile = imageService.getImageFile(user.getProfileImage().getId());
+                        oldImageFile.getFile().delete();
+                    } catch (Exception e) {
+                        System.err.println("Failed to delete old avatar: " + e.getMessage());
+                    }
+                }
                 Image newImage = imageService.createAvatarImage(photo); //save the image in the disk and the filename in the database
                 user.setProfileImage(newImage);
             } else {

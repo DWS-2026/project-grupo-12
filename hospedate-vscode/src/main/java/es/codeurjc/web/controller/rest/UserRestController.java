@@ -72,6 +72,15 @@ public class UserRestController {
         //same checks as in the web controller, but adapted to the API (we return ResponseEntity with error messages instead of redirecting to the profile page)
         if (photo != null && !photo.isEmpty()) { 
             if ((photo.getContentType().equals("image/jpeg") || photo.getContentType().equals("image/png"))) {
+                if (user.getProfileImage() != null) {
+                    //delete the old image file from the disk, if it exists, we ignore any error that may occur during deletion
+                    try {
+                        Resource oldImageFile = imageService.getImageFile(user.getProfileImage().getId());
+                        oldImageFile.getFile().delete();
+                    } catch (Exception e) {
+                        System.err.println("Failed to delete old avatar: " + e.getMessage());
+                    }
+                }
                 Image newImage = imageService.createAvatarImage(photo); //save the image in the disk and the filename in the database
                 user.setProfileImage(newImage);
             } else {
