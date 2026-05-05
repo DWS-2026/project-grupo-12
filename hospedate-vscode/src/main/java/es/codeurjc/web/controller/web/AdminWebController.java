@@ -41,7 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 // Controller that handles all admin panel operations: dashboard, hotel/user/reserve management and image uploads
 @Controller
-public class AdminController {
+public class AdminWebController {
 
     @Autowired
     private ReviewService reviewService;
