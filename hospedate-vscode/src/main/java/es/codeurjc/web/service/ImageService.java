@@ -55,8 +55,8 @@ public class ImageService {
             Files.createDirectories(path);
         }
 
-        // Generate a unique filename to avoid conflicts
-        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+        // Generate a unique filename to avoid conflicts, the user has no efect on the filename 
+        String fileName = java.util.UUID.randomUUID().toString() + ".jpg";        
         Path destination = path.resolve(fileName);
         
         //Save bytes of the uploaded file in the destination path
