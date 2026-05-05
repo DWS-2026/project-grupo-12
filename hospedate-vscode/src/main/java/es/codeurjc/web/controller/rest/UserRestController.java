@@ -14,11 +14,16 @@ import es.codeurjc.web.model.Image;
 import es.codeurjc.web.model.User;
 import es.codeurjc.web.service.ImageService;
 import es.codeurjc.web.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.security.Principal;
 import java.sql.SQLException;
 
 
+@Tag(name = "Users")
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserRestController {
@@ -29,14 +34,23 @@ public class UserRestController {
     @Autowired
     private ImageService imageService;  
 
-    // PROFILE
+    @Operation(summary = "Get current user profile")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "OK"),
+        @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
     @GetMapping("/me")
     public ResponseEntity<UserDTO> getProfile(Principal principal) {
         User user = userService.findByEmail(principal.getName()).orElseThrow();
         return ResponseEntity.ok(new UserDTO(user));
     }
 
-    // PROFILE PICTURE
+    @Operation(summary = "Get current user avatar")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "OK"),
+        @ApiResponse(responseCode = "401", description = "Unauthorized"),
+        @ApiResponse(responseCode = "404", description = "No avatar set")
+    })
     @GetMapping("/me/avatar")
     public ResponseEntity<Object> getProfileAvatar(Principal principal) {
         User user = userService.findByEmail(principal.getName()).orElseThrow();
@@ -57,8 +71,13 @@ public class UserRestController {
         return ResponseEntity.notFound().build();
     }
 
-    //UPDATE PROFILE
-    @PutMapping("/me") //update with put
+    @Operation(summary = "Update current user profile")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "OK"),
+        @ApiResponse(responseCode = "400", description = "Invalid file format"),
+        @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    @PutMapping("/me")
     public ResponseEntity<?> updateProfileAPI(
             Principal principal,
             @RequestParam String username,

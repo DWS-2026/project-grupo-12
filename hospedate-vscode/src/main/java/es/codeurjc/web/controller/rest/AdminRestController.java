@@ -16,9 +16,14 @@ import es.codeurjc.web.model.User;
 import es.codeurjc.web.service.ReserveService;
 import es.codeurjc.web.service.UserService;
 import es.codeurjc.web.service.UserService.UserUpdateResult;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import jakarta.validation.Valid;
 
+@Tag(name = "Admin")
 @RestController
 @RequestMapping("/api/v1/admin")
 public class AdminRestController {
@@ -31,6 +36,11 @@ public class AdminRestController {
 
     // --- USERS ---
 
+    @Operation(summary = "List all non-admin users (paginated)")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "OK"),
+        @ApiResponse(responseCode = "403", description = "Forbidden – admin only")
+    })
     @GetMapping("/users")
     public ResponseEntity<Page<UserDTO>> listUsers(
             @RequestParam(defaultValue = "0") int page,
@@ -40,6 +50,12 @@ public class AdminRestController {
         return ResponseEntity.ok(users);
     }
 
+    @Operation(summary = "Get user by ID")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "OK"),
+        @ApiResponse(responseCode = "403", description = "Forbidden – admin only"),
+        @ApiResponse(responseCode = "404", description = "Not found")
+    })
     @GetMapping("/users/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
         Optional<User> user = userService.findById(id);
@@ -49,6 +65,13 @@ public class AdminRestController {
         return ResponseEntity.ok(new UserDTO(user.get()));
     }
 
+    @Operation(summary = "Update a user")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "OK"),
+        @ApiResponse(responseCode = "403", description = "Forbidden"),
+        @ApiResponse(responseCode = "404", description = "Not found"),
+        @ApiResponse(responseCode = "409", description = "Email conflict")
+    })
     @PutMapping("/users/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
         UserService.UserUpdateResult result = userService.adminUpdateUser(
@@ -62,6 +85,12 @@ public class AdminRestController {
         };
     }
 
+    @Operation(summary = "Delete a user")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Deleted"),
+        @ApiResponse(responseCode = "403", description = "Cannot delete admin"),
+        @ApiResponse(responseCode = "404", description = "Not found")
+    })
     @DeleteMapping("/users/{id}")
     public ResponseEntity<Map<String, String>> deleteUser(@PathVariable Long id) {
         Optional<User> user = userService.findById(id);
@@ -78,6 +107,11 @@ public class AdminRestController {
 
     // --- RESERVES ---
 
+    @Operation(summary = "List all reserves (paginated)")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "OK"),
+        @ApiResponse(responseCode = "403", description = "Forbidden – admin only")
+    })
     @GetMapping("/reserves")
     public ResponseEntity<Page<ReserveDTO>> listReserves(
             @RequestParam(defaultValue = "0") int page,
@@ -87,6 +121,12 @@ public class AdminRestController {
         return ResponseEntity.ok(reserves);
     }
 
+    @Operation(summary = "Get reserve by ID")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "OK"),
+        @ApiResponse(responseCode = "403", description = "Forbidden – admin only"),
+        @ApiResponse(responseCode = "404", description = "Not found")
+    })
     @GetMapping("/reserves/{id}")
     public ResponseEntity<ReserveDTO> getReserve(@PathVariable Long id) {
         Optional<Reserve> reserve = reserveService.getReserveById(id);
@@ -96,6 +136,11 @@ public class AdminRestController {
         return ResponseEntity.ok(new ReserveDTO(reserve.get()));
     }
 
+    @Operation(summary = "Update a reserve")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "OK"),
+        @ApiResponse(responseCode = "404", description = "Not found")
+    })
     @PutMapping("/reserves/{id}")
     public ResponseEntity<?> updateReserve(@PathVariable Long id, @Valid @RequestBody ReserveDTO reserveDTO) {
         Optional<Reserve> updated = reserveService.adminUpdateReserve(
@@ -107,6 +152,11 @@ public class AdminRestController {
                 : ResponseEntity.ok(new ReserveDTO(updated.get()));
     }
 
+    @Operation(summary = "Delete a reserve")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Deleted"),
+        @ApiResponse(responseCode = "404", description = "Not found")
+    })
     @DeleteMapping("/reserves/{id}")
     public ResponseEntity<Map<String, String>> deleteReserve(@PathVariable Long id) {
         Optional<Reserve> reserve = reserveService.getReserveById(id);

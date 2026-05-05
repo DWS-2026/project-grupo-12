@@ -8,6 +8,10 @@ import es.codeurjc.web.service.HotelService;
 import es.codeurjc.web.service.ReserveService;
 import es.codeurjc.web.service.UserService;
 import es.codeurjc.web.service.UserSession;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +25,7 @@ import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.Optional;
 
+@Tag(name = "Reserves")
 @RestController
 @RequestMapping("/api/v1/reserves")
 public class ReserveRestController {
@@ -37,37 +42,37 @@ public class ReserveRestController {
     @Autowired
     private UserSession userSession;
 
-    //List reserves
+    @Operation(summary = "List all reserves (paginated)")
+    @ApiResponse(responseCode = "200", description = "OK")
     @GetMapping("/")
     public ResponseEntity<Page<ReserveDTO>> getReserves(Pageable pageable){
         Page<Reserve> reserves = reserveService.getAllReserves(pageable);
         return ResponseEntity.ok(reserves.map(ReserveDTO::new));
     }
 
-    //Create reserve
+    @Operation(summary = "Create a reserve")
+    @ApiResponses({
+        @ApiResponse(responseCode = "201", description = "Created"),
+        @ApiResponse(responseCode = "401", description = "Unauthorized – login required"),
+        @ApiResponse(responseCode = "404", description = "Hotel not found")
+    })
     @PostMapping("/")
     public ResponseEntity<ReserveDTO> createReserve(@Valid @RequestBody ReserveDTO dto){
-
-        //Verufy the user is logged in
         if(!userSession.isLogged()){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); //401 if not logged
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        //Get the hotel
         Optional<Hotel> hotelOpt = hotelService.getHotelById(dto.getHotelId());
         if (hotelOpt.isEmpty()){
-            return ResponseEntity.notFound().build(); // 404 not found
+            return ResponseEntity.notFound().build();
         }
 
-        //Get the user
-        User user = userService.findById(userSession.getIdUser()).orElseThrow(); 
+        User user = userService.findById(userSession.getIdUser()).orElseThrow();
 
-        //Create pending reserve
-        Reserve newReserve =reserveService.createPendingReserve(
+        Reserve newReserve = reserveService.createPendingReserve(
             hotelOpt.get(), user, dto.getEntryDate(), dto.getDepartureDate(), dto.getGuests()
-            );
-            
-        //Generate the header location
+        );
+
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(newReserve.getId())
@@ -75,10 +80,12 @@ public class ReserveRestController {
 
         return ResponseEntity.created(location).body(new ReserveDTO(newReserve));
     }
-    
 
-
-    //Confirm reserve
+    @Operation(summary = "Confirm a reserve")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "OK"),
+        @ApiResponse(responseCode = "404", description = "Not found")
+    })
     @PostMapping("/{id}/confirm")
     public ResponseEntity<ReserveDTO> confirmReserve(@PathVariable Long id){
         return reserveService.getReserveById(id)
@@ -89,15 +96,19 @@ public class ReserveRestController {
             .orElse(ResponseEntity.notFound().build());
     }
 
-    //Delete reserve
+    @Operation(summary = "Delete a reserve")
+    @ApiResponses({
+        @ApiResponse(responseCode = "204", description = "Deleted"),
+        @ApiResponse(responseCode = "404", description = "Not found")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteReserve(@PathVariable Long id){
         if (reserveService.getReserveById(id).isPresent()){
             reserveService.deleteReserve(id);
-            return ResponseEntity.noContent().build(); //204 No Content
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
-        }
+    }
 
 
 }

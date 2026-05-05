@@ -4,6 +4,10 @@ import es.codeurjc.web.dto.HotelDTO;
 import es.codeurjc.web.model.Hotel;
 import es.codeurjc.web.service.HotelService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,51 +22,60 @@ import jakarta.validation.Valid;
 
 import java.util.Optional;
 
+@Tag(name = "Hotels")
 @RestController
 @RequestMapping("/api/v1/hotels")
 public class HotelRestController {
-    
+
         @Autowired
         private HotelService hotelService;
 
-        //List hotels
+        @Operation(summary = "List all hotels (paginated)")
+        @ApiResponse(responseCode = "200", description = "OK")
         @GetMapping("/")
         public ResponseEntity<Page<HotelDTO>> getHotels(Pageable pageable){
             Page<Hotel> hotels = hotelService.getAllHotels(pageable);
             Page<HotelDTO> dtos = hotels.map(HotelDTO::new);
-            return ResponseEntity.ok(dtos); //It returns 200 OK with the JSON
+            return ResponseEntity.ok(dtos);
         }
 
-        //Get hotel 
+        @Operation(summary = "Get hotel by ID")
+        @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "404", description = "Not found")
+        })
         @GetMapping("/{id}")
         public ResponseEntity<HotelDTO> getHotel(@PathVariable long id){
             Optional<Hotel> hotel = hotelService.getHotelById(id);
             return hotel.map(h -> ResponseEntity.ok(new HotelDTO(h)))
                         .orElseGet(() -> ResponseEntity.notFound().build());
-                        //If the hotel is not found, it returns 404 Not Found
         }
 
-        //Create hotel
+        @Operation(summary = "Create a hotel")
+        @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Created"),
+            @ApiResponse(responseCode = "400", description = "Invalid input")
+        })
         @PostMapping("/")
         public ResponseEntity<?> createHotel(@Valid @RequestBody HotelDTO hotelDto){
             try {
-                
                 Hotel newHotel = hotelService.createHotelFromDto(hotelDto);
-                //Generate the header location
                 URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                         .path("/{id}")
                         .buildAndExpand(newHotel.getId())
                         .toUri();
-                        
                 return ResponseEntity.created(location).body(new HotelDTO(newHotel));
             } catch (IllegalArgumentException e) {
-                // if the price is negative, it returns 400 Bad Request with the error message
                 return ResponseEntity.badRequest().body(e.getMessage());
             }
         }
-        
 
-        //Update hotel
+        @Operation(summary = "Update a hotel")
+        @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "404", description = "Not found")
+        })
         @PutMapping("/{id}")
         public ResponseEntity<HotelDTO> updateHotel(@PathVariable Long id, @Valid @RequestBody HotelDTO hotelDto){
             return hotelService.updateHotelFromDto(id, hotelDto)
@@ -70,14 +83,18 @@ public class HotelRestController {
             .orElse(ResponseEntity.notFound().build());
         }
 
-        //Delete hotel
+        @Operation(summary = "Delete a hotel")
+        @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Deleted"),
+            @ApiResponse(responseCode = "404", description = "Not found")
+        })
         @DeleteMapping("/{id}")
         public ResponseEntity<Void> deleteHotel(@PathVariable Long id){
             if (hotelService.getHotelById(id).isPresent()){
                 hotelService.deleteHotel(id);
-                return ResponseEntity.noContent().build(); //204 No Content
+                return ResponseEntity.noContent().build();
             }
-            return ResponseEntity.notFound().build(); //404 Not Found
+            return ResponseEntity.notFound().build();
         }
 
 
