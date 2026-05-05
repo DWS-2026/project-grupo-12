@@ -118,6 +118,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/login").permitAll()
                 .requestMatchers("/register").permitAll()
                 .requestMatchers("/hotels").permitAll()
+                .requestMatchers("/error").permitAll()
                 .requestMatchers("/hotel/**").permitAll()
                 .requestMatchers("/assets/**", "/css/**", "/js/**", "/uploads/**").permitAll()
 
