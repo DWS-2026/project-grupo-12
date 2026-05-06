@@ -32,6 +32,10 @@ public class ReserveService {
         return reserveRepository.findByCustomerId(userId);
     }
 
+    public Page<Reserve> getUserReserves(User user, Pageable pageable) {
+        return reserveRepository.findByCustomer(user, pageable);
+    }
+
     public List<Reserve> getAllReserves() {
         return reserveRepository.findAll();
     }

@@ -4,15 +4,23 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 
+import es.codeurjc.web.dto.ReserveDTO;
+import es.codeurjc.web.dto.ReviewDTO;
 import es.codeurjc.web.dto.UserDTO;
 import es.codeurjc.web.model.Image;
+import es.codeurjc.web.model.Reserve;
+import es.codeurjc.web.model.Review;
 import es.codeurjc.web.model.User;
 import es.codeurjc.web.service.ImageService;
+import es.codeurjc.web.service.ReserveService;
+import es.codeurjc.web.service.ReviewService;
 import es.codeurjc.web.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -30,6 +38,12 @@ public class UserRestController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ReserveService reserveService;
+    
+    @Autowired
+    private ReviewService reviewService;
     
     @Autowired
     private ImageService imageService;  
@@ -39,13 +53,19 @@ public class UserRestController {
         @ApiResponse(responseCode = "200", description = "OK"),
         @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
-    // PROFILE
+
+
+
+
+    //Own profile
     @GetMapping("/me")
     public ResponseEntity<UserDTO> getProfile(Principal principal) {
         User user = userService.findByEmail(principal.getName()).orElseThrow();
         return ResponseEntity.ok(new UserDTO(user));
     }
 
+
+    
     @Operation(summary = "Get current user avatar")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "OK"),
@@ -72,6 +92,8 @@ public class UserRestController {
         }
         return ResponseEntity.notFound().build();
     }
+
+
 
     @Operation(summary = "Update current user profile")
     @ApiResponses({
@@ -117,4 +139,38 @@ public class UserRestController {
         //return the updated user information
         return ResponseEntity.ok(new UserDTO(user));
     }
+
+
+
+
+    @Operation(summary = "Get current user's reserves (paginated)")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "OK"),
+        @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    @GetMapping("/me/reserves")
+    public ResponseEntity<Page<ReserveDTO>> getMyReserves(Principal principal, Pageable pageable) {
+        User user = userService.findByEmail(principal.getName()).orElseThrow();
+        //Find reserves of the user and convert them to DTOs
+        Page<Reserve> reserves = reserveService.getUserReserves(user, pageable);
+        return ResponseEntity.ok(reserves.map(ReserveDTO::new));
+    }
+
+
+
+
+    @Operation(summary = "Get current user's reviews (paginated)")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "OK"),
+        @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    @GetMapping("/me/reviews")
+    public ResponseEntity<Page<ReviewDTO>> getMyReviews(Principal principal, Pageable pageable) {
+        User user = userService.findByEmail(principal.getName()).orElseThrow();
+        //Find reviews of the user and convert them to DTOs
+        Page<Review> reviews = reviewService.getUserReviews(user, pageable);
+        return ResponseEntity.ok(reviews.map(ReviewDTO::new));
+    }
+
+    
 }

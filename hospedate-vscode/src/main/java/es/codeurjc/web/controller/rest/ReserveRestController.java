@@ -23,6 +23,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import jakarta.validation.Valid;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.Optional;
 
 @Tag(name = "Reserves")
@@ -39,17 +40,6 @@ public class ReserveRestController {
     @Autowired 
     private UserService userService;
 
-    @Autowired
-    private UserSession userSession;
-
-    @Operation(summary = "List all reserves (paginated)")
-    @ApiResponse(responseCode = "200", description = "OK")
-    //List reserves
-    @GetMapping("/")
-    public ResponseEntity<Page<ReserveDTO>> getReserves(Pageable pageable){
-        Page<Reserve> reserves = reserveService.getAllReserves(pageable);
-        return ResponseEntity.ok(reserves.map(ReserveDTO::new));
-    }
 
     @Operation(summary = "Create a reserve")
     @ApiResponses({
@@ -59,12 +49,7 @@ public class ReserveRestController {
     })
     //Create reserve
     @PostMapping("/")
-    public ResponseEntity<ReserveDTO> createReserve(@Valid @RequestBody ReserveDTO dto){
-        //Verufy the user is logged in
-        if(!userSession.isLogged()){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); //401 if not logged
-        }
-
+    public ResponseEntity<ReserveDTO> createReserve(@Valid @RequestBody ReserveDTO dto, Principal principal){
         //Get the hotel
         Optional<Hotel> hotelOpt = hotelService.getHotelById(dto.getHotelId());
         if (hotelOpt.isEmpty()){
@@ -72,8 +57,7 @@ public class ReserveRestController {
         }
 
         //Get the user
-        User user = userService.findById(userSession.getIdUser()).orElseThrow();
-
+        User user = userService.findByEmail(principal.getName()).orElseThrow();
         //Create pending reserve
         Reserve newReserve = reserveService.createPendingReserve(
             hotelOpt.get(), user, dto.getEntryDate(), dto.getDepartureDate(), dto.getGuests()
@@ -88,35 +72,57 @@ public class ReserveRestController {
         return ResponseEntity.created(location).body(new ReserveDTO(newReserve));
     }
 
+
+
     @Operation(summary = "Confirm a reserve")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "OK"),
         @ApiResponse(responseCode = "404", description = "Not found")
     })
     //Confirm reserve
-    @PostMapping("/{id}/confirm")
-    public ResponseEntity<ReserveDTO> confirmReserve(@PathVariable Long id){
-        return reserveService.getReserveById(id)
-            .map(reserve -> {
-                reserveService.saveConfirmedReserve(reserve);
-                return ResponseEntity.ok(new ReserveDTO(reserve));
-            })
-            .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<ReserveDTO> confirmReserve(@PathVariable Long id, Principal principal){ // Añadir Principal
+        Optional<Reserve> reserveOpt = reserveService.getReserveById(id);
+        if(reserveOpt.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        Reserve reserve = reserveOpt.get();
+        User currentUser = userService.findByEmail(principal.getName()).orElseThrow();
+
+        //IDOR protection: Only the owner of the reserve can confirm it
+        if(!reserve.getCustomer().getId().equals(currentUser.getId())){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        reserveService.saveConfirmedReserve(reserve);
+        return ResponseEntity.ok(new ReserveDTO(reserve));
     }
+
+    
 
     @Operation(summary = "Delete a reserve")
     @ApiResponses({
         @ApiResponse(responseCode = "204", description = "Deleted"),
+        @ApiResponse(responseCode = "403", description = "Forbidden – not the owner"),
         @ApiResponse(responseCode = "404", description = "Not found")
     })
-    //Delete reserve
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteReserve(@PathVariable Long id){
-        if (reserveService.getReserveById(id).isPresent()){
-            reserveService.deleteReserve(id);
-            return ResponseEntity.noContent().build(); //204 No Content
+    public ResponseEntity<Void> deleteReserve(@PathVariable Long id, Principal principal){
+        Optional<Reserve> reserveOpt = reserveService.getReserveById(id);
+        if(reserveOpt.isEmpty()){
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
+
+        Reserve reserve = reserveOpt.get();
+        User currentUser = userService.findByEmail(principal.getName()).orElseThrow();
+
+        // IDOR protection: Only the owner of the reserve can delete it
+        if(!reserve.getCustomer().getId().equals(currentUser.getId())){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403
+        }
+
+        reserveService.deleteReserve(id);
+        return ResponseEntity.noContent().build(); 
     }
 
 

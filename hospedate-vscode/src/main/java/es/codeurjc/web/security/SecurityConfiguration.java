@@ -82,25 +82,38 @@ public class SecurityConfiguration {
         // We add the JWT filter before the default filter
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
-        http.authorizeHttpRequests(authorize -> authorize
-                // API Public Routes – no authentication required
-                .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/v1/auth/register").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/v1/hotels/**").permitAll()   // anyone can browse hotels
-                .requestMatchers(HttpMethod.GET, "/api/v1/reviews/**").permitAll()  // anyone can read reviews
-                .requestMatchers(HttpMethod.GET, "/api/v1/images/**").permitAll()   // anyone can load images
+       http.authorizeHttpRequests(authorize -> authorize
+                //public routes (no authentication required)
+                .requestMatchers(HttpMethod.POST, "/api/v1/auth/login", "/api/v1/auth/register").permitAll()
+                
+                .requestMatchers(HttpMethod.GET, "/api/v1/hotels/**").permitAll() // GET hotels is public 
+                
+                .requestMatchers(HttpMethod.GET, "/api/v1/reviews/**").permitAll()// GET a review is public
+                .requestMatchers(HttpMethod.GET, "/api/v1/images/**").permitAll() //Get hotel images is public
 
-                // Private API routes – role-based access control
-                .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")                          // admin panel: ADMIN only
-                .requestMatchers("/api/v1/reserves/**").hasAnyRole("USER", "ADMIN")            // reserves: logged-in users
-                .requestMatchers(HttpMethod.POST, "/api/v1/reviews/**").hasAnyRole("USER", "ADMIN")   // create review: logged-in
-                .requestMatchers(HttpMethod.DELETE, "/api/v1/reviews/**").hasAnyRole("USER", "ADMIN") // delete review: logged-in
-                .requestMatchers(HttpMethod.POST, "/api/v1/hotels/**").hasRole("ADMIN")        // create hotel: ADMIN only
-                .requestMatchers(HttpMethod.PUT, "/api/v1/hotels/**").hasRole("ADMIN")         // edit hotel: ADMIN only
-                .requestMatchers(HttpMethod.DELETE, "/api/v1/hotels/**").hasRole("ADMIN")      // delete hotel: ADMIN only
+                // Private routes (authentication required, but any role can access)
+                .requestMatchers("/api/v1/users/me/**").hasAnyRole("USER", "ADMIN")
+                .requestMatchers("/api/v1/reserves/**").hasAnyRole("USER", "ADMIN") //includes both GET and POST for reserves
+                
+                // Routes for managing reviews (only authenticated users can create/update/delete their reviews, but anyone can read them)
+                .requestMatchers(HttpMethod.POST, "/api/v1/reviews/**").hasAnyRole("USER", "ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/v1/reviews/**").hasAnyRole("USER", "ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/reviews/**").hasAnyRole("USER", "ADMIN")
+                
+                //logout route (only authenticated users can logout)
+                .requestMatchers(HttpMethod.POST, "/api/v1/auth/logout").hasAnyRole("USER", "ADMIN")
 
-                // Any other API endpoint requires authentication
-                .anyRequest().authenticated());
+                //Admin routes
+                .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                
+                // Operations for creating/deleting hotels (GET was already permitted for everyone)
+                .requestMatchers(HttpMethod.POST, "/api/v1/hotels/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/v1/hotels/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/hotels/**").hasRole("ADMIN")
+
+                //other routes require authentication 
+                .anyRequest().authenticated()
+        );
 
         return http.build();
     }

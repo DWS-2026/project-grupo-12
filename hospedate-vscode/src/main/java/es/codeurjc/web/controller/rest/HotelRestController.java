@@ -1,9 +1,10 @@
 package es.codeurjc.web.controller.rest;
 
 import es.codeurjc.web.dto.HotelDTO;
+import es.codeurjc.web.dto.ReviewDTO;
 import es.codeurjc.web.model.Hotel;
 import es.codeurjc.web.service.HotelService;
-
+import es.codeurjc.web.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -30,6 +31,9 @@ public class HotelRestController {
         @Autowired
         private HotelService hotelService;
 
+        @Autowired
+        private ReviewService reviewService; 
+
         @Operation(summary = "List all hotels (paginated)")
         @ApiResponse(responseCode = "200", description = "OK")
         //List hotels
@@ -39,6 +43,8 @@ public class HotelRestController {
             Page<HotelDTO> dtos = hotels.map(HotelDTO::new);
             return ResponseEntity.ok(dtos); //It returns 200 OK with the JSON
         }
+
+
 
         @Operation(summary = "Get hotel by ID")
         @ApiResponses({
@@ -52,6 +58,9 @@ public class HotelRestController {
             return hotel.map(h -> ResponseEntity.ok(new HotelDTO(h)))
                         .orElseGet(() -> ResponseEntity.notFound().build()); //If the hotel is not found, it returns 404 Not Found
         }
+
+
+
 
         @Operation(summary = "Create a hotel")
         @ApiResponses({
@@ -75,6 +84,8 @@ public class HotelRestController {
             }
         }
 
+
+
         @Operation(summary = "Update a hotel")
         @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
@@ -88,6 +99,8 @@ public class HotelRestController {
             .map(h -> ResponseEntity.ok(new HotelDTO(h)))
             .orElse(ResponseEntity.notFound().build());
         }
+
+
 
         @Operation(summary = "Delete a hotel")
         @ApiResponses({
@@ -103,6 +116,32 @@ public class HotelRestController {
             }
             return ResponseEntity.notFound().build(); //404 Not Found
         }
+        
+
+
+
+    @Operation(summary = "Get all reviews for a specific hotel")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "OK"),
+        @ApiResponse(responseCode = "404", description = "Hotel not found")
+    })
+    @GetMapping("/{hotelId}/reviews") 
+    public ResponseEntity<Page<ReviewDTO>> getHotelReviews(
+            @PathVariable Long hotelId, 
+            Pageable pageable) {
+
+        // check if the hotel exists, if not return 404 Not Found
+        if (hotelService.getHotelById(hotelId).isEmpty()) {
+            return ResponseEntity.notFound().build(); // 404
+        }
+
+        //find reviews by hotel id and convert to DTOs
+        Page<ReviewDTO> reviews = reviewService
+                .getReviewsByHotelId(hotelId, pageable)
+                .map(ReviewDTO::new);
+
+        return ResponseEntity.ok(reviews);
+    }
 
 
 
