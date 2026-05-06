@@ -37,22 +37,22 @@ public class HotelDTO {
     @Max(value = 5, message = "La puntuación máxima es 5")
     private double rating;
     
-    // Características básicas
+    // Basic features
     private boolean wifi;
     private boolean tv;
     private boolean airConditioning;
     private boolean family;
 
-    // Servicios adicionales dinámicos
+    // Dynamic additional services
     private Set<String> services;
 
-    // URL para la imagen principal (evitamos enviar el BLOB)
+    // URL for the main image (we avoid sending the BLOB)
     private String mainImageUrl;
 
-    // Constructor vacío para Jackson
+    // Empty constructor required by Jackson
     public HotelDTO() {}
 
-    // Constructor traductor (Entidad -> DTO)
+    // Translator constructor (Entity -> DTO)
     public HotelDTO(Hotel hotel) {
         this.id = hotel.getId();
         this.name = hotel.getName();
@@ -61,20 +61,20 @@ public class HotelDTO {
         this.location = hotel.getLocation();
         this.price = hotel.getPrice();
         this.description = hotel.getDescription();
-        this.rating = hotel.getManualRating(); // Usamos el rating manual o el calculado según prefieras
+        this.rating = hotel.getManualRating(); // We use the manual rating
         
         this.wifi = hotel.isWifi();
         this.tv = hotel.isTv();
         this.airConditioning = hotel.isAirConditioning();
         this.family = hotel.isFamily();
         
-        this.services = hotel.getServices(); // Copiamos el Set de Strings
+        this.services = hotel.getServices(); // Copy the Set of Strings
 
-        // Generamos la URL de la imagen principal usando el método que ya tienes en el modelo
+        // Generate the main image URL using the model method
         this.mainImageUrl = hotel.getMainImage();
     }
 
-    // Getters y Setters
+    // Getters and Setters
     public Long getId() { 
         return id; 
     }

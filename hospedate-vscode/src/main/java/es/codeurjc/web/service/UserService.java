@@ -21,11 +21,10 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    // Hashes the password before saving – never stores plain text
     public User registerUser(String name, String email, String password, String role) {
         String hashPassword = passwordEncoder.encode(password);
-        
         User newUser = new User(name, email, hashPassword, role);
-        
         return userRepository.save(newUser);
     }
 
@@ -55,6 +54,7 @@ public class UserService {
         return byUsername.isPresent() && !byUsername.get().getId().equals(userId);
     }
 
+    // Updates user fields; password is only changed if a non-empty value is provided
     public void saveUser(Long id, String name, String email, String password, String role) {
         Optional<User> existing = userRepository.findById(id);
 
@@ -62,6 +62,7 @@ public class UserService {
             User user = existing.get();
             user.setName(name);
             user.setEmail(email);
+            // Skip password update if the field was left blank
             if (password != null && !password.trim().isEmpty()) {
                 user.setPassword(passwordEncoder.encode(password));
             }
@@ -83,13 +84,17 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    // Admin-only update: prevents editing admin accounts and checks for email/name conflicts
+    // Returns a result object instead of throwing exceptions so the controller can map each case to the right HTTP status
     public UserUpdateResult adminUpdateUser(Long id, String name, String email, String role) {
         Optional<User> existing = userRepository.findById(id);
         if (existing.isEmpty()) return UserUpdateResult.notFound();
 
         User user = existing.get();
+        // Admins cannot be modified through this endpoint
         if (user.isAdmin()) return UserUpdateResult.forbidden("Cannot modify an admin account");
 
+        // Only validate uniqueness if the value actually changed
         if (email != null && !email.equals(user.getEmail()) && isEmailTakenByAnother(id, email))
             return UserUpdateResult.conflict("Email already in use");
 
@@ -106,6 +111,7 @@ public class UserService {
 
     public enum UserUpdateStatus { OK, NOT_FOUND, FORBIDDEN, CONFLICT }
 
+    // Result object returned by adminUpdateUser – carries the status, the updated user (if OK), and an error message (if not)
     public static class UserUpdateResult {
         public final UserUpdateStatus status;
         public final User user;

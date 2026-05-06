@@ -83,22 +83,23 @@ public class SecurityConfiguration {
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeHttpRequests(authorize -> authorize
-                // API Public Routes
+                // API Public Routes – no authentication required
                 .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/auth/register").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/v1/hotels/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/v1/reviews/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/v1/images/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/hotels/**").permitAll()   // anyone can browse hotels
+                .requestMatchers(HttpMethod.GET, "/api/v1/reviews/**").permitAll()  // anyone can read reviews
+                .requestMatchers(HttpMethod.GET, "/api/v1/images/**").permitAll()   // anyone can load images
 
-                // Private API routes (We check permissions)
-                .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
-                .requestMatchers("/api/v1/reserves/**").hasAnyRole("USER", "ADMIN")
-                .requestMatchers(HttpMethod.POST, "/api/v1/reviews/**").hasAnyRole("USER", "ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/v1/reviews/**").hasAnyRole("USER", "ADMIN")
-                .requestMatchers(HttpMethod.POST, "/api/v1/hotels/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/api/v1/hotels/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/v1/hotels/**").hasRole("ADMIN")
+                // Private API routes – role-based access control
+                .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")                          // admin panel: ADMIN only
+                .requestMatchers("/api/v1/reserves/**").hasAnyRole("USER", "ADMIN")            // reserves: logged-in users
+                .requestMatchers(HttpMethod.POST, "/api/v1/reviews/**").hasAnyRole("USER", "ADMIN")   // create review: logged-in
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/reviews/**").hasAnyRole("USER", "ADMIN") // delete review: logged-in
+                .requestMatchers(HttpMethod.POST, "/api/v1/hotels/**").hasRole("ADMIN")        // create hotel: ADMIN only
+                .requestMatchers(HttpMethod.PUT, "/api/v1/hotels/**").hasRole("ADMIN")         // edit hotel: ADMIN only
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/hotels/**").hasRole("ADMIN")      // delete hotel: ADMIN only
 
+                // Any other API endpoint requires authentication
                 .anyRequest().authenticated());
 
         return http.build();

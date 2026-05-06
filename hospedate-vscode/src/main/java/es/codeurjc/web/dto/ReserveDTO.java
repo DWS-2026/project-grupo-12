@@ -33,10 +33,10 @@ public class ReserveDTO {
     private Long customerId;
     private String customerName;
 
-    // Constructor vacío (necesario para la serialización de JSON)
+    // Empty constructor (required for JSON serialization)
     public ReserveDTO() {}
 
-    // Constructor para convertir de Entidad a DTO
+    // Translator constructor (Entity -> DTO)
     public ReserveDTO(Reserve reserve) {
         this.id = reserve.getId();
         this.entryDate = reserve.getEntryDate();
@@ -46,20 +46,20 @@ public class ReserveDTO {
         this.price = reserve.getPrice();
         this.status = reserve.getStatus();
 
-        // Extraemos datos del Hotel de forma segura
+        // Safely extract hotel data
         if (reserve.getHotel() != null) {
             this.hotelId = reserve.getHotel().getId();
             this.hotelName = reserve.getHotel().getName();
         }
 
-        // Extraemos datos del Usuario (cliente) de forma segura
+        // Safely extract customer data
         if (reserve.getCustomer() != null) {
             this.customerId = reserve.getCustomer().getId();
             this.customerName = reserve.getCustomer().getName();
         }
     }
 
-    // Getters y Setters
+    // Getters and Setters
     public Long getId() { 
         return id; 
     }

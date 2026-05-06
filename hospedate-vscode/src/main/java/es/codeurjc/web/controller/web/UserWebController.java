@@ -217,7 +217,7 @@ public class UserWebController {
                 }
 
             } catch (Exception e) {
-                // Si la base de datos o el disco fallan, capturamos el error para no dar un 500
+                // If the database or disk fail, we catch the error to avoid returning a 500
                 System.err.println("Error al cargar el avatar: " + e.getMessage());
                 return ResponseEntity.notFound().build();
             }

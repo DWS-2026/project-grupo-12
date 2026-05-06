@@ -74,6 +74,8 @@ public class AdminRestController {
     })
     @PutMapping("/users/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
+        // adminUpdateUser returns a result object with a status enum instead of throwing exceptions
+        // so we can map each case to the correct HTTP response
         UserService.UserUpdateResult result = userService.adminUpdateUser(
                 id, userDTO.getName(), userDTO.getEmail(), userDTO.getRole());
 
@@ -143,6 +145,7 @@ public class AdminRestController {
     })
     @PutMapping("/reserves/{id}")
     public ResponseEntity<?> updateReserve(@PathVariable Long id, @Valid @RequestBody ReserveDTO reserveDTO) {
+        // adminUpdateReserve returns empty Optional if the reserve does not exist
         Optional<Reserve> updated = reserveService.adminUpdateReserve(
                 id, reserveDTO.getEntryDate(), reserveDTO.getDepartureDate(),
                 reserveDTO.getGuests(), reserveDTO.getStatus());

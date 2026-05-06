@@ -32,10 +32,10 @@ public class ReviewDTO {
     @NotNull(message = "Hotel is required")
     private Long hotelId;
 
-    // Constructor vacío (Obligatorio para Spring/Jackson)
+    // Empty constructor (required for Spring/Jackson)
     public ReviewDTO() {}
 
-    // Constructor traductor (Entidad -> DTO)
+    // Translator constructor (Entity -> DTO)
     public ReviewDTO(Review review) {
         this.id = review.getId();
         this.title = review.getTitle();
@@ -43,17 +43,17 @@ public class ReviewDTO {
         this.rating = review.getRating();
         this.publishDate = review.getPublishDate();
         
-        // Extraemos solo el nombre del autor de forma segura
+        // Safely extract only the author's name
         if (review.getAuthor() != null) {
             this.authorName = review.getAuthor().getName();
         }
         
-        // Extraemos solo el ID del hotel de forma segura
+        // Safely extract only the hotel ID
         if (review.getHotel() != null) {
             this.hotelId = review.getHotel().getId();
         }
     }
-    // Getters y Setters 
+    // Getters and Setters
     public void setId(Long id) {
         this.id = id;
     }
