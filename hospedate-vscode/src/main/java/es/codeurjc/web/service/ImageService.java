@@ -46,36 +46,57 @@ public class ImageService {
         imageRepository.save(image); 
         return image; 
     }
-
-    // save avatar image in the disk and save the filename in the database
+    
+    // Save avatar image in the disk and save the filename in the database
     public Image createAvatarImage(MultipartFile file) throws IOException {
-        Path path = Paths.get(uploadDir); //path for uploading images
+        Path path = Paths.get(uploadDir).toAbsolutePath().normalize(); 
         
         if (!Files.exists(path)) {
             Files.createDirectories(path);
         }
 
-        // Generate a unique filename to avoid conflicts, the user has no efect on the filename 
-        String fileName = java.util.UUID.randomUUID().toString() + ".jpg";        
-        Path destination = path.resolve(fileName);
+        // We keep the original name (required in the rubric)
+        String originalFileName = file.getOriginalFilename();
+        if (originalFileName == null || originalFileName.isEmpty()) {
+            originalFileName = "unnamed_file.jpg";
+        }
+
+        // We sanitize to prevent a path traversal
+        // We extract ONLY the final filename, deleting any attempts at "../"
+        String sanitizedFileName = Paths.get(originalFileName).getFileName().toString();
         
-        //Save bytes of the uploaded file in the destination path
+        // We solve the final route
+        Path destination = path.resolve(sanitizedFileName).normalize();
+
+        //We mathematically verified that the file will not be saved outside of our allowed 'uploads' folder.
+        if (!destination.startsWith(path)) {
+            throw new SecurityException("¡Ataque de Path Traversal detectado! Archivo bloqueado.");
+        }
+
+        // Save bytes of the uploaded file in the destination path
         Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
 
-        //save only filename in the database, the file is saved in the disk
+        // save only filename in the database, the file is saved in the disk
         Image image = new Image();
-        image.setFileName(fileName); 
+        image.setFileName(sanitizedFileName); 
         return imageRepository.save(image);
     }
-    
 
-    //get the image file from the disk using the filename stored in the database, if it doesn't exist we return 404
+    //get the image file from the disk using the filename stored in the database
     public Resource getImageFile(long id) throws SQLException, IOException {
         Image image = imageRepository.findById(id).orElseThrow();
         
-        //if the image has a filename, we read it from the disk, if it doesn't exist we return 404
+        //if the image has a filename, we read it from the disk
         if (image.getFileName() != null) {
-            java.nio.file.Path filePath = java.nio.file.Paths.get(uploadDir).resolve(image.getFileName()).normalize();
+            Path basePath = Paths.get(uploadDir).toAbsolutePath().normalize();
+            Path filePath = basePath.resolve(image.getFileName()).normalize();
+            
+            // PATH TRAVERSAL COUNTERMEASURE IN READING
+            // Make sure that nobody reads a file outside of the uploads folder
+            if (!filePath.startsWith(basePath)) {
+                throw new SecurityException("¡Ataque de Path Traversal detectado en lectura!");
+            }
+
             Resource resource = new org.springframework.core.io.UrlResource(filePath.toUri());
             
             if (resource.exists() || resource.isReadable()) {
@@ -88,7 +109,6 @@ public class ImageService {
         else if (image.getImageFile() != null) {
             return new InputStreamResource(image.getImageFile().getBinaryStream()); 
         } 
-        //if the image is empty completely
         else {
             throw new RuntimeException("Image file not found"); 
         }
