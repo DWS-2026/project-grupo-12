@@ -8,8 +8,12 @@ import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
 
 import es.codeurjc.web.service.ImageService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import java.io.IOException;
 
+@Tag(name = "Images")
 @RestController
 @RequestMapping("/api/v1/images")
 public class ImageRestController {
@@ -18,6 +22,7 @@ public class ImageRestController {
     private ImageService imageService;
 
     //return a Resource with the image file
+    @Operation(summary = "Download an image by its ID")
     @GetMapping("/{id}")
     public ResponseEntity<Resource> downloadImage(@PathVariable Long id) {
         try {

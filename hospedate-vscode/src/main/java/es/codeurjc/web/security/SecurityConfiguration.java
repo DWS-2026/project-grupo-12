@@ -88,6 +88,7 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.POST, "/api/v1/auth/register").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/hotels/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/reviews/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/images/**").permitAll()
 
                 // Private API routes (We check permissions)
                 .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
@@ -121,7 +122,8 @@ public class SecurityConfiguration {
                 .requestMatchers("/error").permitAll()
                 .requestMatchers("/hotel/**").permitAll()
                 .requestMatchers("/assets/**", "/css/**", "/js/**", "/uploads/**").permitAll()
-
+                .requestMatchers(HttpMethod.GET, "/hotel/image/**", "/profile/avatar").permitAll()
+                
                 // Swagger (API documentation)
                 .requestMatchers("/v3/api-docs*/**").permitAll()
                 .requestMatchers("/swagger-ui.html").permitAll()
