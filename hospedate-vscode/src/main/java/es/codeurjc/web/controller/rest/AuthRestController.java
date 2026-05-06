@@ -37,6 +37,7 @@ public class AuthRestController {
         @ApiResponse(responseCode = "200", description = "OK"),
         @ApiResponse(responseCode = "401", description = "Invalid credentials")
     })
+    //LOGIN: Generate the JWT token and store it in a cookie.
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(
             @Valid @RequestBody LoginRequest loginRequest,
@@ -49,12 +50,15 @@ public class AuthRestController {
         @ApiResponse(responseCode = "201", description = "Created"),
         @ApiResponse(responseCode = "400", description = "Email already registered or invalid input")
     })
+    //REGISTER: Creates the user and returns the Location header
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody UserRegisterDTO registerDTO) {
+        // We check if the email already exists
         if (userService.findByEmail(registerDTO.getEmail()).isPresent()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already registered");
         }
 
+        // We register the user (by default as USER)
         User createdUser = userService.registerUser(
             registerDTO.getUsername(),
             registerDTO.getEmail(),
@@ -62,6 +66,7 @@ public class AuthRestController {
             "USER"
         );
 
+        // We add the Location header
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(createdUser.getId())

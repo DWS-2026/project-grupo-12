@@ -46,19 +46,24 @@ public class ReviewRestController {
         @ApiResponse(responseCode = "401", description = "Unauthorized – login required"),
         @ApiResponse(responseCode = "404", description = "Hotel not found")
     })
+    //Create review
     @PostMapping("/")
     public ResponseEntity<ReviewDTO> createReview(@Valid @RequestBody ReviewDTO dto){
+        //Verify the user is logged in
         if(!userSession.isLogged()){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); //401
         }
 
+        //Get the hotel
         Optional<Hotel> hotelOpt = hotelService.getHotelById(dto.getHotelId());
         if(hotelOpt.isEmpty()){
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build(); //404
         }
 
+        //Get the author
         User author = userService.findById(userSession.getIdUser()).orElseThrow();
 
+        //Create the review
         Review review = reviewService.createReview(
             dto.getRating(),
             dto.getTitle(),
@@ -67,12 +72,13 @@ public class ReviewRestController {
             hotelOpt.get()
         );
 
+        //Generate the header location
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(review.getId())
                 .toUri();
 
-        return ResponseEntity.created(location).body(new ReviewDTO(review));
+        return ResponseEntity.created(location).body(new ReviewDTO(review)); //201 Created
     }
 
     @Operation(summary = "Delete a review")
@@ -82,25 +88,28 @@ public class ReviewRestController {
         @ApiResponse(responseCode = "403", description = "Forbidden – not the author"),
         @ApiResponse(responseCode = "404", description = "Not found")
     })
+    //Delete review
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteReview(@PathVariable Long id){
+        //Verify the user is logged in
         if(!userSession.isLogged()){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); //401
         }
 
         Optional<Review> reviewOpt = reviewService.getReviewById(id);
         if(reviewOpt.isEmpty()){
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build(); //404
         }
 
         Review review = reviewOpt.get();
 
+        //IDOR: Only the author or an admin can delete the review
         if(!review.getAuthor().getId().equals(userSession.getIdUser())){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); //403
         }
 
         reviewService.deleteReview(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().build(); //204 No Content
     }
 
     @Operation(summary = "Get review by ID")
@@ -108,6 +117,7 @@ public class ReviewRestController {
         @ApiResponse(responseCode = "200", description = "OK"),
         @ApiResponse(responseCode = "404", description = "Not found")
     })
+    //Get review
     @GetMapping("/{id}")
     public ResponseEntity<ReviewDTO> getReview(@PathVariable Long id){
         Optional<Review> reviewOpt = reviewService.getReviewById(id);

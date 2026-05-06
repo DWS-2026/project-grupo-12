@@ -39,6 +39,7 @@ public class UserRestController {
         @ApiResponse(responseCode = "200", description = "OK"),
         @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
+    // PROFILE
     @GetMapping("/me")
     public ResponseEntity<UserDTO> getProfile(Principal principal) {
         User user = userService.findByEmail(principal.getName()).orElseThrow();
@@ -51,6 +52,7 @@ public class UserRestController {
         @ApiResponse(responseCode = "401", description = "Unauthorized"),
         @ApiResponse(responseCode = "404", description = "No avatar set")
     })
+    // PROFILE PICTURE
     @GetMapping("/me/avatar")
     public ResponseEntity<Object> getProfileAvatar(Principal principal) {
         User user = userService.findByEmail(principal.getName()).orElseThrow();
@@ -77,7 +79,8 @@ public class UserRestController {
         @ApiResponse(responseCode = "400", description = "Invalid file format"),
         @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
-    @PutMapping("/me")
+    //UPDATE PROFILE
+    @PutMapping("/me") //update with put
     public ResponseEntity<?> updateProfileAPI(
             Principal principal,
             @RequestParam String username,

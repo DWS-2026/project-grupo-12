@@ -32,11 +32,12 @@ public class HotelRestController {
 
         @Operation(summary = "List all hotels (paginated)")
         @ApiResponse(responseCode = "200", description = "OK")
+        //List hotels
         @GetMapping("/")
         public ResponseEntity<Page<HotelDTO>> getHotels(Pageable pageable){
             Page<Hotel> hotels = hotelService.getAllHotels(pageable);
             Page<HotelDTO> dtos = hotels.map(HotelDTO::new);
-            return ResponseEntity.ok(dtos);
+            return ResponseEntity.ok(dtos); //It returns 200 OK with the JSON
         }
 
         @Operation(summary = "Get hotel by ID")
@@ -44,11 +45,12 @@ public class HotelRestController {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Not found")
         })
+        //Get hotel
         @GetMapping("/{id}")
         public ResponseEntity<HotelDTO> getHotel(@PathVariable long id){
             Optional<Hotel> hotel = hotelService.getHotelById(id);
             return hotel.map(h -> ResponseEntity.ok(new HotelDTO(h)))
-                        .orElseGet(() -> ResponseEntity.notFound().build());
+                        .orElseGet(() -> ResponseEntity.notFound().build()); //If the hotel is not found, it returns 404 Not Found
         }
 
         @Operation(summary = "Create a hotel")
@@ -56,16 +58,19 @@ public class HotelRestController {
             @ApiResponse(responseCode = "201", description = "Created"),
             @ApiResponse(responseCode = "400", description = "Invalid input")
         })
+        //Create hotel
         @PostMapping("/")
         public ResponseEntity<?> createHotel(@Valid @RequestBody HotelDTO hotelDto){
             try {
                 Hotel newHotel = hotelService.createHotelFromDto(hotelDto);
+                //Generate the header location
                 URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                         .path("/{id}")
                         .buildAndExpand(newHotel.getId())
                         .toUri();
                 return ResponseEntity.created(location).body(new HotelDTO(newHotel));
             } catch (IllegalArgumentException e) {
+                // if the price is negative, it returns 400 Bad Request with the error message
                 return ResponseEntity.badRequest().body(e.getMessage());
             }
         }
@@ -76,6 +81,7 @@ public class HotelRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "404", description = "Not found")
         })
+        //Update hotel
         @PutMapping("/{id}")
         public ResponseEntity<HotelDTO> updateHotel(@PathVariable Long id, @Valid @RequestBody HotelDTO hotelDto){
             return hotelService.updateHotelFromDto(id, hotelDto)
@@ -88,13 +94,14 @@ public class HotelRestController {
             @ApiResponse(responseCode = "204", description = "Deleted"),
             @ApiResponse(responseCode = "404", description = "Not found")
         })
+        //Delete hotel
         @DeleteMapping("/{id}")
         public ResponseEntity<Void> deleteHotel(@PathVariable Long id){
             if (hotelService.getHotelById(id).isPresent()){
                 hotelService.deleteHotel(id);
-                return ResponseEntity.noContent().build();
+                return ResponseEntity.noContent().build(); //204 No Content
             }
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build(); //404 Not Found
         }
 
 
