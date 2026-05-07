@@ -398,17 +398,15 @@ Creación y modificación de endpoints de la api y guardado de avatares en disco
 
 ---
 
-#### **Alumno 3 - [Nombre Completo]**
+#### **Alumno 3 - Hugo Vara Carbajo**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Validación de los DTOs, depuración de la documentación OpenAPI y actualización del diagrama de arquitectura.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Cambios en el DTO del hotel para que no se puedan crear hoteles con opciones inválidas](https://github.com/DWS-2026/project-grupo-12/commit/3ce349803c823360378c54cf5ec1a80b8b72bfd8)  | [pom.xml](https://github.com/DWS-2026/project-grupo-12/commit/3ce349803c823360378c54cf5ec1a80b8b72bfd8#diff-dc07cdbf96cb8d438135e75710bc6c699e7b2341e9413533a7450525fc3bb8dc) [HotelDTO.java](https://github.com/DWS-2026/project-grupo-12/commit/3ce349803c823360378c54cf5ec1a80b8b72bfd8#diff-323f8c2fe4dab83104a03cf48dc196cd638550ad74b648f6c524f21fd3967e38)   |
+|2| [Ruta tomada como endpoint por error y generación de nueva documentación actualizada](https://github.com/DWS-2026/project-grupo-12/commit/bad6416b1bc72772564b5e68c6489732eaec9b38)  | [api-docs.html](https://github.com/DWS-2026/project-grupo-12/commit/bad6416b1bc72772564b5e68c6489732eaec9b38#diff-d7874248fdc44436555356dd677c3abd4da7aedd1af622e47d45bec4b61418e3) [api-docs.yaml](https://github.com/DWS-2026/project-grupo-12/commit/bad6416b1bc72772564b5e68c6489732eaec9b38#diff-699c2f7d2f15bee199b256b15d30066802f2f3643757e1bb011ac4135d0cc1cc) [AdminWebController.java](https://github.com/DWS-2026/project-grupo-12/commit/bad6416b1bc72772564b5e68c6489732eaec9b38#diff-f8144596e9abc1cde7aa576ba26f10ae0a4f098f26b3005b34f5efcdab3498bf)  |
+|3| [Nuevo diagrama y aportación de la documentación](https://github.com/DWS-2026/project-grupo-12/commit/3339b6bb311237b85996627c44ce29f543c38197)  | [README.md](https://github.com/DWS-2026/project-grupo-12/commit/3339b6bb311237b85996627c44ce29f543c38197#diff-b335630551682c19a781afebcf4d07bf978fb1f8ac04c6bf87428ed5106870f5)   |
 
 ---
 
