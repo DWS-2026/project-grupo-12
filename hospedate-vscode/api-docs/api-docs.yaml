@@ -9,7 +9,8 @@ paths:
   /api/v1/users/me:
     get:
       tags:
-      - user-rest-controller
+      - Users
+      summary: Get current user profile
       operationId: getProfile
       responses:
         "200":
@@ -18,9 +19,16 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/UserDTO"
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDTO"
     put:
       tags:
-      - user-rest-controller
+      - Users
+      summary: Update current user profile
       operationId: updateProfileAPI
       parameters:
       - name: username
@@ -54,10 +62,139 @@ paths:
             '*/*':
               schema:
                 type: object
+        "400":
+          description: Invalid file format
+          content:
+            '*/*':
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/reviews/{id}:
+    get:
+      tags:
+      - Reviews
+      summary: Get review by ID
+      operationId: getReview
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReviewDTO"
+        "404":
+          description: Not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReviewDTO"
+    put:
+      tags:
+      - Reviews
+      summary: Update a review
+      operationId: updateReview
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReviewDTO"
+        "401":
+          description: Unauthorized – login required
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReviewDTO"
+        "403":
+          description: Forbidden – not the author
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReviewDTO"
+        "404":
+          description: Not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReviewDTO"
+    delete:
+      tags:
+      - Reviews
+      summary: Delete a review
+      operationId: deleteReview
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: Deleted
+        "401":
+          description: Unauthorized – login required
+        "403":
+          description: Forbidden – not the author
+        "404":
+          description: Not found
+  /api/v1/reserves/{id}/confirm:
+    put:
+      tags:
+      - Reserves
+      summary: Confirm a reserve
+      operationId: confirmReserve
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReserveDTO"
+        "404":
+          description: Not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReserveDTO"
   /api/v1/hotels/{id}:
     get:
       tags:
-      - hotel-rest-controller
+      - Hotels
+      summary: Get hotel by ID
       operationId: getHotel
       parameters:
       - name: id
@@ -73,9 +210,16 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/HotelDTO"
+        "404":
+          description: Not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/HotelDTO"
     put:
       tags:
-      - hotel-rest-controller
+      - Hotels
+      summary: Update a hotel
       operationId: updateHotel
       parameters:
       - name: id
@@ -97,9 +241,22 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/HotelDTO"
+        "400":
+          description: Invalid input
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/HotelDTO"
+        "404":
+          description: Not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/HotelDTO"
     delete:
       tags:
-      - hotel-rest-controller
+      - Hotels
+      summary: Delete a hotel
       operationId: deleteHotel
       parameters:
       - name: id
@@ -109,12 +266,15 @@ paths:
           type: integer
           format: int64
       responses:
-        "200":
-          description: OK
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
   /api/v1/admin/users/{id}:
     get:
       tags:
-      - admin-rest-controller
+      - Admin
+      summary: Get user by ID
       operationId: getUser
       parameters:
       - name: id
@@ -130,9 +290,22 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/UserDTO"
+        "403":
+          description: Forbidden – admin only
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDTO"
+        "404":
+          description: Not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDTO"
     put:
       tags:
-      - admin-rest-controller
+      - Admin
+      summary: Update a user
       operationId: updateUser
       parameters:
       - name: id
@@ -154,9 +327,28 @@ paths:
             '*/*':
               schema:
                 type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "404":
+          description: Not found
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Email conflict
+          content:
+            '*/*':
+              schema:
+                type: object
     delete:
       tags:
-      - admin-rest-controller
+      - Admin
+      summary: Delete a user
       operationId: deleteUser
       parameters:
       - name: id
@@ -166,18 +358,17 @@ paths:
           type: integer
           format: int64
       responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: object
-                additionalProperties:
-                  type: string
+        "204":
+          description: Deleted
+        "403":
+          description: Cannot delete admin
+        "404":
+          description: Not found
   /api/v1/admin/reserves/{id}:
     get:
       tags:
-      - admin-rest-controller
+      - Admin
+      summary: Get reserve by ID
       operationId: getReserve
       parameters:
       - name: id
@@ -193,9 +384,22 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/ReserveDTO"
+        "403":
+          description: Forbidden – admin only
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReserveDTO"
+        "404":
+          description: Not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReserveDTO"
     put:
       tags:
-      - admin-rest-controller
+      - Admin
+      summary: Update a reserve
       operationId: updateReserve
       parameters:
       - name: id
@@ -217,9 +421,16 @@ paths:
             '*/*':
               schema:
                 type: object
+        "404":
+          description: Not found
+          content:
+            '*/*':
+              schema:
+                type: object
     delete:
       tags:
-      - admin-rest-controller
+      - Admin
+      summary: Delete a reserve
       operationId: deleteReserve
       parameters:
       - name: id
@@ -229,18 +440,15 @@ paths:
           type: integer
           format: int64
       responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: object
-                additionalProperties:
-                  type: string
-  /api/v1/reviews/:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+  /api/v1/reviews:
     post:
       tags:
-      - review-rest-controller
+      - Reviews
+      summary: Create a review
       operationId: createReview
       requestBody:
         content:
@@ -249,52 +457,29 @@ paths:
               $ref: "#/components/schemas/ReviewDTO"
         required: true
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           content:
             '*/*':
               schema:
                 $ref: "#/components/schemas/ReviewDTO"
-  /api/v1/reserves/{id}/confirm:
-    post:
-      tags:
-      - reserve-rest-controller
-      operationId: confirmReserve
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: OK
+        "401":
+          description: Unauthorized – login required
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/ReserveDTO"
-  /api/v1/reserves/:
-    get:
-      tags:
-      - reserve-rest-controller
-      operationId: getReserves
-      parameters:
-      - name: pageable
-        in: query
-        required: true
-        schema:
-          $ref: "#/components/schemas/Pageable"
-      responses:
-        "200":
-          description: OK
+                $ref: "#/components/schemas/ReviewDTO"
+        "404":
+          description: Hotel not found
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/PageReserveDTO"
+                $ref: "#/components/schemas/ReviewDTO"
+  /api/v1/reserves:
     post:
       tags:
-      - reserve-rest-controller
+      - Reserves
+      summary: Create a reserve
       operationId: createReserve
       requestBody:
         content:
@@ -303,16 +488,29 @@ paths:
               $ref: "#/components/schemas/ReserveDTO"
         required: true
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           content:
             '*/*':
               schema:
                 $ref: "#/components/schemas/ReserveDTO"
-  /api/v1/hotels/:
+        "401":
+          description: Unauthorized – login required
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReserveDTO"
+        "404":
+          description: Hotel not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReserveDTO"
+  /api/v1/hotels:
     get:
       tags:
-      - hotel-rest-controller
+      - Hotels
+      summary: List all hotels (paginated)
       operationId: getHotels
       parameters:
       - name: pageable
@@ -329,7 +527,8 @@ paths:
                 $ref: "#/components/schemas/PageHotelDTO"
     post:
       tags:
-      - hotel-rest-controller
+      - Hotels
+      summary: Create a hotel
       operationId: createHotel
       requestBody:
         content:
@@ -338,8 +537,14 @@ paths:
               $ref: "#/components/schemas/HotelDTO"
         required: true
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Invalid input
           content:
             '*/*':
               schema:
@@ -347,7 +552,8 @@ paths:
   /api/v1/auth/register:
     post:
       tags:
-      - auth-rest-controller
+      - Auth
+      summary: Register a new user
       operationId: register
       requestBody:
         content:
@@ -356,8 +562,14 @@ paths:
               $ref: "#/components/schemas/UserRegisterDTO"
         required: true
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Email already registered or invalid input
           content:
             '*/*':
               schema:
@@ -365,7 +577,8 @@ paths:
   /api/v1/auth/logout:
     post:
       tags:
-      - auth-rest-controller
+      - Auth
+      summary: Logout and clear JWT cookie
       operationId: logout
       responses:
         "200":
@@ -377,7 +590,8 @@ paths:
   /api/v1/auth/login:
     post:
       tags:
-      - auth-rest-controller
+      - Auth
+      summary: Login and get JWT cookie
       operationId: login
       requestBody:
         content:
@@ -392,35 +606,67 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/AuthResponse"
-  /admin/upload:
-    post:
+        "401":
+          description: Invalid credentials
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+  /api/v1/users/me/reviews:
+    get:
       tags:
-      - admin-controller
-      operationId: uploadImage
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-              required:
-              - file
+      - Users
+      summary: Get current user's reviews (paginated)
+      operationId: getMyReviews
+      parameters:
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Pageable"
       responses:
         "200":
           description: OK
           content:
-            application/json:
+            '*/*':
               schema:
-                type: object
-                additionalProperties:
-                  type: string
+                $ref: "#/components/schemas/PageReviewDTO"
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageReviewDTO"
+  /api/v1/users/me/reserves:
+    get:
+      tags:
+      - Users
+      summary: Get current user's reserves (paginated)
+      operationId: getMyReserves
+      parameters:
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Pageable"
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageReserveDTO"
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageReserveDTO"
   /api/v1/users/me/avatar:
     get:
       tags:
-      - user-rest-controller
+      - Users
+      summary: Get current user avatar
       operationId: getProfileAvatar
       responses:
         "200":
@@ -429,43 +675,23 @@ paths:
             '*/*':
               schema:
                 type: object
-  /api/v1/reviews/{id}:
-    get:
-      tags:
-      - review-rest-controller
-      operationId: getReview
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: OK
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/ReviewDTO"
-    delete:
-      tags:
-      - review-rest-controller
-      operationId: deleteReview
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: OK
+                type: object
+        "404":
+          description: No avatar set
+          content:
+            '*/*':
+              schema:
+                type: object
   /api/v1/images/{id}:
     get:
       tags:
-      - image-rest-controller
+      - Images
+      summary: Download an image by its ID
       operationId: downloadImage
       parameters:
       - name: id
@@ -482,10 +708,42 @@ paths:
               schema:
                 type: string
                 format: binary
+  /api/v1/hotels/{hotelId}/reviews:
+    get:
+      tags:
+      - Hotels
+      summary: Get all reviews for a specific hotel
+      operationId: getHotelReviews
+      parameters:
+      - name: hotelId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Pageable"
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageReviewDTO"
+        "404":
+          description: Hotel not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageReviewDTO"
   /api/v1/admin/users:
     get:
       tags:
-      - admin-rest-controller
+      - Admin
+      summary: List all non-admin users (paginated)
       operationId: listUsers
       parameters:
       - name: page
@@ -509,10 +767,17 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/PageUserDTO"
+        "403":
+          description: Forbidden – admin only
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageUserDTO"
   /api/v1/admin/reserves:
     get:
       tags:
-      - admin-rest-controller
+      - Admin
+      summary: List all reserves (paginated)
       operationId: listReserves
       parameters:
       - name: page
@@ -536,10 +801,17 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/PageReserveDTO"
+        "403":
+          description: Forbidden – admin only
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageReserveDTO"
   /api/v1/reserves/{id}:
     delete:
       tags:
-      - reserve-rest-controller
+      - Reserves
+      summary: Delete a reserve
       operationId: deleteReserve_1
       parameters:
       - name: id
@@ -549,10 +821,83 @@ paths:
           type: integer
           format: int64
       responses:
-        "200":
-          description: OK
+        "204":
+          description: Deleted
+        "403":
+          description: Forbidden – not the owner
+        "404":
+          description: Not found
 components:
   schemas:
+    ReviewDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+          maxLength: 100
+          minLength: 0
+        comment:
+          type: string
+          maxLength: 2000
+          minLength: 0
+        rating:
+          type: integer
+          format: int32
+          maximum: 5
+          minimum: 1
+        publishDate:
+          type: string
+          format: date
+        authorName:
+          type: string
+        hotelId:
+          type: integer
+          format: int64
+      required:
+      - comment
+      - hotelId
+      - title
+    ReserveDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        entryDate:
+          type: string
+          format: date
+        departureDate:
+          type: string
+          format: date
+        guests:
+          type: integer
+          format: int32
+          minimum: 1
+        nights:
+          type: integer
+          format: int64
+        price:
+          type: number
+          format: double
+        status:
+          type: string
+        hotelId:
+          type: integer
+          format: int64
+        hotelName:
+          type: string
+        customerId:
+          type: integer
+          format: int64
+        customerName:
+          type: string
+      required:
+      - departureDate
+      - entryDate
+      - hotelId
     HotelDTO:
       type: object
       properties:
@@ -625,75 +970,6 @@ components:
       required:
       - email
       - name
-    ReserveDTO:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        entryDate:
-          type: string
-          format: date
-        departureDate:
-          type: string
-          format: date
-        guests:
-          type: integer
-          format: int32
-          minimum: 1
-        nights:
-          type: integer
-          format: int64
-        price:
-          type: number
-          format: double
-        status:
-          type: string
-        hotelId:
-          type: integer
-          format: int64
-        hotelName:
-          type: string
-        customerId:
-          type: integer
-          format: int64
-        customerName:
-          type: string
-      required:
-      - departureDate
-      - entryDate
-      - hotelId
-    ReviewDTO:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        title:
-          type: string
-          maxLength: 100
-          minLength: 0
-        comment:
-          type: string
-          maxLength: 2000
-          minLength: 0
-        rating:
-          type: integer
-          format: int32
-          maximum: 5
-          minimum: 1
-        publishDate:
-          type: string
-          format: date
-        authorName:
-          type: string
-        hotelId:
-          type: integer
-          format: int64
-      required:
-      - comment
-      - hotelId
-      - title
     UserRegisterDTO:
       type: object
       properties:
@@ -752,7 +1028,7 @@ components:
           type: array
           items:
             type: string
-    PageReserveDTO:
+    PageReviewDTO:
       type: object
       properties:
         totalPages:
@@ -767,21 +1043,21 @@ components:
         content:
           type: array
           items:
-            $ref: "#/components/schemas/ReserveDTO"
+            $ref: "#/components/schemas/ReviewDTO"
         number:
-          type: integer
-          format: int32
-        numberOfElements:
           type: integer
           format: int32
         sort:
           $ref: "#/components/schemas/SortObject"
-        pageable:
-          $ref: "#/components/schemas/PageableObject"
         first:
           type: boolean
         last:
           type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
         empty:
           type: boolean
     PageableObject:
@@ -811,6 +1087,38 @@ components:
           type: boolean
         unsorted:
           type: boolean
+    PageReserveDTO:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReserveDTO"
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        first:
+          type: boolean
+        last:
+          type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        empty:
+          type: boolean
     PageHotelDTO:
       type: object
       properties:
@@ -830,17 +1138,17 @@ components:
         number:
           type: integer
           format: int32
-        numberOfElements:
-          type: integer
-          format: int32
         sort:
           $ref: "#/components/schemas/SortObject"
-        pageable:
-          $ref: "#/components/schemas/PageableObject"
         first:
           type: boolean
         last:
           type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
         empty:
           type: boolean
     PageUserDTO:
@@ -862,16 +1170,16 @@ components:
         number:
           type: integer
           format: int32
-        numberOfElements:
-          type: integer
-          format: int32
         sort:
           $ref: "#/components/schemas/SortObject"
-        pageable:
-          $ref: "#/components/schemas/PageableObject"
         first:
           type: boolean
         last:
           type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
         empty:
           type: boolean

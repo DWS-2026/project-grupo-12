@@ -354,6 +354,7 @@ public class AdminWebController {
     // ==================== UPLOAD ====================
 
     // Handles image upload via AJAX, validates file type and stores image in the database
+    @io.swagger.v3.oas.annotations.Hidden // This endpoint is only for internal use by the admin panel, not part of the public API
     @PostMapping(value = "/admin/upload", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("file") MultipartFile file) {
