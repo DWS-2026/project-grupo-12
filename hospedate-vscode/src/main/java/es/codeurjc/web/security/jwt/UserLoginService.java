@@ -86,6 +86,8 @@ public class UserLoginService {
 		cookie.setMaxAge((int) type.duration.getSeconds());
 		cookie.setHttpOnly(true);
 		cookie.setPath("/");
+		// Set SameSite attribute to Strict for better security against CSRF attacks
+		cookie.setAttribute("SameSite", "Strict");
 		return cookie;
 	}
 
@@ -94,6 +96,8 @@ public class UserLoginService {
 		cookie.setMaxAge(0);
 		cookie.setHttpOnly(true);
 		cookie.setPath("/");
+		// Set SameSite attribute to Strict for better security against CSRF attacks
+		cookie.setAttribute("SameSite", "Strict");
 		return cookie;
 	}
 }
