@@ -52,7 +52,7 @@ public class ReviewRestController {
         @ApiResponse(responseCode = "404", description = "Hotel not found")
     })
     //Create review
-    @PostMapping("")
+    @PostMapping("/")
     public ResponseEntity<ReviewDTO> createReview(@Valid @RequestBody ReviewDTO dto, Principal principal){
         //Get the hotel
         Optional<Hotel> hotelOpt = hotelService.getHotelById(dto.getHotelId());
@@ -132,26 +132,33 @@ public class ReviewRestController {
     }
 
 
-   @PutMapping("/{id}")
+    @Operation(summary = "Update a review")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "OK"),
+        @ApiResponse(responseCode = "401", description = "Unauthorized – login required"),
+        @ApiResponse(responseCode = "403", description = "Forbidden – not the author"),
+        @ApiResponse(responseCode = "404", description = "Not found")
+    })
+    
+    @PutMapping("/{id}")
     public ResponseEntity<ReviewDTO> updateReview(@PathVariable Long id, @Valid @RequestBody ReviewDTO reviewDto, Principal principal){
-        //Find the original review
+        //Find original review
         Optional<Review> reviewOpt = reviewService.getReviewById(id);
         if(reviewOpt.isEmpty()){
             return ResponseEntity.notFound().build(); // 404
         }
+
         Review review = reviewOpt.get();
-        //Check the identity
+
+        // Verify identity, only the author can update the review
         if(!review.getAuthor().getId().equals(userService.findByEmail(principal.getName()).orElseThrow().getId())){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403
         }
-        // Prevent IDOR: If the JSON contains a hotelId, it must be the same as the one already associated with the review in the database.
-        if(reviewDto.getHotelId() != null && !review.getHotel().getId().equals(reviewDto.getHotelId())) {
-            //If the client tries to change the hotelId, we reject the request with a 400 Bad Request, since it's a client error (the client is trying to change something that is not allowed).
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 400 
-        }
-        //Update the review and return the updated DTO
+
+        // Update the review and return the updated DTO
         return reviewService.updateReviewFromDto(id, reviewDto)
             .map(r -> ResponseEntity.ok(new ReviewDTO(r)))
             .orElse(ResponseEntity.notFound().build());
     }
 }
+
