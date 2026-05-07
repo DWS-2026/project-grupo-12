@@ -16,10 +16,10 @@ Todas las URLs de la colección usan `{{baseUrl}}` — nunca hay rutas hardcodea
 
 ## Flujo recomendado de pruebas
 
-1. **Auth → Login (admin)** — autentica como `admin / admin123`. La cookie/sesión se guarda automáticamente.
+1. **Auth → Login (admin)** — autentica como `admin@admin / admin`. La cookie/sesión se guarda automáticamente.
 2. **Hotels → Create hotel (admin)** — crea un hotel; copia el `id` de la respuesta a la variable `hotelId`.
 3. **Hotels → List / Get / Update / Delete** — usa `{{hotelId}}` en las que requieran ID.
-4. **Auth → Login (user)** — cambia a `user1 / user123` para probar endpoints de usuario y los 401 en `/api/v1/admin/**`.
+4. **Auth → Login (user)** — cambia a `user@user / user` para probar endpoints de usuario y los 401 en `/api/v1/admin/**`.
 5. **Reserves / Reviews** — crear/listar/borrar usando `{{hotelId}}`.
 6. **Admin → List/Get/Update/Delete users y reserves** — solo accesibles con sesión admin.
 

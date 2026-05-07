@@ -35,7 +35,7 @@ public class HotelRestController {
         @Operation(summary = "List all hotels (paginated)")
         @ApiResponse(responseCode = "200", description = "OK")
         //List hotels
-        @GetMapping("/")
+        @GetMapping("")
         public ResponseEntity<Page<HotelDTO>> getHotels(Pageable pageable){
             Page<Hotel> hotels = hotelService.getAllHotels(pageable);
             Page<HotelDTO> dtos = hotels.map(HotelDTO::new);
@@ -66,7 +66,7 @@ public class HotelRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input")
         })
         //Create hotel
-        @PostMapping("/")
+        @PostMapping("")
         public ResponseEntity<?> createHotel(@Valid @RequestBody HotelDTO hotelDto){
             try {
                 Hotel newHotel = hotelService.createHotelFromDto(hotelDto);
