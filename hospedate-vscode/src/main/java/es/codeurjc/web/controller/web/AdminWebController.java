@@ -260,7 +260,15 @@ public class AdminWebController {
             return "redirect:/admin/users/edit/" + id;
         }
 
-        userService.saveUser(id, name, email, password, role);
+        // Check if the username is already used by another user
+        // We tried to save the user with the new try-catch block
+        try {
+            userService.saveUser(id, name, email, password, role);
+        } catch (Exception e) {
+            // If the service throws an exception (e.g., duplicate username), we capture the message
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/admin/users/edit/" + id;
+        }
 
         // Delete reviews selected by the admin via checkboxes
         if (deleteReviews != null && !deleteReviews.isEmpty()) {

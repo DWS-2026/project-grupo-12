@@ -103,8 +103,10 @@ public class ReviewRestController {
 
         Review review = reviewOpt.get();
 
+        User currentUser = userService.findByEmail(principal.getName()).orElseThrow();
+
         //IDOR: Only the author or an admin can delete the review
-        if(!review.getAuthor().getId().equals(userService.findByEmail(principal.getName()).orElseThrow().getId())){
+        if (!review.getAuthor().getId().equals(currentUser.getId()) && !currentUser.isAdmin()) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); //403
         }
 

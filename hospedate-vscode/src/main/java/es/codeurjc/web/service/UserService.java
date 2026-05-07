@@ -55,11 +55,20 @@ public class UserService {
     }
 
     // Updates user fields; password is only changed if a non-empty value is provided
-    public void saveUser(Long id, String name, String email, String password, String role) {
+    public void saveUser(Long id, String name, String email, String password, String role) throws Exception {
         Optional<User> existing = userRepository.findById(id);
 
         if (existing.isPresent()) {
             User user = existing.get();
+
+            // We check if the email or username is already taken by someone else
+            if (email != null && !email.equals(user.getEmail()) && isEmailTakenByAnother(id, email)) {
+                throw new Exception("The email address is already in use by another account..");
+            }
+            if (name != null && !name.equals(user.getName()) && isUsernameTakenByAnother(id, name)) {
+                throw new Exception("The username is already in use by another account.");
+            }
+
             user.setName(name);
             user.setEmail(email);
             // Skip password update if the field was left blank

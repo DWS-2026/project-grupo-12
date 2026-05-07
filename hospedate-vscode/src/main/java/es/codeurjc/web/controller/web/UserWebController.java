@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 
-import jakarta.servlet.http.HttpSession;
 
 
 import java.util.List;
@@ -97,12 +96,6 @@ public class UserWebController {
     @GetMapping("/register")
     public String register() {
         return "register"; 
-    }
-
-     @GetMapping("/logout")
-    public String processLogout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/"; 
     }
 
     @GetMapping("/images")

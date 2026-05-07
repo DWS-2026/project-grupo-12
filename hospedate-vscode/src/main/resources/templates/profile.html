@@ -170,9 +170,13 @@
                         </div>
                         <!-- Logout button -->
                         <div class="card-footer text-center py-4 bg-light border-0 rounded-bottom">
-                            <a href="/logout" class="btn btn-outline-danger rounded-pill px-4 shadow-sm">
-                                <i class="bi bi-box-arrow-right me-2"></i> Cerrar Sesión
-                            </a>
+                            <form action="/logout" method="post" style="display: inline;">
+                                <input type="hidden" name="_csrf" value="{{token}}">
+                                
+                                <button type="submit" class="btn btn-outline-danger rounded-pill px-4 shadow-sm">
+                                    <i class="bi bi-box-arrow-right me-2"></i> Cerrar Sesión
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div> </div> </div>
