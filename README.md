@@ -351,10 +351,10 @@ Desarrollador principal de todo lo relacionado con los hoteles ademas de añadir
 ### **Documentación de la API REST**
 
 #### **Especificación OpenAPI**
-📄 **[Especificación OpenAPI (YAML)](/api-docs/api-docs.yaml)**
+📄 **[Especificación OpenAPI (YAML)](hospedate-vscode/api-docs/api-docs.yaml)**
 
 #### **Documentación HTML**
-📖 **[Documentación API REST (HTML)](https://raw.githack.com/[usuario]/[repositorio]/main/api-docs/api-docs.html)**
+📖 **[Documentación API REST (HTML)](https://raw.githack.com/DWS-2026/project-grupo-12/refs/heads/main/hospedate-vscode/api-docs/api-docs.html)**
 
 > La documentación de la API REST se encuentra en la carpeta `/api-docs` del repositorio. Se ha generado automáticamente con SpringDoc a partir de las anotaciones en el código Java.
 
@@ -362,7 +362,7 @@ Desarrollador principal de todo lo relacionado con los hoteles ademas de añadir
 
 Diagrama actualizado incluyendo los @RestController y su relación con los @Service compartidos:
 
-![Diagrama de Clases Actualizado](images/complete-classes-diagram.png)
+![Diagrama de Clases Actualizado](images/EsquemaClases3.drawio.png)
 
 #### **Credenciales de prueba**
 - **Usuario Admin**: usuario: `admin@admin`, contraseña: `admin`
