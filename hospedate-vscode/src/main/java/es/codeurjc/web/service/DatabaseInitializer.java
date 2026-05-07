@@ -17,12 +17,6 @@ import es.codeurjc.web.repository.UserRepository;
 
 @Service
 public class DatabaseInitializer implements CommandLineRunner {
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private ImageService imageService;
     
     @Autowired 
     private UserRepository userRepository;

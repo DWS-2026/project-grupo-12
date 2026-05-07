@@ -26,11 +26,15 @@ class CSRFHandlerInterceptor implements HandlerInterceptor {
 			final ModelAndView modelAndView) throws Exception {
 
 		if (modelAndView != null) {
+        // If it's a redirect, we don't add the token to the model to prevent it from being attached to the URL.
+        String viewName = modelAndView.getViewName();
+        if (viewName != null && viewName.startsWith("redirect:")) {
+            return;
+        }
 
-			CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
-			if (token != null) {
-				modelAndView.addObject("token", token.getToken());
-			}
+        CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
+        if (token != null) {
+            modelAndView.addObject("token", token.getToken());}
 		}
 	}
 }

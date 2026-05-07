@@ -11,7 +11,6 @@ import es.codeurjc.web.service.ImageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import java.io.IOException;
 
 @Tag(name = "Images")
 @RestController

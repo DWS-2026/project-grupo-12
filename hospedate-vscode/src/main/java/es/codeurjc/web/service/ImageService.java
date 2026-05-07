@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -118,4 +117,30 @@ public class ImageService {
         imageRepository.deleteById(id);
     }
     
+    public boolean isImageSafe(MultipartFile file) {
+    try {
+        if (file == null || file.isEmpty()) return false;
+
+        // We read the first 4 bytes (Magic Bytes)
+        byte[] header = new byte[4];
+        try (java.io.InputStream is = file.getInputStream()) {
+            if (is.read(header) < 3) return false; 
+        }
+
+        // We checked JPEG (FF D8 FF)
+        boolean isJpeg = header[0] == (byte) 0xFF && 
+                         header[1] == (byte) 0xD8 && 
+                         header[2] == (byte) 0xFF;
+
+        // We checked PNG (89 50 4E 47)
+        boolean isPng = header[0] == (byte) 0x89 && 
+                        header[1] == (byte) 0x50 && 
+                        header[2] == (byte) 0x4E && 
+                        header[3] == (byte) 0x47;
+
+        return isJpeg || isPng;
+    } catch (Exception e) {
+        return false;
+    }
+}
 }

@@ -15,7 +15,6 @@ import es.codeurjc.web.model.Reserve;
 import es.codeurjc.web.model.User;
 import es.codeurjc.web.service.ReserveService;
 import es.codeurjc.web.service.UserService;
-import es.codeurjc.web.service.UserService.UserUpdateResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import es.codeurjc.web.model.Hotel;
@@ -26,16 +25,13 @@ import es.codeurjc.web.service.ImageService;
 import es.codeurjc.web.service.ReserveService;
 import es.codeurjc.web.service.ReviewService;
 import es.codeurjc.web.service.UserService;
-import es.codeurjc.web.service.UserSession;
 
 import java.util.Set;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.io.IOException;
-import java.nio.file.*;
 import java.util.Map;
-import java.util.UUID;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,9 +53,6 @@ public class AdminWebController {
 
     @Autowired
     private ImageService imageService;
-
-    @Autowired
-    private UserSession userSession;
 
     // ==================== DASHBOARD ====================
 
@@ -357,16 +350,10 @@ public class AdminWebController {
     @ResponseBody
     public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("file") MultipartFile file) {
         try {
-            // Extract the file extension from the original filename
-            String originalName = file.getOriginalFilename();
-            String extension = "";
-            if (originalName != null && originalName.contains(".")) {
-                extension = originalName.substring(originalName.lastIndexOf(".")).toLowerCase();
-            }
-
-            // Only allow common image formats
-            if (!extension.matches("\\.(jpg|jpeg|png|gif|webp)")) {
-                return ResponseEntity.badRequest().body(Map.of("error", "Tipo no permitido."));
+            // We checked the file's DNA (Magic Bytes)
+            // This will restrict uploads from admins to JPG and PNG 
+            if (!imageService.isImageSafe(file)) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Archivo corrupto o formato no permitido. Usa JPG o PNG reales."));
             }
 
             // Save the image in the database and get the entity with its generated ID
@@ -380,5 +367,4 @@ public class AdminWebController {
             return ResponseEntity.internalServerError().body(Map.of("error", e.getMessage()));
         }
     }
-
 }

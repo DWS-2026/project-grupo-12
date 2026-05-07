@@ -28,7 +28,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.security.Principal;
-import java.sql.SQLException;
 
 
 @Tag(name = "Users")
@@ -115,7 +114,8 @@ public class UserRestController {
 
         //same checks as in the web controller, but adapted to the API (we return ResponseEntity with error messages instead of redirecting to the profile page)
         if (photo != null && !photo.isEmpty()) { 
-            if ((photo.getContentType().equals("image/jpeg") || photo.getContentType().equals("image/png"))) {
+            // We verified the real Magic Bytes
+            if (imageService.isImageSafe(photo)) {
                 if (user.getProfileImage() != null) {
                     //delete the old image file from the disk, if it exists, we ignore any error that may occur during deletion
                     try {
@@ -128,7 +128,8 @@ public class UserRestController {
                 Image newImage = imageService.createAvatarImage(photo); //save the image in the disk and the filename in the database
                 user.setProfileImage(newImage);
             } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Solo formato JPG o PNG");
+                // If the file fails the DNA test, we block it
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Archivo inválido o corrupto. Solo imágenes reales JPG o PNG.");
             }
         }
 
@@ -139,7 +140,6 @@ public class UserRestController {
         //return the updated user information
         return ResponseEntity.ok(new UserDTO(user));
     }
-
 
 
 

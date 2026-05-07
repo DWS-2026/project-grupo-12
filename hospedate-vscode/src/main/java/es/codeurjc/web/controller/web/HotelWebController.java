@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,6 @@ import es.codeurjc.web.model.Hotel;
 import es.codeurjc.web.model.Review;
 import es.codeurjc.web.service.HotelService;
 import es.codeurjc.web.service.ImageService;
-import es.codeurjc.web.service.UserSession;
 import es.codeurjc.web.model.Image;
 
 @Controller
@@ -30,9 +28,6 @@ public class HotelWebController {
 
     @Autowired
     private HotelService hotelService;
-
-    @Autowired
-    private UserSession userSession;
 
     @Autowired
     private ImageService imageService;

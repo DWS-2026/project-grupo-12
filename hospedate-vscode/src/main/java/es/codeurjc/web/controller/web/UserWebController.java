@@ -3,13 +3,12 @@ package es.codeurjc.web.controller.web;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import es.codeurjc.web.model.Hotel;
+
 import es.codeurjc.web.model.Image;
 import es.codeurjc.web.model.Reserve;
 import es.codeurjc.web.model.Review;
@@ -24,13 +23,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
-import java.sql.SQLException;
+
 
 
 
@@ -143,7 +141,7 @@ public class UserWebController {
             @RequestParam String email,
             @RequestParam String password,
             @RequestParam("photo") MultipartFile photo,
-            Model model) throws Exception {
+            RedirectAttributes redirectAttributes) throws Exception { // We changed Model to RedirectAttributes
         
         //to prevent not logged users from accessing profile page    
         if (!userSession.isLogged()) {
@@ -158,11 +156,12 @@ public class UserWebController {
         }
 
         User user = userOp.get(); //get the logged user 
+        
         //if the user is uploading a photo and its format is correct, we create a new image
-        if (!photo.isEmpty()) { //if the user is uploading a photo, we change it
-            if ((photo.getContentType().equals("image/jpeg") || photo.getContentType().equals("image/png"))) {
+        if (!photo.isEmpty()) { 
+            // We verified the real Magic Bytes
+            if (imageService.isImageSafe(photo)) {
                 if (user.getProfileImage() != null) {
-                    //delete the old image file from the disk, if it exists, we ignore any error that may occur during deletion
                     try {
                         Resource oldImageFile = imageService.getImageFile(user.getProfileImage().getId());
                         oldImageFile.getFile().delete();
@@ -170,20 +169,23 @@ public class UserWebController {
                         System.err.println("Failed to delete old avatar: " + e.getMessage());
                     }
                 }
-                Image newImage = imageService.createAvatarImage(photo); //save the image in the disk and the filename in the database
+                Image newImage = imageService.createAvatarImage(photo); 
                 user.setProfileImage(newImage);
             } else {
-                model.addAttribute("errorMessage", "Solo se permiten imágenes en formato JPG o PNG");
-                return "profile";
+                // We use addFlashAttribute so that the error survives the redirection.
+                redirectAttributes.addFlashAttribute("errorMessage", "Archivo inválido. Solo se permiten imágenes reales en formato JPG o PNG");
+                return "redirect:/profile"; // NOW WE ARE REDIRECTING
             }
         }
+        
         //modify the logged container with the new information
-        userService.saveUser(userId, username, email, password, user.getRole()); //update the user in database with the new information
-        userService.updateUser(user); //modify the user in database 
-        userSession.modifySessionInfo(user); //update session info with new username and profile picture
+        userService.saveUser(userId, username, email, password, user.getRole()); 
+        userService.updateUser(user);  
+        userSession.modifySessionInfo(user); 
 
         return "redirect:/profile";
     }
+    
 
 
     //adapted from Repo-0, makes a GET request to the server to get the profile picture of the user, and returns it as a Resource to be displayed in the profile page

@@ -7,14 +7,11 @@ import es.codeurjc.web.model.User;
 import es.codeurjc.web.service.HotelService;
 import es.codeurjc.web.service.ReserveService;
 import es.codeurjc.web.service.UserService;
-import es.codeurjc.web.service.UserSession;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -80,7 +77,8 @@ public class ReserveRestController {
         @ApiResponse(responseCode = "404", description = "Not found")
     })
     //Confirm reserve
-    public ResponseEntity<ReserveDTO> confirmReserve(@PathVariable Long id, Principal principal){ // Añadir Principal
+    @PutMapping("/{id}/confirm")
+    public ResponseEntity<ReserveDTO> confirmReserve(@PathVariable Long id, Principal principal){ 
         Optional<Reserve> reserveOpt = reserveService.getReserveById(id);
         if(reserveOpt.isEmpty()){
             return ResponseEntity.notFound().build();
