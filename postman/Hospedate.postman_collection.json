@@ -218,7 +218,19 @@
               "mode": "raw",
               "raw": "{\n  \"title\": \"Muy buena estancia\",\n  \"comment\": \"Habitaciones limpias y trato excelente\",\n  \"rating\": 5,\n  \"hotelId\": {{hotelId}}\n}"
             },
-            "url": { "raw": "{{baseUrl}}/api/v1/reviews/", "host": ["{{baseUrl}}"], "path": ["api", "v1", "reviews", ""] }
+            "url": { "raw": "{{baseUrl}}/api/v1/reviews", "host": ["{{baseUrl}}"], "path": ["api", "v1", "reviews"] }
+          }
+        },
+        {
+          "name": "Update review",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Excelente hotel editado\",\n  \"comment\": \"Una experiencia increíble, la recomiendo\",\n  \"rating\": 4,\n  \"hotelId\": {{hotelId}}\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/reviews/{{reviewId}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "reviews", "{{reviewId}}"] }
           }
         },
         {
