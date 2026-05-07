@@ -372,7 +372,7 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 
 #### **Alumno 1 - Oliver Infante Jarana**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Creación y modificación de los RestControllers del hotel, reserva y reseña. Implementación de funcionalidad de texto enriquecido y de securización de varios aspectos de la aplicación.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
