@@ -937,13 +937,13 @@ ul.nav-tabs {
 };
     defs["PageHotelDTO"] = {
   "properties" : {
-    "totalPages" : {
-      "type" : "integer",
-      "format" : "int32"
-    },
     "totalElements" : {
       "type" : "integer",
       "format" : "int64"
+    },
+    "totalPages" : {
+      "type" : "integer",
+      "format" : "int32"
     },
     "size" : {
       "type" : "integer",
@@ -959,9 +959,6 @@ ul.nav-tabs {
       "type" : "integer",
       "format" : "int32"
     },
-    "sort" : {
-      "$ref" : "#/components/schemas/SortObject"
-    },
     "first" : {
       "type" : "boolean"
     },
@@ -975,6 +972,9 @@ ul.nav-tabs {
     "pageable" : {
       "$ref" : "#/components/schemas/PageableObject"
     },
+    "sort" : {
+      "$ref" : "#/components/schemas/SortObject"
+    },
     "empty" : {
       "type" : "boolean"
     }
@@ -982,13 +982,13 @@ ul.nav-tabs {
 };
     defs["PageReserveDTO"] = {
   "properties" : {
-    "totalPages" : {
-      "type" : "integer",
-      "format" : "int32"
-    },
     "totalElements" : {
       "type" : "integer",
       "format" : "int64"
+    },
+    "totalPages" : {
+      "type" : "integer",
+      "format" : "int32"
     },
     "size" : {
       "type" : "integer",
@@ -1004,9 +1004,6 @@ ul.nav-tabs {
       "type" : "integer",
       "format" : "int32"
     },
-    "sort" : {
-      "$ref" : "#/components/schemas/SortObject"
-    },
     "first" : {
       "type" : "boolean"
     },
@@ -1020,6 +1017,9 @@ ul.nav-tabs {
     "pageable" : {
       "$ref" : "#/components/schemas/PageableObject"
     },
+    "sort" : {
+      "$ref" : "#/components/schemas/SortObject"
+    },
     "empty" : {
       "type" : "boolean"
     }
@@ -1027,13 +1027,13 @@ ul.nav-tabs {
 };
     defs["PageReviewDTO"] = {
   "properties" : {
-    "totalPages" : {
-      "type" : "integer",
-      "format" : "int32"
-    },
     "totalElements" : {
       "type" : "integer",
       "format" : "int64"
+    },
+    "totalPages" : {
+      "type" : "integer",
+      "format" : "int32"
     },
     "size" : {
       "type" : "integer",
@@ -1049,9 +1049,6 @@ ul.nav-tabs {
       "type" : "integer",
       "format" : "int32"
     },
-    "sort" : {
-      "$ref" : "#/components/schemas/SortObject"
-    },
     "first" : {
       "type" : "boolean"
     },
@@ -1065,6 +1062,9 @@ ul.nav-tabs {
     "pageable" : {
       "$ref" : "#/components/schemas/PageableObject"
     },
+    "sort" : {
+      "$ref" : "#/components/schemas/SortObject"
+    },
     "empty" : {
       "type" : "boolean"
     }
@@ -1072,13 +1072,13 @@ ul.nav-tabs {
 };
     defs["PageUserDTO"] = {
   "properties" : {
-    "totalPages" : {
-      "type" : "integer",
-      "format" : "int32"
-    },
     "totalElements" : {
       "type" : "integer",
       "format" : "int64"
+    },
+    "totalPages" : {
+      "type" : "integer",
+      "format" : "int32"
     },
     "size" : {
       "type" : "integer",
@@ -1094,9 +1094,6 @@ ul.nav-tabs {
       "type" : "integer",
       "format" : "int32"
     },
-    "sort" : {
-      "$ref" : "#/components/schemas/SortObject"
-    },
     "first" : {
       "type" : "boolean"
     },
@@ -1109,6 +1106,9 @@ ul.nav-tabs {
     },
     "pageable" : {
       "$ref" : "#/components/schemas/PageableObject"
+    },
+    "sort" : {
+      "$ref" : "#/components/schemas/SortObject"
     },
     "empty" : {
       "type" : "boolean"
@@ -1141,12 +1141,6 @@ ul.nav-tabs {
       "type" : "integer",
       "format" : "int64"
     },
-    "sort" : {
-      "$ref" : "#/components/schemas/SortObject"
-    },
-    "paged" : {
-      "type" : "boolean"
-    },
     "pageNumber" : {
       "type" : "integer",
       "format" : "int32"
@@ -1154,6 +1148,12 @@ ul.nav-tabs {
     "pageSize" : {
       "type" : "integer",
       "format" : "int32"
+    },
+    "paged" : {
+      "type" : "boolean"
+    },
+    "sort" : {
+      "$ref" : "#/components/schemas/SortObject"
     },
     "unpaged" : {
       "type" : "boolean"
@@ -1248,10 +1248,10 @@ ul.nav-tabs {
     "empty" : {
       "type" : "boolean"
     },
-    "sorted" : {
+    "unsorted" : {
       "type" : "boolean"
     },
-    "unsorted" : {
+    "sorted" : {
       "type" : "boolean"
     }
   }
