@@ -149,7 +149,7 @@ public class ReviewRestController {
             //If the client tries to change the hotelId, we reject the request with a 400 Bad Request, since it's a client error (the client is trying to change something that is not allowed).
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 400 
         }
-        // 4. Update the review and return the updated DTO
+        //Update the review and return the updated DTO
         return reviewService.updateReviewFromDto(id, reviewDto)
             .map(r -> ResponseEntity.ok(new ReviewDTO(r)))
             .orElse(ResponseEntity.notFound().build());
