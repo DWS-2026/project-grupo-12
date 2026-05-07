@@ -132,32 +132,24 @@ public class ReviewRestController {
     }
 
 
-    @Operation(summary = "Update a review")
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "OK"),
-        @ApiResponse(responseCode = "401", description = "Unauthorized – login required"),
-        @ApiResponse(responseCode = "403", description = "Forbidden – not the author"),
-        @ApiResponse(responseCode = "404", description = "Not found")
-    })
-
-
-    
-    @PutMapping("/{id}")
+   @PutMapping("/{id}")
     public ResponseEntity<ReviewDTO> updateReview(@PathVariable Long id, @Valid @RequestBody ReviewDTO reviewDto, Principal principal){
-        //Find original review
+        //Find the original review
         Optional<Review> reviewOpt = reviewService.getReviewById(id);
         if(reviewOpt.isEmpty()){
             return ResponseEntity.notFound().build(); // 404
         }
-
         Review review = reviewOpt.get();
-
-        // Verify identity, only the author can update the review
+        //Check the identity
         if(!review.getAuthor().getId().equals(userService.findByEmail(principal.getName()).orElseThrow().getId())){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403
         }
-
-        // Update the review and return the updated DTO
+        // Prevent IDOR: If the JSON contains a hotelId, it must be the same as the one already associated with the review in the database.
+        if(reviewDto.getHotelId() != null && !review.getHotel().getId().equals(reviewDto.getHotelId())) {
+            //If the client tries to change the hotelId, we reject the request with a 400 Bad Request, since it's a client error (the client is trying to change something that is not allowed).
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 400 
+        }
+        //Update the review and return the updated DTO
         return reviewService.updateReviewFromDto(id, reviewDto)
             .map(r -> ResponseEntity.ok(new ReviewDTO(r)))
             .orElse(ResponseEntity.notFound().build());
