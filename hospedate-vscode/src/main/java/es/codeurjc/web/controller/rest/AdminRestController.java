@@ -88,22 +88,21 @@ public class AdminRestController {
 
     @Operation(summary = "Delete a user")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Deleted"),
+        @ApiResponse(responseCode = "204", description = "Deleted"),
         @ApiResponse(responseCode = "403", description = "Cannot delete admin"),
         @ApiResponse(responseCode = "404", description = "Not found")
     })
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<Map<String, String>> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         Optional<User> user = userService.findById(id);
         if (user.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         if (user.get().isAdmin()) {
-            return ResponseEntity.status(403)
-                    .body(Map.of("error", "Cannot delete an admin account"));
+            return ResponseEntity.status(403).build();
         }
         userService.deleteUser(id);
-        return ResponseEntity.ok(Map.of("message", "User deleted successfully"));
+        return ResponseEntity.noContent().build();
     }
 
     // --- RESERVES ---
@@ -156,16 +155,16 @@ public class AdminRestController {
 
     @Operation(summary = "Delete a reserve")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Deleted"),
+        @ApiResponse(responseCode = "204", description = "Deleted"),
         @ApiResponse(responseCode = "404", description = "Not found")
     })
     @DeleteMapping("/reserves/{id}")
-    public ResponseEntity<Map<String, String>> deleteReserve(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteReserve(@PathVariable Long id) {
         Optional<Reserve> reserve = reserveService.getReserveById(id);
         if (reserve.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         reserveService.deleteReserve(id);
-        return ResponseEntity.ok(Map.of("message", "Reserve deleted successfully"));
+        return ResponseEntity.noContent().build();
     }
 }
