@@ -52,7 +52,7 @@ public class ReviewRestController {
         @ApiResponse(responseCode = "404", description = "Hotel not found")
     })
     //Create review
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<ReviewDTO> createReview(@Valid @RequestBody ReviewDTO dto, Principal principal){
         //Get the hotel
         Optional<Hotel> hotelOpt = hotelService.getHotelById(dto.getHotelId());
