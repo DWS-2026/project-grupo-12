@@ -136,7 +136,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/error").permitAll()
                 .requestMatchers("/hotel/**").permitAll()
                 .requestMatchers("/assets/**", "/css/**", "/js/**", "/uploads/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/hotel/image/**", "/profile/avatar").permitAll()
+                .requestMatchers(HttpMethod.GET, "/hotel/image/**").permitAll()
                 
                 // Swagger (API documentation)
                 .requestMatchers("/v3/api-docs*/**").permitAll()
@@ -148,7 +148,8 @@ public class SecurityConfiguration {
                 .requestMatchers("/profile/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/reserve/delete/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/reserve/**").hasAnyRole("USER")
-
+                .requestMatchers("/profile/avatar").hasAnyRole("USER", "ADMIN")
+                
                 .anyRequest().authenticated());
 
         http.formLogin(formLogin -> formLogin
