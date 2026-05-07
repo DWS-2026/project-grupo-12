@@ -45,7 +45,7 @@ public class ReserveRestController {
         @ApiResponse(responseCode = "404", description = "Hotel not found")
     })
     //Create reserve
-    @PostMapping("")
+    @PostMapping("/")
     public ResponseEntity<ReserveDTO> createReserve(@Valid @RequestBody ReserveDTO dto, Principal principal){
         //Get the hotel
         Optional<Hotel> hotelOpt = hotelService.getHotelById(dto.getHotelId());
