@@ -270,6 +270,39 @@ paths:
           description: Deleted
         "404":
           description: Not found
+  /api/v1/hotels/{id}/images/{imageId}:
+    put:
+      tags:
+      - Hotels
+      summary: Update an existing image of a hotel
+      operationId: updateHotelImage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: imageId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+              required:
+              - file
+      responses:
+        "200":
+          description: OK
   /api/v1/admin/users/{id}:
     get:
       tags:
@@ -444,7 +477,7 @@ paths:
           description: Deleted
         "404":
           description: Not found
-  /api/v1/reviews:
+  /api/v1/reviews/:
     post:
       tags:
       - Reviews
@@ -475,7 +508,7 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/ReviewDTO"
-  /api/v1/reserves:
+  /api/v1/reserves/:
     post:
       tags:
       - Reserves
@@ -506,7 +539,38 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/ReserveDTO"
-  /api/v1/hotels:
+  /api/v1/hotels/{id}/images:
+    post:
+      tags:
+      - Hotels
+      summary: Upload a new image to a hotel
+      operationId: uploadHotelImage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+              required:
+              - file
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/HotelDTO"
+  /api/v1/hotels/:
     get:
       tags:
       - Hotels
@@ -1031,12 +1095,12 @@ components:
     PageReviewDTO:
       type: object
       properties:
-        totalElements:
-          type: integer
-          format: int64
         totalPages:
           type: integer
           format: int32
+        totalElements:
+          type: integer
+          format: int64
         size:
           type: integer
           format: int32
@@ -1047,6 +1111,8 @@ components:
         number:
           type: integer
           format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
         first:
           type: boolean
         last:
@@ -1056,8 +1122,6 @@ components:
           format: int32
         pageable:
           $ref: "#/components/schemas/PageableObject"
-        sort:
-          $ref: "#/components/schemas/SortObject"
         empty:
           type: boolean
     PageableObject:
@@ -1066,6 +1130,8 @@ components:
         offset:
           type: integer
           format: int64
+        sort:
+          $ref: "#/components/schemas/SortObject"
         pageNumber:
           type: integer
           format: int32
@@ -1074,8 +1140,6 @@ components:
           format: int32
         paged:
           type: boolean
-        sort:
-          $ref: "#/components/schemas/SortObject"
         unpaged:
           type: boolean
     SortObject:
@@ -1083,19 +1147,19 @@ components:
       properties:
         empty:
           type: boolean
-        unsorted:
-          type: boolean
         sorted:
+          type: boolean
+        unsorted:
           type: boolean
     PageReserveDTO:
       type: object
       properties:
-        totalElements:
-          type: integer
-          format: int64
         totalPages:
           type: integer
           format: int32
+        totalElements:
+          type: integer
+          format: int64
         size:
           type: integer
           format: int32
@@ -1106,6 +1170,8 @@ components:
         number:
           type: integer
           format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
         first:
           type: boolean
         last:
@@ -1115,19 +1181,17 @@ components:
           format: int32
         pageable:
           $ref: "#/components/schemas/PageableObject"
-        sort:
-          $ref: "#/components/schemas/SortObject"
         empty:
           type: boolean
     PageHotelDTO:
       type: object
       properties:
-        totalElements:
-          type: integer
-          format: int64
         totalPages:
           type: integer
           format: int32
+        totalElements:
+          type: integer
+          format: int64
         size:
           type: integer
           format: int32
@@ -1138,6 +1202,8 @@ components:
         number:
           type: integer
           format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
         first:
           type: boolean
         last:
@@ -1147,19 +1213,17 @@ components:
           format: int32
         pageable:
           $ref: "#/components/schemas/PageableObject"
-        sort:
-          $ref: "#/components/schemas/SortObject"
         empty:
           type: boolean
     PageUserDTO:
       type: object
       properties:
-        totalElements:
-          type: integer
-          format: int64
         totalPages:
           type: integer
           format: int32
+        totalElements:
+          type: integer
+          format: int64
         size:
           type: integer
           format: int32
@@ -1170,6 +1234,8 @@ components:
         number:
           type: integer
           format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
         first:
           type: boolean
         last:
@@ -1179,7 +1245,5 @@ components:
           format: int32
         pageable:
           $ref: "#/components/schemas/PageableObject"
-        sort:
-          $ref: "#/components/schemas/SortObject"
         empty:
           type: boolean
