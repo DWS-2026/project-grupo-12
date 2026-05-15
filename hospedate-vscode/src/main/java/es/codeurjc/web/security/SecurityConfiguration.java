@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 //import the necessary classes to manage the user session and access the user data in the database
 import es.codeurjc.web.model.User;
 import es.codeurjc.web.repository.UserRepository;
+import es.codeurjc.web.security.jwt.ForbiddenHandlerJwt;
 import es.codeurjc.web.security.jwt.JwtRequestFilter;
 import es.codeurjc.web.security.jwt.UnauthorizedHandlerJwt;
 import es.codeurjc.web.service.UserSession;
@@ -41,6 +42,9 @@ public class SecurityConfiguration {
 
     @Autowired
     private UnauthorizedHandlerJwt unauthorizedHandlerJwt;
+
+    @Autowired
+    private ForbiddenHandlerJwt forbiddenHandlerJwt;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -75,9 +79,11 @@ public class SecurityConfiguration {
         // The API is Stateless (no server-side session)
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        // If authentication fails, we return a 401 in JSON instead of redirecting to
-        // the Login page
-        http.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandlerJwt));
+        // If authentication fails, return a 401 in JSON; if authorization fails,
+        // return a 403 in JSON. Both prevent Spring from forwarding to /error (HTML).
+        http.exceptionHandling(exception -> exception
+                .authenticationEntryPoint(unauthorizedHandlerJwt)
+                .accessDeniedHandler(forbiddenHandlerJwt));
 
         // We add the JWT filter before the default filter
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
