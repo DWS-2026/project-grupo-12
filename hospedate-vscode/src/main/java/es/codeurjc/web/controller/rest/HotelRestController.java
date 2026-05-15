@@ -3,6 +3,7 @@ package es.codeurjc.web.controller.rest;
 import java.io.IOException;
 import java.net.URI;
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.sql.rowset.serial.SerialBlob;
@@ -160,43 +161,66 @@ public class HotelRestController {
         return ResponseEntity.ok(reviews);
     }
 
-    // 2. Endpoint tu upload new images (POST)
+    // 2. Endpoint to upload new images (POST)
     @Operation(summary = "Upload a new image to a hotel")
+    @ApiResponses({
+        @ApiResponse(responseCode = "201", description = "Image uploaded"),
+        @ApiResponse(responseCode = "400", description = "Invalid or unsafe image file"),
+        @ApiResponse(responseCode = "401", description = "Unauthorized"),
+        @ApiResponse(responseCode = "403", description = "Forbidden"),
+        @ApiResponse(responseCode = "404", description = "Hotel not found")
+    })
     @PostMapping("/{id}/images")
-    public ResponseEntity<HotelDTO> uploadHotelImage(
-            @PathVariable Long id, 
+    public ResponseEntity<Map<String, Object>> uploadHotelImage(
+            @PathVariable Long id,
             @RequestParam MultipartFile file) throws IOException {
-        
+
         Optional<Hotel> hotelOpt = hotelService.getHotelById(id);
         if (hotelOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        // Security implementatio that we implemented before, checking the magic bytes
+        // Security check using magic bytes (JPG/PNG only)
         if (!imageService.isImageSafe(file)) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(Map.of("error", "Invalid or unsafe image file"));
         }
 
         Hotel hotel = hotelOpt.get();
-        
-        // Creation of the entity from the image
+
+        // Create image entity and link it to the hotel
         es.codeurjc.web.model.Image image = imageService.createImage(file);
-        
-        // Vinculation to the hotel and save
         hotel.getGaleria().add(image);
         hotelService.save(hotel);
 
-        return ResponseEntity.ok(new HotelDTO(hotel));
+        URI location = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/api/v1/images/{imageId}")
+                .buildAndExpand(image.getId())
+                .toUri();
+
+        Map<String, Object> body = Map.of(
+                "imageId", image.getId(),
+                "hotelId", hotel.getId(),
+                "url", "/api/v1/images/" + image.getId()
+        );
+
+        return ResponseEntity.created(location).body(body);
     }
 
     // 3. Endpoint for updating an existing image (PUT)
     @Operation(summary = "Update an existing image of a hotel")
+    @ApiResponses({
+        @ApiResponse(responseCode = "204", description = "Image updated"),
+        @ApiResponse(responseCode = "400", description = "Invalid or unsafe image file"),
+        @ApiResponse(responseCode = "401", description = "Unauthorized"),
+        @ApiResponse(responseCode = "403", description = "Forbidden"),
+        @ApiResponse(responseCode = "404", description = "Hotel or image not found")
+    })
     @PutMapping("/{id}/images/{imageId}")
-    public ResponseEntity<Void> updateHotelImage(
-            @PathVariable Long id, 
-            @PathVariable Long imageId, 
+    public ResponseEntity<?> updateHotelImage(
+            @PathVariable Long id,
+            @PathVariable Long imageId,
             @RequestParam MultipartFile file) throws IOException, SQLException {
-        
+
         Optional<Hotel> hotelOpt = hotelService.getHotelById(id);
         Optional<es.codeurjc.web.model.Image> imageOpt = imageService.getImageById(imageId);
 
@@ -204,16 +228,24 @@ public class HotelRestController {
             return ResponseEntity.notFound().build();
         }
 
-        if (!imageService.isImageSafe(file)) {
-            return ResponseEntity.badRequest().build();
+        Hotel hotel = hotelOpt.get();
+        es.codeurjc.web.model.Image image = imageOpt.get();
+
+        // The image must belong to this hotel's gallery
+        boolean belongsToHotel = hotel.getGaleria().stream()
+                .anyMatch(i -> i.getId() == image.getId());
+        if (!belongsToHotel) {
+            return ResponseEntity.notFound().build();
         }
 
-        es.codeurjc.web.model.Image image = imageOpt.get();
-        
-        // Updating the binary data and the filename
+        if (!imageService.isImageSafe(file)) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Invalid or unsafe image file"));
+        }
+
+        // Update binary data and filename
         image.setImageFile(new SerialBlob(file.getBytes()));
         image.setFileName(file.getOriginalFilename());
-        
+
         imageService.saveImage(image);
 
         return ResponseEntity.noContent().build();
