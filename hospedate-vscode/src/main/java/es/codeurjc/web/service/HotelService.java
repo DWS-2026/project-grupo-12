@@ -1,17 +1,18 @@
 package es.codeurjc.web.service;
 
-import es.codeurjc.web.dto.HotelDTO;
-import es.codeurjc.web.model.Hotel;
-import es.codeurjc.web.repository.HotelRepository;
-import org.springframework.stereotype.Service;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.HashSet;
-import java.util.Set;
+import org.springframework.stereotype.Service;
+
+import es.codeurjc.web.dto.HotelDTO;
+import es.codeurjc.web.model.Hotel;
+import es.codeurjc.web.repository.HotelRepository;
 
 @Service
 public class HotelService {
@@ -158,4 +159,8 @@ public class HotelService {
         hotel.setFamily(dto.isFamily());
         hotel.setServices(dto.getServices());
     }
+
+    public Hotel save(Hotel hotel) {
+    return hotelRepository.save(hotel);
+}
 }

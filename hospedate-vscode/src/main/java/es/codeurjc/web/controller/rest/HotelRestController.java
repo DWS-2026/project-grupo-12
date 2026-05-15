@@ -1,25 +1,39 @@
 package es.codeurjc.web.controller.rest;
 
+import java.io.IOException;
+import java.net.URI;
+import java.sql.SQLException;
+import java.util.Optional;
+
+import javax.sql.rowset.serial.SerialBlob;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import es.codeurjc.web.dto.HotelDTO;
 import es.codeurjc.web.dto.ReviewDTO;
 import es.codeurjc.web.model.Hotel;
 import es.codeurjc.web.service.HotelService;
+import es.codeurjc.web.service.ImageService;
 import es.codeurjc.web.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import java.net.URI;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import jakarta.validation.Valid;
-
-import java.util.Optional;
 
 @Tag(name = "Hotels")
 @RestController
@@ -31,6 +45,9 @@ public class HotelRestController {
 
         @Autowired
         private ReviewService reviewService; 
+
+        @Autowired
+        private ImageService imageService;
 
         @Operation(summary = "List all hotels (paginated)")
         @ApiResponse(responseCode = "200", description = "OK")
@@ -141,6 +158,63 @@ public class HotelRestController {
         return ResponseEntity.ok(reviews);
     }
 
+    // 2. Endpoint tu upload new images (POST)
+    @Operation(summary = "Upload a new image to a hotel")
+    @PostMapping("/{id}/images")
+    public ResponseEntity<HotelDTO> uploadHotelImage(
+            @PathVariable Long id, 
+            @RequestParam MultipartFile file) throws IOException {
+        
+        Optional<Hotel> hotelOpt = hotelService.getHotelById(id);
+        if (hotelOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
 
+        // Security implementatio that we implemented before, checking the magic bytes
+        if (!imageService.isImageSafe(file)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Hotel hotel = hotelOpt.get();
+        
+        // Creation of the entity from the image
+        es.codeurjc.web.model.Image image = imageService.createImage(file);
+        
+        // Vinculation to the hotel and save
+        hotel.getGaleria().add(image);
+        hotelService.save(hotel);
+
+        return ResponseEntity.ok(new HotelDTO(hotel));
+    }
+
+    // 3. Endpoint for updating an existing image (PUT)
+    @Operation(summary = "Update an existing image of a hotel")
+    @PutMapping("/{id}/images/{imageId}")
+    public ResponseEntity<Void> updateHotelImage(
+            @PathVariable Long id, 
+            @PathVariable Long imageId, 
+            @RequestParam MultipartFile file) throws IOException, SQLException {
+        
+        Optional<Hotel> hotelOpt = hotelService.getHotelById(id);
+        Optional<es.codeurjc.web.model.Image> imageOpt = imageService.getImageById(imageId);
+
+        if (hotelOpt.isEmpty() || imageOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (!imageService.isImageSafe(file)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        es.codeurjc.web.model.Image image = imageOpt.get();
+        
+        // Updating the binary data and the filename
+        image.setImageFile(new SerialBlob(file.getBytes()));
+        image.setFileName(file.getOriginalFilename());
+        
+        imageService.saveImage(image);
+
+        return ResponseEntity.noContent().build();
+    }
 
 }
