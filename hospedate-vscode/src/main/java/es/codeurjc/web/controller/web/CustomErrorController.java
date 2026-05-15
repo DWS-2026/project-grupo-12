@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CustomErrorController implements ErrorController {
 
     @RequestMapping("/error")
+    // Intercepts global application errors and provides customized, user-friendly error pages based on the HTTP status code
     public String handleError(HttpServletRequest request, Model model) {
         
         // We extract the error details from the request attributes that Spring sets when an error occurs

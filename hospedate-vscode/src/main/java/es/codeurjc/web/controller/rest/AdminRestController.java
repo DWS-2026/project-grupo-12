@@ -34,7 +34,7 @@ public class AdminRestController {
     private ReserveService reserveService;
 
     // --- USERS ---
-
+    // Retrieves a paginated list of all non-admin users for the administration dashboard
     @Operation(summary = "List all non-admin users (paginated)")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "OK"),
@@ -101,6 +101,7 @@ public class AdminRestController {
         if (user.get().isAdmin()) {
             return ResponseEntity.status(403).build();
         }
+        // Ensures all associated data (reserves, reviews) are properly handled before deleting the user entity
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }

@@ -51,7 +51,7 @@ public class ReviewRestController {
         @ApiResponse(responseCode = "401", description = "Unauthorized – login required"),
         @ApiResponse(responseCode = "404", description = "Hotel not found")
     })
-    //Create review
+    // Associates a newly created review with the specified hotel and the currently authenticated user profile
     @PostMapping("/")
     public ResponseEntity<ReviewDTO> createReview(@Valid @RequestBody ReviewDTO dto, Principal principal){
         //Get the hotel

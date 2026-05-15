@@ -36,7 +36,7 @@ public class AuthRestController {
         @ApiResponse(responseCode = "200", description = "OK"),
         @ApiResponse(responseCode = "401", description = "Invalid credentials")
     })
-    //LOGIN: Generate the JWT token and store it in a cookie.
+    // Authenticates the user credentials and generates a secure JWT token upon successful login
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(
             @Valid @RequestBody LoginRequest loginRequest,

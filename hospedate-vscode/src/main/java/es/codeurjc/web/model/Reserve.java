@@ -125,7 +125,7 @@ public class Reserve {
         this.nights = nights;
     }
 
-    //used in profile to finish pending reservations
+    // Helper method used in the frontend to check if the user still needs to pay or confirm this reserve
     public boolean isPending() {
     return "PENDIENTE".equals(this.status);
     }

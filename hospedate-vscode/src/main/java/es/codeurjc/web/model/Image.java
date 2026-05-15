@@ -10,10 +10,12 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    // Saves the actual file bytes directly in the database using a large BLOB type
     @Lob
     @Column(columnDefinition = "LONGBLOB")
     private Blob imageFile;
 
+    // Used to remember the exact display order of the images in the hotel gallery
     private int position;
 
     private String name;

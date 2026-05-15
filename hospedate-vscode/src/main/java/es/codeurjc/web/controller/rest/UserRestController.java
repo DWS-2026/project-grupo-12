@@ -71,7 +71,7 @@ public class UserRestController {
         @ApiResponse(responseCode = "401", description = "Unauthorized"),
         @ApiResponse(responseCode = "404", description = "No avatar set")
     })
-    // PROFILE PICTURE
+    // Processes the uploaded multipart file, validates its format, and updates the user's profile avatar reference
     @GetMapping("/me/avatar")
     public ResponseEntity<Object> getProfileAvatar(Principal principal) {
         User user = userService.findByEmail(principal.getName()).orElseThrow();

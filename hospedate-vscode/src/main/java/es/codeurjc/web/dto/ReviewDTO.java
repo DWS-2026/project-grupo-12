@@ -35,7 +35,7 @@ public class ReviewDTO {
     // Empty constructor (required for Spring/Jackson)
     public ReviewDTO() {}
 
-    // Translator constructor (Entity -> DTO)
+    // Safely extracts specific fields from associated entities to decouple the API response from the internal database schema and prevent sensitive data exposure
     public ReviewDTO(Review review) {
         this.id = review.getId();
         this.title = review.getTitle();

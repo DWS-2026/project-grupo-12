@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+// Sanitized data transfer object representing a User. The password field is deliberately omitted from this class to comply with security best practices and prevent credentials leakage
 public class UserDTO {
 
     private Long id;

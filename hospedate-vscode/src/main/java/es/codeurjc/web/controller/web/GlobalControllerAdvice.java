@@ -15,6 +15,7 @@ public class GlobalControllerAdvice {
     private UserSession userSession;
 
     @ModelAttribute
+    // Injects global variables (like authentication status, user roles, and page metadata) into all Mustache templates dynamically
     public void addGlobalAttributes(Model model, HttpServletRequest request) {
         String currentRoute = request.getRequestURI(); 
 

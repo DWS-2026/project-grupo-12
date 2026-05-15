@@ -37,7 +37,7 @@ public class Review {
         this.author = author;
         this.hotel = hotel;
     }
-
+    // Automatically sets today's date right before saving the review to the database for the first time
     @PrePersist //It is executed before the .save, and saves the date it is done
     protected void initializePublishDate() {
         this.publishDate = LocalDate.now();
@@ -114,7 +114,7 @@ public class Review {
         return this.publishDate.format(formatter);
     }
 
-    //For getting each users rating as stars in the hotel page
+    // Helper method to draw the correct number of star icons in the HTML template based on the rating
     public List<Integer> getStars() {
     List<Integer> stars = new ArrayList<>();
     for (int i = 0; i < this.rating; i++) {

@@ -15,7 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "users") // "user" is a reserved word in SQL, so we use "users" as the table name
 public class User {
-    //1 to 1 relation with image
+    // Links the user to their profile picture. If the user account is deleted, the photo is deleted automatically
     @OneToOne(cascade=CascadeType.ALL)
     private Image image;
 

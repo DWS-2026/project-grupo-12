@@ -120,7 +120,7 @@ public class AdminWebController {
         return "admin_hotels";
 }
 
-    // Renders the form to create a new hotel
+    // Prepares the model with empty attributes for the hotel creation form in the admin dashboard
     @GetMapping("/admin/hotels/new")
     public String newHotelForm(Model model) {
         return "create_hotel";
@@ -139,7 +139,7 @@ public class AdminWebController {
         return "redirect:/admin/hotels";
     }
 
-    // Saves a new hotel or updates an existing one with all its attributes and gallery images
+    // Processes the creation of a new hotel, handling mandatory fields and associating the uploaded gallery images
     @PostMapping("/admin/hotels/save")
     public String saveHotel(
             @RequestParam(required = false) Long id,
@@ -176,6 +176,7 @@ public class AdminWebController {
     // Deletes a hotel by its ID and redirects back to the hotel list
     @Transactional
     @PostMapping("/admin/hotels/delete/{id}")
+    // Removes a hotel from the database and cleanly redirects the administrator back to the hotel list
     public String deleteHotel(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Optional<Hotel> hotel = hotelService.getHotelById(id);
         if (hotel.isPresent()) {

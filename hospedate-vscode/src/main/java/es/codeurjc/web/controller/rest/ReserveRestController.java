@@ -53,7 +53,7 @@ public class ReserveRestController {
             return ResponseEntity.notFound().build(); // 404 not found
         }
 
-        //Get the user
+        // Retrieves the current authenticated user instance from the security context to link the new reserve
         User user = userService.findByEmail(principal.getName()).orElseThrow();
         //Create pending reserve
         Reserve newReserve = reserveService.createPendingReserve(

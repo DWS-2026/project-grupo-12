@@ -34,6 +34,7 @@ public class HotelWebController {
 
 
     @GetMapping("/")
+    // Retrieves the top-rated hotels from the database to highlight them on the application's landing page
     public String index(Model model) {
 
         List<Hotel> topHoteles = hotelService.getTop3Hotels();
@@ -73,6 +74,7 @@ public class HotelWebController {
     }
 
     @GetMapping("/hotel/{id}")
+    // Loads detailed information, user reviews, and splits the image gallery to render the carousel properly
     public String showHotel(@PathVariable long id, Model model) {
         Optional<Hotel> hotel = hotelService.getHotelById(id);
         if (hotel.isPresent()) {

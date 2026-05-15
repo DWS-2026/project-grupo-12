@@ -12,6 +12,7 @@ public class ReserveDTO {
     private Long id;
 
     @NotNull(message = "Entry date is required")
+    // Ensures temporal consistency by validating that entry and departure dates are never set in the past during the booking process
     @FutureOrPresent(message = "Entry date cannot be in the past")
     private LocalDate entryDate;
 

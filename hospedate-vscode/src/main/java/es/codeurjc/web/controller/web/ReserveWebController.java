@@ -40,6 +40,7 @@ public class ReserveWebController {
     // Method to display the reservation and collect the data from the form, 
     // and create the reservation as "PENDING" so that the data cannot be modified and we have greater security
     @PostMapping("/reserve")
+    // Initializes a pending reserve to lock the selected dates and prevent data manipulation before the checkout process
     public String showReserve(@RequestParam Long hotelId,
                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate entryDate, 
                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate departureDate,
@@ -176,6 +177,7 @@ public class ReserveWebController {
     }
 
     @PostMapping("/reserve/payment")
+    // Verifies the user's identity and ownership of the pending reserve before granting access to the payment gateway
     public String showPaymentPage(@RequestParam Long reserveId, Model model) {
         // If the user is not logged in, redirect to the login page
         if(!userSession.isLogged()){

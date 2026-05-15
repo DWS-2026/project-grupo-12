@@ -16,6 +16,7 @@ import java.util.Map;
 public class GlobalRestExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
+    // Extracts field validation errors from the exception and maps them into a readable JSON response format
     public ResponseEntity<Map<String, String>> handleValidationErrors(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new LinkedHashMap<>();
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {

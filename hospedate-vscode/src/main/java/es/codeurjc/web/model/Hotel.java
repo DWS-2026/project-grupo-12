@@ -174,6 +174,7 @@ public class Hotel{
         return rating;
     }
 
+    // Returns the fixed rating set by the admin, ignoring the average of user reviews
     public double getManualRating() {
         return rating;
     }

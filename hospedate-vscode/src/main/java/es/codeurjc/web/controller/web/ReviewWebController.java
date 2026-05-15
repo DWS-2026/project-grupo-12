@@ -32,6 +32,7 @@ public class ReviewWebController {
     private UserSession userSession;
     
     @PostMapping("/hotel/{id}/review")
+    // Associates a new review and rating with the specified hotel, linking it directly to the authenticated user's profile
     public String showHotel(@PathVariable long id,
                             @RequestParam int rating, 
                             @RequestParam String title,
@@ -53,6 +54,7 @@ public class ReviewWebController {
     }
 
     @PostMapping("/review/delete/{id}")
+    // Enforces IDOR protection by ensuring the logged-in user is the actual author of the review before executing the deletion
     public String deleteReview(@PathVariable long id){
         // If the user is not logged in, redirect to the login page
         if(!userSession.isLogged()){

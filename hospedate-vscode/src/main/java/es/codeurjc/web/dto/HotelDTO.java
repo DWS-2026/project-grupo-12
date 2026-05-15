@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Size;
 
+// Acts as a data contract for Hotel entities in the REST API, enforcing strict validation rules to ensure data integrity before reaching the service layer
 public class HotelDTO {
 
     private Long id;
@@ -42,7 +43,7 @@ public class HotelDTO {
     private boolean airConditioning;
     private boolean family;
 
-    // Dynamic additional services
+    // Aggregates nested service relationships into a flat data structure to optimize the JSON payload size
     private Set<String> services;
 
     // URL for the main image (we avoid sending the BLOB)

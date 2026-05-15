@@ -37,6 +37,7 @@ public class ImageRestController {
                     .body(imageFile);
                     
         } catch (Exception e) {
+            // Fallback to a 404 Not Found response if the requested image file cannot be located or read from the storage
             return ResponseEntity.notFound().build(); 
         }
     }

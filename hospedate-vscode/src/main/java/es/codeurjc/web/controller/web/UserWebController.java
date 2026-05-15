@@ -53,6 +53,7 @@ public class UserWebController {
 
 
     @GetMapping("/profile")
+    // Aggregates the user's personal data, active reserves, and past reviews to populate their private profile dashboard
     public String profile(Model model) {
 
         if (!userSession.isLogged()) {
@@ -127,7 +128,7 @@ public class UserWebController {
 
    
 
-    //to update the user's profile information
+    // Handles profile modifications and securely processes the avatar multipart file if a new image is provided
     @PostMapping("/profile/update")
     public String updateProfile(
             @RequestParam String username,

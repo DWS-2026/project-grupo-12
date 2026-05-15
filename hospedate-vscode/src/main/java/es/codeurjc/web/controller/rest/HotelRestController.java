@@ -49,6 +49,7 @@ public class HotelRestController {
         @Autowired
         private ImageService imageService;
 
+        // Retrieves a paginated list of hotels, optionally applying a keyword filter for city or name searches
         @Operation(summary = "List all hotels (paginated)")
         @ApiResponse(responseCode = "200", description = "OK")
         //List hotels
@@ -86,6 +87,7 @@ public class HotelRestController {
         @PostMapping("/")
         public ResponseEntity<?> createHotel(@Valid @RequestBody HotelDTO hotelDto){
             try {
+                // Transforms the incoming DTO into a Hotel entity and persists it to the database
                 Hotel newHotel = hotelService.createHotelFromDto(hotelDto);
                 //Generate the header location
                 URI location = ServletUriComponentsBuilder.fromCurrentRequest()
